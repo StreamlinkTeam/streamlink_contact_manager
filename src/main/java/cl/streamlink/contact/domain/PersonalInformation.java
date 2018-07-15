@@ -1,0 +1,65 @@
+package cl.streamlink.contact.domain;
+
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.security.KeyStore;
+import java.time.LocalDate;
+
+/**
+ * Created by Chemakh on 11/07/2018.
+ */
+@Embeddable
+public class PersonalInformation {
+
+    private LocalDate birthDate;
+
+    private String placeOfBirth;
+
+    private String nationality;
+
+    private String socialSecurityNumber;
+
+    @Enumerated(EnumType.STRING)
+    private FamilySituation familySituation;
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getSocialSecurityNumber() {
+        return socialSecurityNumber;
+    }
+
+    public void setSocialSecurityNumber(String socialSecurityNumber) {
+        this.socialSecurityNumber = socialSecurityNumber;
+    }
+
+    public FamilySituation getFamilySituation() {
+        return familySituation;
+    }
+
+    public void setFamilySituation(FamilySituation familySituation) {
+        this.familySituation = familySituation;
+    }
+}

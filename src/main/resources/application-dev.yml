@@ -1,0 +1,29 @@
+spring:
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:file:~/developer
+#    username: test
+#    password:
+#    driver-class-name: org.h2.Driver
+  datasource:
+    url: jdbc:mysql://localhost:3306/contact?useUnicode=true&characterEncoding=utf8&useSSL=false
+    name: contact
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 50
+      pool-name: contact_pool
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+
+contact:
+  security:
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOlt7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifV0sImlhdCI6MTUzMTQxMzE2NCwiZXhwIjoxNTM1MDEzMTY0fQ.2DhsTiaemCMEK7ZwyT7OHIGrPr2mSC8Z7b42BLTeRik

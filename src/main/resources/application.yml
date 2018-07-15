@@ -1,0 +1,18 @@
+server.port: 9090
+
+security:
+  jwt:
+    token:
+      secret-key: secret-key
+      expire-length: 3600
+
+spring:
+  jpa:
+    database: MYSQL
+    show_sql: false
+    hibernate:
+      ddl-auto : update
+    properties:
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.dialect : org.hibernate.dialect.MySQL5Dialect
