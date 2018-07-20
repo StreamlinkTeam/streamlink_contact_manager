@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 /**
- * Created by Radouen on 12/07/2018.
+ * Created by chemakh on 12/07/2018.
  */
 @RestController
 @RequestMapping("/ws/developers/contract")

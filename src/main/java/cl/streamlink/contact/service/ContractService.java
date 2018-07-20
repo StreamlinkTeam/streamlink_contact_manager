@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 
 /**
- * Created by Radouen on 12/07/2018.
+ * Created by chemakh on 12/07/2018.
  */
 @Service
 public class ContractService {

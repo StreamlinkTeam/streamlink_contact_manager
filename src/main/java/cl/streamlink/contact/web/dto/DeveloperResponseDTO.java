@@ -1,13 +1,15 @@
 package cl.streamlink.contact.web.dto;
 
+import cl.streamlink.contact.domain.Gender;
 import cl.streamlink.contact.domain.Stage;
 import cl.streamlink.contact.domain.User;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * Created by Radouen on 12/07/2018.
+ * Created by chemakh on 12/07/2018.
  */
 public class DeveloperResponseDTO {
 
@@ -18,6 +20,8 @@ public class DeveloperResponseDTO {
     private String lastname;
 
     private Stage stage;
+
+    private Gender gender;
 
     private User manager;
 
@@ -33,10 +37,13 @@ public class DeveloperResponseDTO {
 
     private LocalDateTime modifiedDate;
 
+    @JsonUnwrapped
     private PersonalInformationDTO personalInformation;
 
+    @JsonUnwrapped
     private SkillsInformationDTO skillsInformation;
 
+    @JsonUnwrapped
     private ContactDTO contact;
 
     public String getReference() {
@@ -101,6 +108,14 @@ public class DeveloperResponseDTO {
 
     public void setAvailability(LocalDate availability) {
         this.availability = availability;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getMobility() {

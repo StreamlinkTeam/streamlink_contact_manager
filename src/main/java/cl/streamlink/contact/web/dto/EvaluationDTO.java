@@ -5,7 +5,7 @@ import cl.streamlink.contact.domain.EvaluationNote;
 import java.time.LocalDateTime;
 
 /**
- * Created by Radouen on 13/07/2018.
+ * Created by chemakh on 13/07/2018.
  */
 public class EvaluationDTO {
 

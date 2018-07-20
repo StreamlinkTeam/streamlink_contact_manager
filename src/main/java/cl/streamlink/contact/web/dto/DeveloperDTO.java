@@ -26,6 +26,8 @@ public class DeveloperDTO {
 
     private Stage stage;
 
+    private Gender gender;
+
     private String managerReference;
 
     private String rhReference;
@@ -111,6 +113,14 @@ public class DeveloperDTO {
 
     public void setMobility(String mobility) {
         this.mobility = mobility;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public LocalDateTime getCreatedDate() {

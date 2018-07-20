@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by Radouen on 13/07/2018.
+ * Created by chemakh on 13/07/2018.
  */
 public interface ContractRepository extends JpaRepository<Contract, Long> {
 

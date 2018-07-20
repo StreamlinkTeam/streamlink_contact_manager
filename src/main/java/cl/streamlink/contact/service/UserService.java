@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -85,4 +87,7 @@ public class UserService {
                         resourceNotFoundExceptionBuilder("User", currentUserName));
     }
 
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+    }
 }

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Arrays;
 
 /**
- * Created by Radouen on 13/07/2018.
+ * Created by chemakh on 13/07/2018.
  */
 public enum ActionType {
 

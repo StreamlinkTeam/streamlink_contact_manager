@@ -35,6 +35,9 @@ public class Developer implements Serializable {
     @Enumerated(EnumType.STRING)
     private Stage stage;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     @Embedded
     private Contact contact = new Contact();
 
