@@ -108,6 +108,14 @@ public class Developer implements Serializable {
         this.stage = stage;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     public Contact getContact() {
         if (contact == null)
             contact = new Contact();

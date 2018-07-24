@@ -19,6 +19,15 @@ public class UserDTO {
     @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
     private String username;
 
+
+    @NotNull
+    @Size(min = 2, max = 255)
+    private String firstname;
+
+    @NotNull
+    @Size(min = 2, max = 255)
+    private String lastname;
+
     @NotNull
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
@@ -36,12 +45,30 @@ public class UserDTO {
         this.reference = reference;
     }
 
+
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getPassword() {

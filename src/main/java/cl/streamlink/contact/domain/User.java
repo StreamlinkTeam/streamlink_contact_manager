@@ -1,6 +1,7 @@
 package cl.streamlink.contact.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -14,6 +15,12 @@ public class User {
 
   @Column(unique = true)
   private String reference;
+
+  @NotNull
+  private String firstname;
+
+  @NotNull
+  private String lastname;
 
   @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
   @Column(unique = true, nullable = false)
@@ -42,6 +49,22 @@ public class User {
 
   public void setReference(String reference) {
     this.reference = reference;
+  }
+
+  public String getLastname() {
+    return lastname;
+  }
+
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
+  }
+
+  public String getFirstname() {
+    return firstname;
+  }
+
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
   }
 
   public String getUsername() {

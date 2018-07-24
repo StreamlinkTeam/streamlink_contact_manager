@@ -51,8 +51,14 @@ public class DeveloperService {
         return mapper.fromBeanToDTOResponse(developerRepository.save(developer));
     }
 
+    public DeveloperDTO getDeveloper(String developerReference) throws ContactApiException {
 
-    public List<DeveloperResponseDTO> getDeveloper(String developerReference) throws ContactApiException {
+        return mapper.fromBeanToDTO(developerRepository.findOneByReference(developerReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference)));
+    }
+
+
+    public List<DeveloperResponseDTO> getDevelopers(String developerReference) throws ContactApiException {
 
         if (developerReference != null)
             return Collections.singletonList(mapper.fromBeanToDTOResponse(developerRepository.findOneByReference(developerReference)
@@ -117,7 +123,9 @@ public class DeveloperService {
 
     public ContactDTO getDeveloperContact(String developerReference) {
 
-        return getDeveloper(developerReference).get(0).getContact();
+        ContactDTO contact = getDevelopers(developerReference).get(0).getContact();
+        contact.setDeveloperReference(developerReference);
+        return contact;
     }
 
     public SkillsInformationDTO updateDeveloperSkills(SkillsInformationDTO skillsInformation, String developerReference) {
@@ -137,8 +145,9 @@ public class DeveloperService {
 
     public SkillsInformationDTO getDeveloperSkills(String developerReference) {
 
-        return getDeveloper(developerReference).get(0).getSkillsInformation();
-
+        SkillsInformationDTO skillsInformation = getDevelopers(developerReference).get(0).getSkillsInformation();
+        skillsInformation.setDeveloperReference(developerReference);
+        return skillsInformation;
     }
 
     public PersonalInformationDTO updateDeveloperPersonalInformation(PersonalInformationDTO personalInformation, String developerReference) {
@@ -153,7 +162,8 @@ public class DeveloperService {
     }
 
     public PersonalInformationDTO getDeveloperPersonalInformation(String developerReference) {
-        return getDeveloper(developerReference).get(0).getPersonalInformation();
-
+        PersonalInformationDTO personalInformation = getDevelopers(developerReference).get(0).getPersonalInformation();
+        personalInformation.setDeveloperReference(developerReference);
+        return personalInformation;
     }
 }

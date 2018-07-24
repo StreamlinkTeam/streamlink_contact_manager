@@ -51,7 +51,7 @@ public class DeveloperController {
         return developerService.updateDeveloper(developer, developerReference);
     }
 
-    @RequestMapping(value = "",
+    @RequestMapping(value = "all",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -60,7 +60,20 @@ public class DeveloperController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Developer.class),
             @ApiResponse(code = 404, message = "Developer with Ref not Found")
     })
-    public List<DeveloperResponseDTO> getDeveloper(@RequestParam(value = "developerReference", required = false) String developerReference) throws ContactApiException {
+    public List<DeveloperResponseDTO> getDevelopers()  {
+        return developerService.getDevelopers(null);
+    }
+
+    @RequestMapping(value = "",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Developer Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = DeveloperDTO.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public DeveloperDTO getDeveloper(@RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
         return developerService.getDeveloper(developerReference);
     }
 
