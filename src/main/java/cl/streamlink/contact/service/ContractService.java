@@ -70,17 +70,24 @@ public class ContractService {
 
     public ContractDTO getContract(String developerReference) {
 
-        Developer developer = developerRepository.findOneByReference(developerReference)
+        developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         Contract contract = contractRepository.findOneByDeveloperReference(developerReference).orElse(null);
 
-        return mapper.fromBeanToDTO(contract);
+        if (contract != null) {
+            ContractDTO contractDTO = mapper.fromBeanToDTO(contract);
+            contractDTO.setDeveloperReference(developerReference);
+
+            return contractDTO;
+        }
+
+        return null;
     }
 
     public JSONObject deleteContract(String developerReference) {
 
-        Developer developer = developerRepository.findOneByReference(developerReference)
+        developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         Contract contract = contractRepository.findOneByDeveloperReference(developerReference).orElse(null);
@@ -113,6 +120,10 @@ public class ContractService {
         developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
-        return mapper.fromBeanToDTO(wishedContractRepository.findOneByDeveloperReference(developerReference).orElse(new WishedContract()));
+        WishedContractDTO wishedContract =
+                mapper.fromBeanToDTO(wishedContractRepository.findOneByDeveloperReference(developerReference).orElse(new WishedContract()));
+
+        wishedContract.setDeveloperReference(developerReference);
+        return wishedContract;
     }
 }

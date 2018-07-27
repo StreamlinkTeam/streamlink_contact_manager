@@ -5,6 +5,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -33,6 +34,8 @@ public class Action {
     private ActionType type;
 
     private String note;
+
+    private LocalDateTime date;
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
@@ -88,6 +91,14 @@ public class Action {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public LocalDateTime getCreatedDate() {

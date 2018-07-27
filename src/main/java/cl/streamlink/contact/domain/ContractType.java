@@ -10,6 +10,7 @@ import java.util.Arrays;
  */
 public enum ContractType {
 
+    NOT_DEFINED,
     CDI,
     CDD,
     SUBCONTRACTOR,
@@ -20,7 +21,7 @@ public enum ContractType {
     public static ContractType fromString(final String value) {
         return value != null ?
                 Arrays.stream(values()).filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
-                        .findFirst().orElse(CDI)
-                : CDI;
+                        .findFirst().orElse(NOT_DEFINED)
+                : NOT_DEFINED;
     }
 }

@@ -13,6 +13,8 @@ public class EvaluationDTO {
 
     private String developerReference;
 
+    private String responsableName;
+
     private String responsableReference;
 
     private EvaluationNote relational;
@@ -71,6 +73,14 @@ public class EvaluationDTO {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getResponsableName() {
+        return responsableName;
+    }
+
+    public void setResponsableName(String responsableName) {
+        this.responsableName = responsableName;
     }
 
     public LocalDateTime getCreatedDate() {

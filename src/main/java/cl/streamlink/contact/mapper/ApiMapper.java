@@ -109,7 +109,8 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference"),
-            @Mapping(source = "responsable.reference", target = "responsableReference")
+            @Mapping(source = "responsable.reference", target = "responsableReference"),
+            @Mapping(target = "responsableName", expression = "java(bean.getResponsable().getFirstname()+\" \"+bean.getResponsable().getLastname())")
     })
     public abstract EvaluationDTO fromBeanToDTO(Evaluation bean);
 

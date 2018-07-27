@@ -27,6 +27,8 @@ public class ActionDTO {
 
     private String note;
 
+    private LocalDateTime date;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
@@ -69,6 +71,14 @@ public class ActionDTO {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public LocalDateTime getCreatedDate() {

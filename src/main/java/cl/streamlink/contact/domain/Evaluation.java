@@ -90,7 +90,7 @@ public class Evaluation {
     }
 
     public void setTechnical(EvaluationNote technical) {
-        technical = technical;
+        this.technical = technical;
     }
 
     public String getNote() {
