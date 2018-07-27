@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Inject;
 import java.util.stream.Collectors;
@@ -24,6 +25,9 @@ public abstract class ApiMapper {
 
     @Inject
     DeveloperRepository developerRepository;
+
+    @Value("${mazad.avatar.url}")
+    String baseUrl;
 
     @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference")
@@ -131,6 +135,17 @@ public abstract class ApiMapper {
     public abstract UserDTO fromBeanToDTO(User bean);
 
     public abstract User fromDTOToBean(UserDTO dto);
+
+    @Mappings({
+            @Mapping(target = "developerReference", source = "developer.reference"),
+            @Mapping(target = "url", expression = "java(baseUrl.concat(photo.getName()))")
+    })
+    public abstract CurriculumVitaeDTO fromBeanToDTO(CurriculumVitae bean);
+
+    @Mappings({
+            @Mapping(target = "developer", expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))")
+    })
+    public abstract CurriculumVitae fromDTOToBean(CurriculumVitaeDTO dto);
 
 
     @Mappings({

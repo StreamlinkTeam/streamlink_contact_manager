@@ -33,6 +33,7 @@ public class Action {
     @Enumerated(EnumType.STRING)
     private ActionType type;
 
+    @Lob
     private String note;
 
     private LocalDateTime date;

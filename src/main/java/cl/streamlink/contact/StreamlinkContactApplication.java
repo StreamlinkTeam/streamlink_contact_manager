@@ -35,6 +35,9 @@ public class StreamlinkContactApplication implements CommandLineRunner {
         try {
             UserDTO admin = new UserDTO();
             admin.setUsername("admin");
+            admin.setLastname("admin");
+            admin.setFirstname("admin");
+
             admin.setPassword("admin");
             admin.setEmail("admin@email.com");
             admin.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_ADMIN)));
@@ -46,6 +49,8 @@ public class StreamlinkContactApplication implements CommandLineRunner {
         try {
             UserDTO client = new UserDTO();
             client.setUsername("client");
+            client.setLastname("admin");
+            client.setFirstname("admin");
             client.setPassword("client");
             client.setEmail("client@email.com");
             client.setRoles(new ArrayList<Role>(Collections.singletonList(Role.ROLE_CLIENT)));

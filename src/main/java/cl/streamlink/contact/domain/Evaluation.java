@@ -35,6 +35,7 @@ public class Evaluation {
     @Enumerated(EnumType.STRING)
     private EvaluationNote technical;
 
+    @Lob
     private String note;
 
     @Column(name = "created_date", updatable = false)

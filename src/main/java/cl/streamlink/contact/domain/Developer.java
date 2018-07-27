@@ -53,6 +53,7 @@ public class Developer implements Serializable {
     @ManyToOne
     private User rh;
 
+    @Lob
     private String note;
 
     private LocalDate availability;
