@@ -34,7 +34,6 @@ public class StreamlinkContactApplication implements CommandLineRunner {
 
         try {
             UserDTO admin = new UserDTO();
-            admin.setUsername("admin");
             admin.setLastname("admin");
             admin.setFirstname("admin");
 
@@ -48,12 +47,11 @@ public class StreamlinkContactApplication implements CommandLineRunner {
         }
         try {
             UserDTO client = new UserDTO();
-            client.setUsername("client");
-            client.setLastname("admin");
-            client.setFirstname("admin");
+            client.setLastname("client");
+            client.setFirstname("client");
             client.setPassword("client");
             client.setEmail("client@email.com");
-            client.setRoles(new ArrayList<Role>(Collections.singletonList(Role.ROLE_CLIENT)));
+            client.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_CLIENT)));
 
             userService.signup(client);
         } catch (ContactApiException e) {

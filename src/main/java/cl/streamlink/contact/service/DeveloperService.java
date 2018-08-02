@@ -78,7 +78,7 @@ public class DeveloperService {
         return MiscUtils.createSuccessfullyResult();
     }
 
-    public DeveloperResponseDTO addLanguage(String developerReference, String languageReference) throws ContactApiException {
+   /* public DeveloperResponseDTO addLanguage(String developerReference, String languageReference) throws ContactApiException {
         Developer developer = developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
@@ -92,9 +92,9 @@ public class DeveloperService {
         } else {
             throw ContactApiException.unprocessableEntityExceptionBuilder("relation.exist", new String[]{developerReference, languageReference});
         }
-    }
+    }*/
 
-    public DeveloperResponseDTO removeLanguage(String developerReference, String languageReference) throws ContactApiException {
+   /* public DeveloperResponseDTO removeLanguage(String developerReference, String languageReference) throws ContactApiException {
         Developer developer = developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
@@ -108,7 +108,7 @@ public class DeveloperService {
         } else {
             throw ContactApiException.unprocessableEntityExceptionBuilder("relation.not.exist", new String[]{developerReference, languageReference});
         }
-    }
+    }*/
 
     public ContactDTO updateDeveloperContact(ContactDTO contact, String developerReference) {
         Developer developer = developerRepository.findOneByReference(developerReference)
@@ -130,8 +130,8 @@ public class DeveloperService {
 
     public SkillsInformationDTO updateDeveloperSkills(SkillsInformationDTO skillsInformation, String developerReference) {
 
-        skillsInformation.getLanguages().stream().filter(lan -> MiscUtils.isEmpty(lan.getReference())).
-                forEach(languageService::createLanguage);
+//        skillsInformation.getLanguages().stream().filter(lan -> MiscUtils.isEmpty(lan.getReference())).
+//                forEach(languageService::createLanguage);
 
         Developer developer = developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +43,14 @@ public class ContcatApiExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorDTO processMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
-        return new ErrorDTO(null,ErrorConstants.ERR_MISSING_REQUEST_PARAMETER, ex.getMessage());
+        return new ErrorDTO(null, ErrorConstants.ERR_MISSING_REQUEST_PARAMETER, ex.getMessage());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorDTO processAuthenticationException(AuthenticationException ex) {
+        return new ErrorDTO(null, ErrorConstants.ERR_UNAUTHORIZED, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -69,10 +78,9 @@ public class ContcatApiExceptionHandler {
             logger.error(cause.getMessage());
         }
 
-        if(ex.getCause() instanceof JsonMappingException)
-        {
+        if (ex.getCause() instanceof JsonMappingException) {
             JsonMappingException cause = ((JsonMappingException) ex.getCause());
-            JsonMappingException.Reference ref = cause.getPath().get(cause.getPath().size()-1);
+            JsonMappingException.Reference ref = cause.getPath().get(cause.getPath().size() - 1);
             errorDTO.add(ref.getFrom().getClass().getSimpleName(), ref.getFieldName(), cause.getOriginalMessage());
 
 
@@ -92,7 +100,7 @@ public class ContcatApiExceptionHandler {
     }
 
     private ErrorDTO processFieldErrors(List<FieldError> fieldErrors) {
-        ErrorDTO dto = new ErrorDTO(null,ErrorConstants.ERR_VALIDATION, null);
+        ErrorDTO dto = new ErrorDTO(null, ErrorConstants.ERR_VALIDATION, null);
 
         for (FieldError fieldError : fieldErrors) {
             dto.add(fieldError.getObjectName(), fieldError.getField(), fieldError.getCode());
@@ -110,6 +118,19 @@ public class ContcatApiExceptionHandler {
         logger.error(ex.getClass().getName(), ex);
         logger.error(errorDTO.toString());
         return errorDTO;
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorDTO processMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
+
+        ErrorDTO errorDTO = new ErrorDTO("", ex.getLocalizedMessage(), ex.getMessage());
+
+        logger.error(errorDTO.toString());
+
+        return errorDTO;
+
     }
 
     @ExceptionHandler(ContactApiException.class)

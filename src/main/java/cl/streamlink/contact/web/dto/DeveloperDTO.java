@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 public class DeveloperDTO {
@@ -37,7 +38,7 @@ public class DeveloperDTO {
 
     private LocalDate availability;
 
-    private String mobility;
+    private List<String> mobility;
 
     private LocalDateTime createdDate;
 
@@ -107,11 +108,11 @@ public class DeveloperDTO {
         this.availability = availability;
     }
 
-    public String getMobility() {
+    public List<String> getMobility() {
         return mobility;
     }
 
-    public void setMobility(String mobility) {
+    public void setMobility(List<String> mobility) {
         this.mobility = mobility;
     }
 

@@ -1,13 +1,13 @@
 spring:
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2
-#  datasource:
-#    url: jdbc:h2:file:~/developer
-#    username: test
-#    password:
-#    driver-class-name: org.h2.Driver
+  #  h2:
+  #    console:
+  #      enabled: true
+  #      path: /h2
+  #  datasource:
+  #    url: jdbc:h2:file:~/developer
+  #    username: test
+  #    password:
+  #    driver-class-name: org.h2.Driver
   datasource:
     url: jdbc:mysql://localhost:3306/contact?useUnicode=true&characterEncoding=utf8&useSSL=false
     name: contact
@@ -26,7 +26,7 @@ spring:
 
 contact:
   security:
-    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOlt7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifV0sImlhdCI6MTUzMTQxMzE2NCwiZXhwIjoxNTM1MDEzMTY0fQ.2DhsTiaemCMEK7ZwyT7OHIGrPr2mSC8Z7b42BLTeRik
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJhdXRoIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE1MzMxMzg3MzIsImV4cCI6MTUzNjczODczMn0.AiXci7rjitucF9gyd8Rel-eV9p3hrIOVd54j0Z8OW8Q
   avatar:
-    path: C:\ldk\cv
-    url: C:\ldk\cv\
+    path: C:\ldk\cv\
+    url: http://localhost:8000/

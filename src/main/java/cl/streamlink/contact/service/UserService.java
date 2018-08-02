@@ -42,37 +42,37 @@ public class UserService {
         try {
             ApplicationConfig.getService(AuthenticationManager.class)
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username, userRepository.findOneByUsername(username).get().getRoles());
+            return jwtTokenProvider.createToken(username, userRepository.findOneByEmail(username).get().getRoles());
         } catch (AuthenticationException e) {
-            throw new ContactApiException("Invalid username/password supplied", ContactApiError.UNAUTHORIZED, null);
+            throw new ContactApiException("Invalid email/password supplied", ContactApiError.UNAUTHORIZED, null);
         }
     }
 
     public UserDTO signup(UserDTO user) {
 
-        if (!userRepository.existsByUsername(user.getUsername())) {
+        if (!userRepository.existsByEmail(user.getEmail())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setReference(MiscUtils.generateReference());
             return mapper.fromBeanToDTO(userRepository.save(mapper.fromDTOToBean(user)));
         } else {
-            throw new ContactApiException("Username is already in use", ContactApiError.UNAUTHORIZED, null);
+            throw new ContactApiException("Email is already in use", ContactApiError.UNAUTHORIZED, null);
         }
     }
 
-    public void delete(String username) {
-        userRepository.deleteByUsername(username);
+    public void delete(String email) {
+        userRepository.deleteByEmail(email);
     }
 
-    public UserDTO search(String username) {
-        User user = userRepository.findOneByUsername(username).orElse(null);
+    public UserDTO search(String email) {
+        User user = userRepository.findOneByEmail(email).orElse(null);
         if (user == null) {
-            throw ContactApiException.resourceNotFoundExceptionBuilder("User", username);
+            throw ContactApiException.resourceNotFoundExceptionBuilder("User", email);
         }
         return mapper.fromBeanToDTO(user);
     }
 
     public UserDTO whoami(HttpServletRequest req) {
-        return mapper.fromBeanToDTO(userRepository.findOneByUsername
+        return mapper.fromBeanToDTO(userRepository.findOneByEmail
                 (jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req))).orElse(null));
     }
 
@@ -82,7 +82,7 @@ public class UserService {
         if (!SecurityUtils.checkIfThereIsUserLogged())
             throw new ContactApiException("Access denied", ContactApiError.UNAUTHORIZED, null);
 
-        return userRepository.findOneByUsername(currentUserName).
+        return userRepository.findOneByEmail(currentUserName).
                 orElseThrow(() -> ContactApiException.
                         resourceNotFoundExceptionBuilder("User", currentUserName));
     }

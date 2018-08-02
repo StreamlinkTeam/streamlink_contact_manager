@@ -15,9 +15,9 @@ public class UserDTO {
 
     private String reference;
 
-    @NotNull
+   /* @NotNull
     @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
-    private String username;
+    private String username;*/
 
 
     @NotNull
@@ -47,13 +47,13 @@ public class UserDTO {
 
 
 
-    public String getUsername() {
+/*    public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
+    }*/
 
     public String getFirstname() {
         return firstname;

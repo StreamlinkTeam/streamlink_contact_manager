@@ -12,9 +12,10 @@ import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Inject;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring", imports = {Collectors.class})
+@Mapper(componentModel = "spring", imports = {Collectors.class, Arrays.class})
 public abstract class ApiMapper {
 
     @Inject
@@ -26,7 +27,7 @@ public abstract class ApiMapper {
     @Inject
     DeveloperRepository developerRepository;
 
-    @Value("${mazad.avatar.url}")
+    @Value("${contact.avatar.url}")
     String baseUrl;
 
     @Mappings({
@@ -61,12 +62,12 @@ public abstract class ApiMapper {
     })
     public abstract SkillsInformationDTO fromBeanToDTO(SkillsInformation bean, String developerReference);
 
-    @Mappings(
+    /*@Mappings(
             {@Mapping(target = "languages", expression = "java(dto.getLanguages().stream()" +
                     ".map(lan -> languageRepository.findOneByReference(lan.getReference()).orElse(null))" +
                     ".filter(lan -> lan != null).collect(Collectors.toSet()))")
             }
-    )
+    )*/
     public abstract SkillsInformation fromDTOToBean(SkillsInformationDTO dto);
 
     @Mappings({
@@ -84,13 +85,18 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(source = "manager.reference", target = "managerReference"),
-            @Mapping(source = "rh.reference", target = "rhReference")
+            @Mapping(source = "rh.reference", target = "rhReference"),
+            @Mapping(target = "mobility",
+                    expression = "java(Arrays.asList(bean.getMobility().split(\",\")))"),
+
     })
     public abstract DeveloperDTO fromBeanToDTO(Developer bean);
 
     @Mappings({
             @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
             @Mapping(target = "rh", expression = "java(userRepository.findOneByReference(dto.getRhReference()).orElse(null))"),
+            @Mapping(target = "mobility",
+                    expression = "java(String.join(\", \", dto.getMobility()))"),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true)
     })
@@ -138,7 +144,7 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(target = "developerReference", source = "developer.reference"),
-            @Mapping(target = "url", expression = "java(baseUrl.concat(photo.getName()))")
+            @Mapping(target = "url", expression = "java(baseUrl.concat(bean.getName()))")
     })
     public abstract CurriculumVitaeDTO fromBeanToDTO(CurriculumVitae bean);
 
@@ -151,6 +157,8 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(target = "reference", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "mobility",
+                    expression = "java(String.join(\" , \", dto.getMobility()))"),
             @Mapping(target = "modifiedDate", ignore = true),
             @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
             @Mapping(target = "rh", expression = "java(userRepository.findOneByReference(dto.getRhReference()).orElse(null))")
@@ -182,12 +190,12 @@ public abstract class ApiMapper {
 
     public abstract void updateBeanFromDto(PersonalInformationDTO dto, @MappingTarget PersonalInformation bean);
 
-    @Mappings(
+    /*@Mappings(
             {@Mapping(target = "languages", expression = "java(dto.getLanguages().stream()" +
                     ".map(lan -> languageRepository.findOneByReference(lan.getReference()).orElse(null))" +
                     ".filter(lan -> lan != null).collect(Collectors.toSet()))")
             }
-    )
+    )*/
     public abstract void updateBeanFromDto(SkillsInformationDTO dto, @MappingTarget SkillsInformation bean);
 
     @Mappings({

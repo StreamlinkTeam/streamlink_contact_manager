@@ -1,11 +1,18 @@
 package cl.streamlink.contact.service;
 
 
+import cl.streamlink.contact.domain.CurriculumVitae;
+import cl.streamlink.contact.domain.Developer;
+import cl.streamlink.contact.exception.ContactApiException;
+import cl.streamlink.contact.exception.FieldErrorDTO;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.CurriculumVitaeRepository;
 import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.UserRepository;
+import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.web.dto.CurriculumVitaeDTO;
 import cl.streamlink.contact.web.dto.DeveloperDTO;
+import net.minidev.json.JSONObject;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
-
 
 
 @Service
@@ -43,111 +50,71 @@ public class CurriculumVitaeService {
     @Inject
     private CurriculumVitaeRepository curriculumVitaeRepository;
 
-    public DeveloperDTO addDeveloperCV(MultipartFile avatar, String userRef)  {
+    public CurriculumVitaeDTO addDeveloperCV(MultipartFile cv, String developerReference) throws IOException {
 
-        if (avatar != null) {
-            User user = userRepository.findOneByReference(userRef).
-                    orElseThrow(() -> MazadException.resourceNotFoundExceptionBuilder(User.class, userRef));
+        if (cv != null) {
+            Developer developer = developerRepository.findOneByReference(developerReference)
+                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
-            String referenceOldAvatar = user.getAvatar() != null ? user.getAvatar().getReference() : null;
-            user.setAvatar(createPhoto("User", avatar, null));
-            UserDTO userDTO = mapper.fromUserToDTO(userRepository.save(user));
+            if (curriculumVitaeRepository.countByDeveloperReference(developerReference) >= 5)
+                throw ContactApiException.unprocessableEntityExceptionBuilder("", null);
 
-            if (referenceOldAvatar != null)
-                removePhoto(photoRepository.findOneByReference(referenceOldAvatar).orElse(null));
-
-            return userDTO;
+            return mapper.fromBeanToDTO(saveCurriculumVitae(cv, developer));
         } else
-            throw MazadException.validationErrorBuilder(new FieldErrorDTO("Photo", "Photo", "must_be_not_null"));
+            throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("Cv", "CV", "must_be_not_null"));
     }
 
-    public ArticleDTO createArticleAvatar(MultipartFile avatar, String articleRef) throws IOException, MazadException {
-        if (avatar != null) {
+    public List<CurriculumVitaeDTO> findDeveloperCVs(String developerReference) {
 
-            Article article = articleRepository.findOneByReference(articleRef).
-                    orElseThrow(() -> MazadException.resourceNotFoundExceptionBuilder(Article.class, articleRef));
+        developerRepository.findOneByReference(developerReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
-            String referenceOldAvatar = article.getAvatar() != null ? article.getAvatar().getReference() : null;
-            article.setAvatar(createPhoto("Article", avatar, null));
-            ArticleDTO articleDTO = mapper.fromArticleToDTO(articleRepository.save(article));
 
-            if (referenceOldAvatar != null)
-                removePhoto(photoRepository.findOneByReference(referenceOldAvatar).orElse(null));
+        return curriculumVitaeRepository.findByDeveloperReference(developerReference)
+                .stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
 
-            return articleDTO;
-        } else
-            throw MazadException.validationErrorBuilder(new FieldErrorDTO("Photo", "Photo", "must_be_not_null"));
+
     }
 
-    public Category createCategoryAvatar(MultipartFile avatar, String categoryRef) throws IOException, MazadException {
-        if (avatar != null) {
+    public JSONObject removeDeveloperCV(String reference, String developerReference) {
 
-            Category category = categoryRepository.findOneByReference(categoryRef).
-                    orElseThrow(() -> MazadException.resourceNotFoundExceptionBuilder(Category.class, categoryRef));
+        Developer developer = developerRepository.findOneByReference(developerReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
-            String referenceOldAvatar = category.getAvatar() != null ? category.getAvatar().getReference() : null;
-            category.setAvatar(createPhoto("Category", avatar, null));
-            category = categoryRepository.save(category);
+        CurriculumVitae curriculumVitae = curriculumVitaeRepository.findOneByReferenceAndDeveloperReference
+                (reference, developerReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Cv", reference));
 
-            if (referenceOldAvatar != null)
-                removePhoto(photoRepository.findOneByReference(referenceOldAvatar).orElse(null));
+        removeCurriculumVitae(curriculumVitae);
 
-            return category;
-        } else
-            throw MazadException.validationErrorBuilder(new FieldErrorDTO("Photo", "Photo", "must_be_not_null"));
+        return MiscUtils.createSuccessfullyResult();
+
+
     }
 
-    public Photo createPhoto(String type, MultipartFile avatar, String articleRef) throws MazadException, IOException {
 
-        if (avatar != null) {
+    private CurriculumVitae saveCurriculumVitae(MultipartFile cv, Developer developer) throws IOException {
 
-            Photo photo = new Photo();
-            photo.setReference(TokenUtil.generateReference());
-            photo.setLabel(type + "-" + avatar.getName());
-            photo.setName(photo.getReference() + "." + FilenameUtils.getExtension(avatar.getOriginalFilename()));
-            photo.setArticle(articleRef != null ? articleRepository.findOneByReference(articleRef).
-                    orElseThrow(() -> MazadException.resourceNotFoundExceptionBuilder(Article.class, articleRef)) : null);
-            avatar.transferTo(new File(mazadProperties.getAvatar().getPath() + photo.getName()));
+        CurriculumVitae curriculumVitae = new CurriculumVitae();
+        curriculumVitae.setReference(MiscUtils.generateReference());
+        curriculumVitae.setLabel(cv.getOriginalFilename());
+        curriculumVitae.setName(curriculumVitae.getReference() + "." +
+                FilenameUtils.getExtension(cv.getOriginalFilename()));
+        curriculumVitae.setDeveloper(developer);
+        cv.transferTo(new File(basePath, curriculumVitae.getName()));
 
-            photo = photoRepository.save(photo);
+        curriculumVitae = curriculumVitaeRepository.save(curriculumVitae);
 
-            if (articleRef != null) {
-                Article article = articleRepository.findOneByReference(articleRef).
-                        orElseThrow(() -> MazadException.resourceNotFoundExceptionBuilder(Article.class, articleRef));
+        return curriculumVitae;
 
-                if (article.getAvatar() == null) {
-                    article.setAvatar(photo);
-                    articleRepository.save(article);
-                }
-            }
-            return photo;
-
-        } else
-            throw MazadException.validationErrorBuilder(new FieldErrorDTO("Photo", "Photo", "must_be_not_null"));
     }
 
-    public Photo getPhotoByArticle(String reference, String articleRef) throws MazadException {
-        return photoRepository.findOneByReferenceAndArticleReference(reference, articleRef).orElseThrow(() ->
-                MazadException.resourceNotFoundExceptionBuilder(Photo.class, reference));
-    }
+    private void removeCurriculumVitae(CurriculumVitae curriculumVitae) {
 
-    public List<PhotoDTO> getArticlePhotos(String articleRef) {
-        return photoRepository.findByArticleReference(articleRef).stream().map(mapper::fromPhotoToDTO)
-                .collect(Collectors.toList());
-    }
+        File file = new File(basePath , curriculumVitae.getName());
+        file.delete();
+        curriculumVitaeRepository.delete(curriculumVitae);
 
-    public Photo getPhoto(String reference) throws MazadException {
-        return photoRepository.findOneByReference(reference).orElseThrow(() ->
-                MazadException.resourceNotFoundExceptionBuilder(Photo.class, reference));
-    }
-
-    public void removePhoto(Photo photo) throws MazadException, IOException {
-
-        if (photo != null) {
-            File file = new File(mazadProperties.getAvatar().getPath() + photo.getName());
-            file.delete();
-            photoRepository.delete(photo);
-        }
 
     }
 }

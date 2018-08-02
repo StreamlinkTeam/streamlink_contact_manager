@@ -17,7 +17,7 @@ public class SkillsInformationDTO {
 
     private String title;
 
-    private Set<LanguageDTO> languages = new HashSet<>();
+    private String languages ;
 
     private List<String> qualifications = new ArrayList<String>();
 
@@ -41,11 +41,11 @@ public class SkillsInformationDTO {
         this.title = title;
     }
 
-    public Set<LanguageDTO> getLanguages() {
+    public String getLanguages() {
         return languages;
     }
 
-    public void setLanguages(Set<LanguageDTO> languages) {
+    public void setLanguages(String languages) {
         this.languages = languages;
     }
 

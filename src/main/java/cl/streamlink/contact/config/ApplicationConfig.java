@@ -63,6 +63,8 @@ public class ApplicationConfig implements ApplicationContextAware {
 
     @Bean
     public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
+
+
         return new Jackson2ObjectMapperBuilder()
                 .timeZone(TimeZone.getDefault())
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)

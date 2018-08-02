@@ -10,6 +10,8 @@ public final class ErrorConstants
     public static final String ERR_INTERNAL_SERVER_ERROR = "error.internalServerError";
     public static final String ERR_DATA_INTEGRITY_VIOLATION="error.dataIntegrityViolation";
     public static final String ERR_RESOURCE_NOT_FOUND="error.resourceNotFound";
+    public static final String ERR_UNAUTHORIZED="error.unauthorized";
+
 
 
 

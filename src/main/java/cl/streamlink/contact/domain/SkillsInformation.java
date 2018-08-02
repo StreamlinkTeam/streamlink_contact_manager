@@ -15,8 +15,8 @@ public class SkillsInformation {
 
     private String title;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Language> languages = new HashSet<>();
+    @Lob
+    private String languages;
 
     @ElementCollection
     private List<String> qualifications = new ArrayList<String>();
@@ -35,11 +35,11 @@ public class SkillsInformation {
         this.title = title;
     }
 
-    public Set<Language> getLanguages() {
+    public String getLanguages() {
         return languages;
     }
 
-    public void setLanguages(Set<Language> languages) {
+    public void setLanguages(String languages) {
         this.languages = languages;
     }
 
