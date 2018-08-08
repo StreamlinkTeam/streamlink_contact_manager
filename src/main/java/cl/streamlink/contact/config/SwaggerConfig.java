@@ -35,7 +35,7 @@ public class SwaggerConfig {
                 .description("Authentication token (see /ws/user/authenticate)")
                 .allowMultiple(false)
                 .required(false)
-                .defaultValue("Bearer "+token)
+                .defaultValue("Bearer " + token)
                 .build());
 
         parameters.add(new ParameterBuilder()

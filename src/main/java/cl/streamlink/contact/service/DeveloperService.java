@@ -1,7 +1,9 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Developer;
-import cl.streamlink.contact.domain.Language;
+import cl.streamlink.contact.domain.Experience;
+import cl.streamlink.contact.domain.Formation;
+import cl.streamlink.contact.domain.Stage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.DeveloperRepository;
@@ -11,10 +13,11 @@ import cl.streamlink.contact.web.dto.*;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,6 +69,35 @@ public class DeveloperService {
 
         else
             return developerRepository.findAll().stream().map(mapper::fromBeanToDTOResponse).collect(Collectors.toList());
+    }
+
+    public Page<DeveloperResponseDTO> searchDevelopers(String value, Stage stage, Experience experience, Formation formation, Pageable pageable) {
+
+        if (MiscUtils.isEmpty(value))
+            value = "";
+
+        List<Stage> stages;
+        if (stage != null)
+            stages = Collections.singletonList(stage);
+        else
+            stages = Stage.getAll();
+
+        List<Experience> experiences;
+        if (experience != null)
+            experiences = Collections.singletonList(experience);
+        else
+            experiences = Experience.getAll();
+
+        List<Formation> formations;
+        if (formation != null)
+            formations = Collections.singletonList(formation);
+        else
+            formations = Formation.getAll();
+
+        return developerRepository.
+                findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn
+                        (value,stages,formations,experiences, value, stages,formations,experiences,value,stages,formations,experiences, value, stages,formations,experiences, pageable)
+                .map(developer -> mapper.fromBeanToDTOResponse(developer));
     }
 
     public JSONObject deleteDeveloper(String developerReference) throws ContactApiException {

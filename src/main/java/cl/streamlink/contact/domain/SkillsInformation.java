@@ -1,5 +1,8 @@
 package cl.streamlink.contact.domain;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,13 +22,14 @@ public class SkillsInformation {
     private String languages;
 
     @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> qualifications = new ArrayList<String>();
 
     @Enumerated(EnumType.STRING)
-    private Experience experience;
+    private Experience experience = Experience.NOT_DEFINED;
 
     @Enumerated(EnumType.STRING)
-    private Formation formation;
+    private Formation formation = Formation.NOT_DEFINED;
 
     public String getTitle() {
         return title;

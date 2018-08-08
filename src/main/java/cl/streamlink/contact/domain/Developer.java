@@ -33,10 +33,10 @@ public class Developer implements Serializable {
     private String lastname;
 
     @Enumerated(EnumType.STRING)
-    private Stage stage;
+    private Stage stage = Stage.ToTreat;
 
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Gender gender = Gender.UNDEFINED;
 
     @Embedded
     private Contact contact = new Contact();

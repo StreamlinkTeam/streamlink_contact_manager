@@ -1,6 +1,9 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Developer;
+import cl.streamlink.contact.domain.Experience;
+import cl.streamlink.contact.domain.Formation;
+import cl.streamlink.contact.domain.Stage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.CurriculumVitaeService;
 import cl.streamlink.contact.service.DeveloperService;
@@ -9,6 +12,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +25,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ws/developers")
@@ -68,6 +76,37 @@ public class DeveloperController {
     })
     public List<DeveloperResponseDTO> getDevelopers() {
         return developerService.getDevelopers(null);
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public Page<DeveloperResponseDTO> getDevelopers(Pageable pageable, @RequestParam boolean fromAngular,
+                                                    @RequestParam(required = false) String value,
+                                                    @RequestParam(required = false) Formation formation,
+                                                    @RequestParam(required = false) Stage stage,
+                                                    @RequestParam(required = false) Experience experience,
+                                                    @RequestParam(required = false) Sort.Direction dir) {
+
+        if (fromAngular) {
+
+            pageable = pageable.previousOrFirst();
+
+            if (dir != null) {
+                PageRequest req = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                        new Sort(dir, pageable.getSort().stream().map(order -> {
+
+                            if (order.getProperty().equalsIgnoreCase("email1"))
+                                return "contact.email1";
+
+                            if (order.getProperty().equalsIgnoreCase("experience"))
+                                return "skillsInformation.experience";
+
+                            return order.getProperty();
+                        }).collect(Collectors.toList())));
+                return developerService.searchDevelopers(value, stage, experience, formation, req);
+            }
+        }
+        return developerService.searchDevelopers(value, stage, experience, formation, pageable);
+
     }
 
     @RequestMapping(value = "",

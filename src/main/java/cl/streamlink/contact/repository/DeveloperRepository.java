@@ -1,7 +1,11 @@
 package cl.streamlink.contact.repository;
 
 import cl.streamlink.contact.domain.Developer;
-import cl.streamlink.contact.domain.Language;
+import cl.streamlink.contact.domain.Experience;
+import cl.streamlink.contact.domain.Formation;
+import cl.streamlink.contact.domain.Stage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,4 +15,10 @@ public interface DeveloperRepository extends JpaRepository<Developer, Long> {
 
     Optional<Developer> findOneByReference(String reference);
 
+    Page<Developer> findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn
+            (String value, List<Stage> stages, List<Formation> formations, List<Experience> experiences,
+             String value1, List<Stage> stages1, List<Formation> formations1, List<Experience> experiences1,
+             String value2, List<Stage> stages2, List<Formation> formations2, List<Experience> experiences2,
+             String value3, List<Stage> stages3, List<Formation> formations3, List<Experience> experiences3,
+             Pageable pageable);
 }

@@ -5,14 +5,12 @@ import cl.streamlink.contact.utils.DeveloperResponseSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
-import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 @Configuration
-@EnableSpringDataWebSupport
+//@EnableSpringDataWebSupport
 public class RepositoryRestConfigurerAdapterImpl extends RepositoryRestConfigurerAdapter {
 
 

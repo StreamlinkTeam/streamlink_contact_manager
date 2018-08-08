@@ -4,6 +4,7 @@ import cl.streamlink.contact.utils.MiscUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Chemakh on 11/07/2018.
@@ -23,5 +24,9 @@ public enum Experience {
                 Arrays.stream(values()).filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
                         .findFirst().orElse(NOT_DEFINED)
                 : NOT_DEFINED;
+    }
+
+    public static List<Experience> getAll() {
+        return Arrays.asList(values());
     }
 }

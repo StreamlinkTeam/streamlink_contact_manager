@@ -1,17 +1,15 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import cl.streamlink.contact.domain.Gender;
+import cl.streamlink.contact.domain.Stage;
+import cl.streamlink.contact.utils.MiscUtils;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class DeveloperDTO {
 
@@ -109,6 +107,8 @@ public class DeveloperDTO {
     }
 
     public List<String> getMobility() {
+        if (MiscUtils.isEmpty(mobility))
+            return new ArrayList<>();
         return mobility;
     }
 
