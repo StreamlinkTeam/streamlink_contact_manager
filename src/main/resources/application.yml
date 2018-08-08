@@ -14,7 +14,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         cache.use_query_cache: false
         generate_statistics: false
         dialect: org.hibernate.dialect.MySQL5Dialect
