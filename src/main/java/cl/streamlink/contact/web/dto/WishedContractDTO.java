@@ -2,11 +2,7 @@ package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.domain.ContractType;
 import cl.streamlink.contact.domain.Currency;
-import cl.streamlink.contact.domain.Developer;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 
 /**

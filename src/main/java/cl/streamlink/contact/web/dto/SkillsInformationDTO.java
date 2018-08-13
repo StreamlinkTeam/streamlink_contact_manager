@@ -4,9 +4,7 @@ import cl.streamlink.contact.domain.Experience;
 import cl.streamlink.contact.domain.Formation;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Chemakh on 11/07/2018.

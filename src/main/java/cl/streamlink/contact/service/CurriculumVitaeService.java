@@ -11,7 +11,6 @@ import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.UserRepository;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.CurriculumVitaeDTO;
-import cl.streamlink.contact.web.dto.DeveloperDTO;
 import net.minidev.json.JSONObject;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;

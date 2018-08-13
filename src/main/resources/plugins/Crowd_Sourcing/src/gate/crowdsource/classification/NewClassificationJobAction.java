@@ -13,10 +13,13 @@
  */
 package gate.crowdsource.classification;
 
+import com.jeta.forms.components.panel.FormPanel;
 import gate.gui.MainFrame;
 import gate.util.GateRuntimeException;
 
-import java.awt.Dimension;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -25,19 +28,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.InputStream;
 import java.util.List;
-
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
-
-import com.jeta.forms.components.panel.FormPanel;
 
 /**
  * Action to present a dialog prompting the user for the information required to

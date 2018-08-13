@@ -19,7 +19,7 @@
 
 package kea;
 
-import java.util.*;
+import java.util.Hashtable;
 
 /**
  * Class that can test whether a given string is a stop word.

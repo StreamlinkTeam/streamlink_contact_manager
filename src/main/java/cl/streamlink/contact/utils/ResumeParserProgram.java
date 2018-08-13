@@ -15,6 +15,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -60,7 +61,7 @@ public class ResumeParserProgram {
 	}
 
 	public static JSONObject loadGateAndAnnie(File file) throws GateException,
-			IOException {
+            IOException, URISyntaxException {
 		Out.prln("Initialising basic system...");
 		Gate.init();
 		Out.prln("...basic system initialised");
@@ -239,9 +240,8 @@ public class ResumeParserProgram {
 //					.println("USAGE: java ResumeParser <inputfile> <outputfile>");
 //			return;
 //		}
-		String inputFileName = "C:\\ldk\\cv\\Salwa-CHAABI.pdf";
-		String outputFileName = (args.length == 2) ? args[1]
-				: "C:\\ldk\\cv\\parsed_resume.json";
+		String inputFileName = "C:\\ldk\\cv\\CHEMAKH_Lazher_Software_Engineer __EN.pdf";
+		String outputFileName =  "C:\\ldk\\cv\\parsed_resume.json";
 
 		try {
 			File tikkaConvertedFile = parseToHTMLUsingApacheTikka(inputFileName);

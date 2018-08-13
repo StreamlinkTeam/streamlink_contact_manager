@@ -13,25 +13,18 @@
  */
 package gate.crowdsource.ne;
 
+import com.jeta.forms.components.panel.FormPanel;
 import gate.gui.MainFrame;
 import gate.util.GateRuntimeException;
 
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.InputStream;
-
-import javax.swing.AbstractAction;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-
-import com.jeta.forms.components.panel.FormPanel;
 
 /**
  * Action to present a dialog prompting the user for the information required to

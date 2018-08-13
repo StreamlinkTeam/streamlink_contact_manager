@@ -13,16 +13,9 @@
  */
 package gate.crowdsource.ne;
 
-import static gate.crowdsource.CrowdFlowerConstants.*;
-
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Resource;
@@ -37,6 +30,12 @@ import gate.creole.metadata.Optional;
 import gate.creole.metadata.RunTime;
 import gate.crowdsource.rest.CrowdFlowerClient;
 import gate.util.InvalidOffsetException;
+import org.apache.log4j.Logger;
+
+import java.util.List;
+
+import static gate.crowdsource.CrowdFlowerConstants.JUDGMENT_ID_FEATURE_NAME;
+import static gate.crowdsource.CrowdFlowerConstants.UNIT_ID_FEATURE_NAME;
 
 @CreoleResource(name = "Entity Annotation Results Importer",
 comment = "Import judgments from a CrowdFlower job created by "

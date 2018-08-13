@@ -14,13 +14,6 @@
 
 package gate.crowdsource.classification;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.swing.Action;
-
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Resource;
@@ -35,8 +28,13 @@ import gate.creole.metadata.Optional;
 import gate.creole.metadata.RunTime;
 import gate.crowdsource.rest.CrowdFlowerClient;
 import gate.gui.ActionsPublisher;
-
 import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @CreoleResource(name = "Entity Classification Job Builder",
    comment = "Build a CrowdFlower job asking users to select the right label for entities",

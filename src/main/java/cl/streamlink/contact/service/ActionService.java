@@ -1,7 +1,6 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Action;
-import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.ActionRepository;

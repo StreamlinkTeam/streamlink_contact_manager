@@ -5,9 +5,6 @@ import cl.streamlink.contact.utils.MiscUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
 public enum Gender {
     M,

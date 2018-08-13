@@ -22,7 +22,7 @@ package kea;
 import weka.core.*;
 import weka.filters.*;
 
-import java.util.*;
+import java.util.StringTokenizer;
 
 /**
  * Removes all numbers from all the string attributes in the given

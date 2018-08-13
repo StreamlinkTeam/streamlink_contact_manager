@@ -1,15 +1,7 @@
 package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.domain.ActionType;
-import cl.streamlink.contact.domain.Developer;
-import cl.streamlink.contact.domain.User;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 /**

@@ -13,14 +13,9 @@
  */
 package gate.crowdsource.classification;
 
-import static gate.crowdsource.CrowdFlowerConstants.*;
-
-import org.apache.log4j.Logger;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Resource;
@@ -34,6 +29,10 @@ import gate.creole.metadata.CreoleResource;
 import gate.creole.metadata.Optional;
 import gate.creole.metadata.RunTime;
 import gate.crowdsource.rest.CrowdFlowerClient;
+import org.apache.log4j.Logger;
+
+import static gate.crowdsource.CrowdFlowerConstants.JUDGMENT_ID_FEATURE_NAME;
+import static gate.crowdsource.CrowdFlowerConstants.UNIT_ID_FEATURE_NAME;
 
 @CreoleResource(name = "Entity Classification Results Importer", comment = "Import judgments from a CrowdFlower job created by "
         + "the Entity Classification Job Builder as GATE annotations.",

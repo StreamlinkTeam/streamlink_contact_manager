@@ -28,10 +28,9 @@ import gate.creole.metadata.RunTime;
 import gate.crowdsource.rest.CrowdFlowerClient;
 import gate.gui.ActionsPublisher;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.Action;
 
 @CreoleResource(name = "Entity Annotation Job Builder",
     comment = "Build a CrowdFlower job asking users to annotate entities "

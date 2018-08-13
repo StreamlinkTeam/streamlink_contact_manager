@@ -1,6 +1,5 @@
 package cl.streamlink.contact.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**

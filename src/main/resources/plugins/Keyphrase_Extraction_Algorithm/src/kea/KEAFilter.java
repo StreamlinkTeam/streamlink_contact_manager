@@ -19,24 +19,14 @@
 
 package kea;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.Vector;
-
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.NaiveBayesSimple;
 import weka.classifiers.meta.FilteredClassifier;
-import weka.core.Attribute;
-import weka.core.FastVector;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.Option;
-import weka.core.OptionHandler;
-import weka.core.Utils;
+import weka.core.*;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.Discretize;
+
+import java.util.*;
 
 /**
  * This filter converts the incoming data into data appropriate for

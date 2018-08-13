@@ -3,7 +3,6 @@ package cl.streamlink.contact.domain;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.security.KeyStore;
 import java.time.LocalDate;
 
 /**

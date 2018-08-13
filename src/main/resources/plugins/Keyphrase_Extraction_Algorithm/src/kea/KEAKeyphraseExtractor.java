@@ -19,17 +19,12 @@
 package kea;
 
 import gate.util.BomStrippingInputStreamReader;
+import weka.core.*;
 
 import java.io.*;
-import java.util.*;
-
-import weka.core.Attribute;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.OptionHandler;
-import weka.core.Utils;
-import weka.core.FastVector;
-import weka.core.Option;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * Extracts keyphrases from the documents in a given directory.
