@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
  */
 public class ContactDTO {
 
-    private String developerReference;
+    private String ownerReference;
 
     @Email
     private String email1;
@@ -34,12 +34,15 @@ public class ContactDTO {
 
     private String country;
 
-    public String getDeveloperReference() {
-        return developerReference;
+    private String website;
+
+
+    public String getOwnerReference() {
+        return ownerReference;
     }
 
-    public void setDeveloperReference(String developerReference) {
-        this.developerReference = developerReference;
+    public void setOwnerReference(String ownerReference) {
+        this.ownerReference = ownerReference;
     }
 
     public String getEmail1() {
@@ -128,5 +131,13 @@ public class ContactDTO {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }

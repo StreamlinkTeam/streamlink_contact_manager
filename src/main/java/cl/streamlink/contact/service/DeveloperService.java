@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class DeveloperService {
+
     private final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
     @Inject
     private DeveloperRepository developerRepository;
@@ -156,7 +157,7 @@ public class DeveloperService {
     public ContactDTO getDeveloperContact(String developerReference) {
 
         ContactDTO contact = getDevelopers(developerReference).get(0).getContact();
-        contact.setDeveloperReference(developerReference);
+        contact.setOwnerReference(developerReference);
         return contact;
     }
 

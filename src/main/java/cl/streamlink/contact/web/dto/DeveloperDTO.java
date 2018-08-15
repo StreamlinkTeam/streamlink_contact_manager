@@ -31,7 +31,6 @@ public class DeveloperDTO {
 
     private String rhReference;
 
-    @Size(min = 2, max = 255)
     private String note;
 
     private LocalDate availability;

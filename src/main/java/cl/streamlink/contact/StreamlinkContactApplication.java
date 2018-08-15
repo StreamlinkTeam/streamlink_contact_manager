@@ -59,6 +59,8 @@ public class StreamlinkContactApplication implements CommandLineRunner {
             logger.warn(e.getMessage());
         }
 
-//        fakerService.generateFakerData(20);
+        fakerService.deleteAll();
+        fakerService.generateFakerDeveloperData(20);
+        fakerService.generateFakerSocietyData(20,10);
     }
 }

@@ -3,6 +3,8 @@ package cl.streamlink.contact.utils;
 
 import cl.streamlink.contact.domain.*;
 import cl.streamlink.contact.service.DeveloperService;
+import cl.streamlink.contact.service.SocietyContactService;
+import cl.streamlink.contact.service.SocietyService;
 import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.web.dto.*;
 import com.github.javafaker.Faker;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.persistence.Lob;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -26,12 +29,93 @@ public class FakerService {
     private DeveloperService developerService;
 
     @Inject
+    private SocietyService societyService;
+
+    @Inject
+    private SocietyContactService societyContactService;
+
+    @Inject
     private UserService userService;
 
     private Faker faker = new Faker(new Locale("fr", "fr"));
 
+    public void generateFakerSocietyData(Integer societySize,Integer societyContactSize) {
 
-    public void generateFakerData(Integer size) {
+        List<UserDTO> users = userService.getAllUsers();
+
+        for (Integer i = 0; i < societySize; i++) {
+
+            SocietyDTO society = new SocietyDTO();
+
+            society.setLabel(faker.company().name());
+            society.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+            society.setNote(faker.lorem().paragraph());
+            society.setStaffNumber(faker.number().numberBetween(5,500));
+            society.setSupplierNumber(faker.code().asin());
+            society.setStage(SocietyStage.values()[faker.number().numberBetween(0, SocietyStage.values().length)]);
+            society.setActivityArea(SocietyActivityArea.values()[faker.number().numberBetween(0, SocietyActivityArea.values().length)]);
+            society.setServices(Arrays.asList(faker.job().keySkills(),
+                    faker.job().keySkills(), faker.job().keySkills()));
+
+            SocietyResponseDTO societyResponse = societyService.createSociety(society);
+
+            ContactDTO contact = generateContact(societyResponse.getReference()) ;
+
+            societyService.updateSocietyContact(contact, societyResponse.getReference());
+
+            SocietyLegalInformationDTO legalInformation = new SocietyLegalInformationDTO();
+
+            legalInformation.setSocietyReference(societyResponse.getReference());
+            legalInformation.setAPECode(faker.code().asin());
+            legalInformation.setLegalStatus(faker.code().asin());
+            legalInformation.setRCS(faker.code().asin());
+            legalInformation.setSiret(faker.code().asin());
+            legalInformation.setTVA(faker.code().asin());
+
+            societyService.updateSocietyLegalInformation(legalInformation, societyResponse.getReference());
+
+            for (Integer j = 0; j < societyContactSize; j++) {
+                SocietyContactDTO societyContactDTO = new SocietyContactDTO();
+
+                societyContactDTO.setFirstname(faker.name().firstName());
+                societyContactDTO.setLastname(faker.name().lastName());
+                societyContactDTO.setGender(Gender.values()[i % 2]);
+                societyContactDTO.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+                societyContactDTO.setNote(faker.lorem().paragraph());
+                societyContactDTO.setStage(SocietyStage.values()[faker.number().numberBetween(0, SocietyStage.values().length)]);
+                societyContactDTO.setFunction(faker.job().title());
+
+                societyContactDTO.setTechnicalScope(String.join(", ", faker.job().keySkills(),
+                        faker.job().keySkills(), faker.job().keySkills()));
+
+                societyContactDTO.setFunctionalScope(String.join(", ", faker.job().keySkills(),
+                        faker.job().keySkills(), faker.job().keySkills()));
+
+                societyContactDTO.setSocietyReference(societyResponse.getReference());
+
+
+                societyContactDTO  = societyContactService.createSocietyContact
+                        (societyContactDTO,societyResponse.getReference());
+
+                ContactDTO cont = generateContact(societyContactDTO.getReference());
+
+                societyContactService.updateSocietyContactContact(cont, societyContactDTO.getReference(),societyResponse.getReference());
+            }
+
+        }
+    }
+
+    public void deleteAll() {
+
+        developerService.getDevelopers(null)
+                .forEach(developerResponseDTO -> developerService.deleteDeveloper(developerResponseDTO.getReference()));
+
+        societyService.getSocieties(null)
+                .forEach(societyResponseDTO -> societyService.deleteSociety(societyResponseDTO.getReference()));
+
+    }
+
+    public void generateFakerDeveloperData(Integer size) {
 
         List<UserDTO> users = userService.getAllUsers();
 
@@ -53,23 +137,7 @@ public class FakerService {
 
             DeveloperResponseDTO developer = developerService.createDeveloper(dev);
 
-            ContactDTO contact = new ContactDTO();
-
-            contact.setDeveloperReference(developer.getReference());
-
-            contact.setEmail1(new Faker(new Locale("en")).internet().emailAddress());
-            contact.setEmail2(new Faker(new Locale("en")).internet().emailAddress());
-            contact.setEmail3(new Faker(new Locale("en")).internet().emailAddress());
-
-            contact.setTel1(faker.phoneNumber().phoneNumber());
-            contact.setTel2(faker.phoneNumber().phoneNumber());
-            contact.setTel3(faker.phoneNumber().phoneNumber());
-            contact.setFax(faker.phoneNumber().phoneNumber());
-
-            contact.setAddress(faker.address().streetAddress());
-            contact.setCity(faker.address().city());
-            contact.setCountry(faker.address().country());
-            contact.setNpa(faker.address().zipCode());
+            ContactDTO contact = generateContact(developer.getReference());
 
             developerService.updateDeveloperContact(contact, developer.getReference());
 
@@ -100,6 +168,31 @@ public class FakerService {
             developerService.updateDeveloperSkills(skills, developer.getReference());
 
         }
+    }
+
+    private ContactDTO generateContact(String ownerReference)
+    {
+        ContactDTO contact = new ContactDTO();
+
+        contact.setOwnerReference(ownerReference);
+
+        contact.setEmail1(new Faker(new Locale("en")).internet().emailAddress());
+        contact.setEmail2(new Faker(new Locale("en")).internet().emailAddress());
+        contact.setEmail3(new Faker(new Locale("en")).internet().emailAddress());
+
+        contact.setTel1(faker.phoneNumber().phoneNumber());
+        contact.setTel2(faker.phoneNumber().phoneNumber());
+        contact.setTel3(faker.phoneNumber().phoneNumber());
+        contact.setFax(faker.phoneNumber().phoneNumber());
+        contact.setWebsite(faker.internet().url());
+
+
+        contact.setAddress(faker.address().streetAddress());
+        contact.setCity(faker.address().city());
+        contact.setCountry(faker.address().country());
+        contact.setNpa(faker.address().zipCode());
+
+        return contact;
     }
 
 

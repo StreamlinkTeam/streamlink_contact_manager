@@ -3,6 +3,7 @@ package cl.streamlink.contact.mapper;
 import cl.streamlink.contact.domain.*;
 import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.LanguageRepository;
+import cl.streamlink.contact.repository.SocietyRepository;
 import cl.streamlink.contact.repository.UserRepository;
 import cl.streamlink.contact.web.dto.*;
 import org.mapstruct.Mapper;
@@ -27,6 +28,9 @@ public abstract class ApiMapper {
     @Inject
     DeveloperRepository developerRepository;
 
+    @Inject
+    SocietyRepository societyRepository;
+
     @Value("${contact.avatar.url}")
     String baseUrl;
 
@@ -44,9 +48,9 @@ public abstract class ApiMapper {
     public abstract Contract fromDTOToBean(ContractDTO dto);
 
     @Mappings({
-            @Mapping(source = "developerReference", target = "developerReference")
+            @Mapping(source = "ownerReference", target = "ownerReference")
     })
-    public abstract ContactDTO fromBeanToDTO(Contact bean, String developerReference);
+    public abstract ContactDTO fromBeanToDTO(Contact bean, String ownerReference);
 
     public abstract Contact fromDTOToBean(ContactDTO dto);
 
@@ -82,6 +86,14 @@ public abstract class ApiMapper {
     public abstract WishedContract fromDTOToBean(WishedContractDTO dto);
 
     public abstract DeveloperResponseDTO fromBeanToDTOResponse(Developer bean);
+
+    public abstract SocietyResponseDTO fromBeanToDTOResponse(Society bean);
+
+//    @Mappings({
+//            @Mapping(source = "society.reference", target = "societyReference"),
+//    })
+//    public abstract SocietyContactResponseDTO fromBeanToDTOResponse(SocietyContact bean);
+
 
     @Mappings({
             @Mapping(source = "manager.reference", target = "managerReference"),
@@ -153,6 +165,39 @@ public abstract class ApiMapper {
     })
     public abstract CurriculumVitae fromDTOToBean(CurriculumVitaeDTO dto);
 
+    @Mappings({
+            @Mapping(source = "manager.reference", target = "managerReference"),
+            @Mapping(source = "society.reference", target = "societyReference"),
+    })
+    public abstract SocietyContactDTO fromBeanToDTO(SocietyContact bean);
+
+    @Mappings({
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
+            @Mapping(target = "society", expression = "java(societyRepository.findOneByReference(dto.getSocietyReference()).orElse(null))"),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true)
+    })
+    public abstract SocietyContact fromDTOToBean(SocietyContactDTO dto);
+
+    @Mappings({
+            @Mapping(source = "manager.reference", target = "managerReference")
+    })
+    public abstract SocietyDTO fromBeanToDTO(Society bean);
+
+    @Mappings({
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true)
+    })
+    public abstract Society fromDTOToBean(SocietyDTO dto);
+
+    @Mappings({
+            @Mapping(source = "societyReference", target = "societyReference")
+    })
+    public abstract SocietyLegalInformationDTO fromBeanToDTO(SocietyLegalInformation bean, String societyReference);
+
+    public abstract SocietyLegalInformation fromDTOToBean(SocietyLegalInformationDTO dto);
+
 
     @Mappings({
             @Mapping(target = "reference", ignore = true),
@@ -221,6 +266,25 @@ public abstract class ApiMapper {
             @Mapping(target = "responsable", ignore = true)
     })
     public abstract void updateBeanFromDto(ActionDTO dto, @MappingTarget Action bean);
+
+    public abstract void updateBeanFromDto(SocietyLegalInformationDTO dto, @MappingTarget SocietyLegalInformation bean);
+
+    @Mappings({
+            @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true),
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))")
+    })
+    public abstract void updateBeanFromDto(SocietyDTO dto, @MappingTarget Society bean);
+
+    @Mappings({
+            @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true),
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
+            @Mapping(target = "society", ignore = true)
+    })
+    public abstract void updateBeanFromDto(SocietyContactDTO dto, @MappingTarget SocietyContact bean);
 
 
 }

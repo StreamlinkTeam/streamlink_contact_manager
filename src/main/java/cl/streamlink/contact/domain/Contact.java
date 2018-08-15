@@ -31,6 +31,8 @@ public class Contact {
 
     private String country;
 
+    private String website;
+
     public String getEmail1() {
         return email1;
     }
@@ -117,5 +119,13 @@ public class Contact {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }
