@@ -252,6 +252,23 @@ public class DeveloperController {
     @PostMapping(value = "cv",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Add developer from CV")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = DeveloperResponseDTO.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict"),
+            @ApiResponse(code = 404, message = "Object with Ref not Found"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden")
+
+    })
+    public DeveloperResponseDTO addDeveloperFromCV(@RequestPart(value = "cv") MultipartFile cv) throws IOException {
+
+        return curriculumVitaeService.generateFromCv(cv);
+    }
+
+    @PutMapping(value = "cv",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Add developer CV")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = CurriculumVitaeDTO.class),

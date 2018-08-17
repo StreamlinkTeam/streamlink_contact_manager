@@ -9,7 +9,7 @@ spring:
   #    password:
   #    driver-class-name: org.h2.Driver
   datasource:
-    url: jdbc:mysql://localhost:3306/contact?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://localhost:3306/contact?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     name: contact
     username: root
     password: root
@@ -27,6 +27,6 @@ spring:
 contact:
   security:
     token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJhdXRoIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE1MzMxMzg3MzIsImV4cCI6MTUzNjczODczMn0.AiXci7rjitucF9gyd8Rel-eV9p3hrIOVd54j0Z8OW8Q
-  avatar:
+  cv:
     path: C:\ldk\cv\
     url: http://localhost:8000/

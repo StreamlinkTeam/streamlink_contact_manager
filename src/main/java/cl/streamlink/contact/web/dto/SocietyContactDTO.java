@@ -21,7 +21,7 @@ public class SocietyContactDTO {
     @Size(min = 2, max = 255)
     private String lastname;
 
-    private String function;
+    private String titre;
 
     private SocietyStage stage ;
 
@@ -65,12 +65,12 @@ public class SocietyContactDTO {
         this.lastname = lastname;
     }
 
-    public String getFunction() {
-        return function;
+    public String getTitre() {
+        return titre;
     }
 
-    public void setFunction(String function) {
-        this.function = function;
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public SocietyStage getStage() {

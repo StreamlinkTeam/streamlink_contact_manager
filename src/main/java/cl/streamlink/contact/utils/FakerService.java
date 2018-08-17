@@ -83,7 +83,7 @@ public class FakerService {
                 societyContactDTO.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
                 societyContactDTO.setNote(faker.lorem().paragraph());
                 societyContactDTO.setStage(SocietyStage.values()[faker.number().numberBetween(0, SocietyStage.values().length)]);
-                societyContactDTO.setFunction(faker.job().title());
+                societyContactDTO.setTitre(faker.job().title());
 
                 societyContactDTO.setTechnicalScope(String.join(", ", faker.job().keySkills(),
                         faker.job().keySkills(), faker.job().keySkills()));

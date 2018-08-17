@@ -10,7 +10,9 @@ import cl.streamlink.contact.repository.CurriculumVitaeRepository;
 import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.UserRepository;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.ResumeParserService;
 import cl.streamlink.contact.web.dto.CurriculumVitaeDTO;
+import cl.streamlink.contact.web.dto.DeveloperResponseDTO;
 import net.minidev.json.JSONObject;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -34,20 +36,49 @@ public class CurriculumVitaeService {
     @Inject
     private ApiMapper mapper;
 
-    @Value("${contact.avatar.url}")
+    @Value("${contact.cv.url}")
     String baseUrl;
 
-    @Value("${contact.avatar.path}")
+    @Value("${contact.cv.path}")
     String basePath;
 
     @Inject
     private UserRepository userRepository;
 
     @Inject
+    private UserService userService;
+
+    @Inject
     private DeveloperRepository developerRepository;
 
     @Inject
     private CurriculumVitaeRepository curriculumVitaeRepository;
+
+
+    public DeveloperResponseDTO generateFromCv(MultipartFile cv) throws IOException {
+
+        String reference = MiscUtils.generateReference();
+        File cvFile = saveCvFile(reference + "." + FilenameUtils.getExtension(cv.getOriginalFilename()), cv);
+
+        Developer developer = ResumeParserService.parseResume(cvFile.getPath());
+        if (developer != null) {
+            developer.setManager(userService.getCurrentUser());
+            developer.setReference(MiscUtils.generateReference());
+            developer = developerRepository.save(developer);
+
+            CurriculumVitae curriculumVitae = new CurriculumVitae();
+            curriculumVitae.setReference(reference);
+            curriculumVitae.setLabel(cv.getOriginalFilename());
+            curriculumVitae.setName(curriculumVitae.getReference() + "." +
+                    FilenameUtils.getExtension(cv.getOriginalFilename()));
+            curriculumVitae.setDeveloper(developer);
+
+            curriculumVitaeRepository.save(curriculumVitae);
+
+            return mapper.fromBeanToDTOResponse(developer);
+        } else throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("Cv", "CV", "format_error"));
+
+    }
 
     public CurriculumVitaeDTO addDeveloperCV(MultipartFile cv, String developerReference) throws IOException {
 
@@ -56,9 +87,19 @@ public class CurriculumVitaeService {
                     .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
             if (curriculumVitaeRepository.countByDeveloperReference(developerReference) >= 5)
-                throw ContactApiException.unprocessableEntityExceptionBuilder("", null);
+                throw ContactApiException.unprocessableEntityExceptionBuilder("cv-number", null);
 
-            return mapper.fromBeanToDTO(saveCurriculumVitae(cv, developer));
+            CurriculumVitae curriculumVitae = new CurriculumVitae();
+            curriculumVitae.setReference(MiscUtils.generateReference());
+            curriculumVitae.setLabel(cv.getOriginalFilename());
+            curriculumVitae.setName(curriculumVitae.getReference() + "." +
+                    FilenameUtils.getExtension(cv.getOriginalFilename()));
+            curriculumVitae.setDeveloper(developer);
+            saveCvFile(curriculumVitae.getName(), cv);
+
+            curriculumVitae = curriculumVitaeRepository.save(curriculumVitae);
+
+            return mapper.fromBeanToDTO(curriculumVitae);
         } else
             throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("Cv", "CV", "must_be_not_null"));
     }
@@ -77,7 +118,7 @@ public class CurriculumVitaeService {
 
     public JSONObject removeDeveloperCV(String reference, String developerReference) {
 
-        Developer developer = developerRepository.findOneByReference(developerReference)
+        developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         CurriculumVitae curriculumVitae = curriculumVitaeRepository.findOneByReferenceAndDeveloperReference
@@ -92,25 +133,16 @@ public class CurriculumVitaeService {
     }
 
 
-    private CurriculumVitae saveCurriculumVitae(MultipartFile cv, Developer developer) throws IOException {
+    private File saveCvFile(String fileName, MultipartFile cv) throws IOException {
 
-        CurriculumVitae curriculumVitae = new CurriculumVitae();
-        curriculumVitae.setReference(MiscUtils.generateReference());
-        curriculumVitae.setLabel(cv.getOriginalFilename());
-        curriculumVitae.setName(curriculumVitae.getReference() + "." +
-                FilenameUtils.getExtension(cv.getOriginalFilename()));
-        curriculumVitae.setDeveloper(developer);
-        cv.transferTo(new File(basePath, curriculumVitae.getName()));
-
-        curriculumVitae = curriculumVitaeRepository.save(curriculumVitae);
-
-        return curriculumVitae;
+        cv.transferTo(new File(basePath, fileName));
+        return new File(basePath, fileName);
 
     }
 
     private void removeCurriculumVitae(CurriculumVitae curriculumVitae) {
 
-        File file = new File(basePath , curriculumVitae.getName());
+        File file = new File(basePath, curriculumVitae.getName());
         file.delete();
         curriculumVitaeRepository.delete(curriculumVitae);
 

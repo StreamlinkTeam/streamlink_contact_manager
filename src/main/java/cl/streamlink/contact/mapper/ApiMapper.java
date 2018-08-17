@@ -31,7 +31,7 @@ public abstract class ApiMapper {
     @Inject
     SocietyRepository societyRepository;
 
-    @Value("${contact.avatar.url}")
+    @Value("${contact.cv.url}")
     String baseUrl;
 
     @Mappings({

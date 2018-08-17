@@ -30,7 +30,7 @@ public class SocietyContact {
     private String lastname;
 
     @NotNull
-    private String function;
+    private String titre;
 
     @Enumerated(EnumType.STRING)
     private SocietyStage stage;
@@ -97,12 +97,12 @@ public class SocietyContact {
         this.lastname = lastname;
     }
 
-    public String getFunction() {
-        return function;
+    public String getTitre() {
+        return titre;
     }
 
-    public void setFunction(String function) {
-        this.function = function;
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public SocietyStage getStage() {

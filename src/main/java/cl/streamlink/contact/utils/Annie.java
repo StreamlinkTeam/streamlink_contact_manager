@@ -10,7 +10,6 @@ import gate.util.persistence.PersistenceManager;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
 
 /**
  * This class illustrates how to use ANNIE as a sausage machine
@@ -35,13 +34,15 @@ public class Annie {
     public void initAnnie() throws GateException, IOException, URISyntaxException {
         Out.prln("Initialising processing engine...");
 
+
+        Gate.init();
         // load the ANNIE application from the saved state in plugins/ANNIE
         File gateHome = Gate.getGateHome();
         //File anniePlugin = new File(pluginsHome, "ANNIE");
         //TODO: Change to relative path
         //File annieGapp = new File(anniePlugin, "C:\\Users\\antonydeepak\\Documents\\workspace\\Programming_Workspace\\project_workspace\\ResumeParser\\ResumeParser_git\\ResumeParser\\GATEFiles\\ANNIEResumeParser.gapp");
 
-        File annieGapp = new File("C:\\ldk\\workspace\\streamlink_condidats_manager\\src\\main\\resources","ANNIEResumeParser.gapp");
+        File annieGapp = new File(gateHome, "ANNIEResumeParser.gapp");
         annieController = (CorpusController) PersistenceManager.loadObjectFromFile(annieGapp);
 
         Out.prln("...processing engine loaded");

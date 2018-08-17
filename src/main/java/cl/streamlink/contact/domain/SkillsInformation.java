@@ -19,8 +19,9 @@ public class SkillsInformation {
     @Lob
     private String languages;
 
-    @ElementCollection
+    @ElementCollection()
     @LazyCollection(LazyCollectionOption.FALSE)
+    @Lob
     private List<String> qualifications = new ArrayList<String>();
 
     @Enumerated(EnumType.STRING)
