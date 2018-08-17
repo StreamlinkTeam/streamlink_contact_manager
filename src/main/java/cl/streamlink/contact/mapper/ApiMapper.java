@@ -85,6 +85,11 @@ public abstract class ApiMapper {
     })
     public abstract WishedContract fromDTOToBean(WishedContractDTO dto);
 
+    @Mappings({
+            @Mapping(target = "mobility",
+                    expression = "java(Arrays.asList(bean.getMobility().split(\",\")))"),
+
+    })
     public abstract DeveloperResponseDTO fromBeanToDTOResponse(Developer bean);
 
     public abstract SocietyResponseDTO fromBeanToDTOResponse(Society bean);

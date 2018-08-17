@@ -46,7 +46,7 @@ public class DeveloperController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Developer.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public DeveloperResponseDTO createDeveloper(@RequestBody @Valid DeveloperDTO developer) {
+    public DeveloperDTO createDeveloper(@RequestBody @Valid DeveloperDTO developer) {
 
         return developerService.createDeveloper(developer);
     }
@@ -60,7 +60,7 @@ public class DeveloperController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Developer.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public DeveloperResponseDTO updateDeveloper(@Valid @RequestBody DeveloperDTO developer, @RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
+    public DeveloperDTO updateDeveloper(@Valid @RequestBody DeveloperDTO developer, @RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
 
         return developerService.updateDeveloper(developer, developerReference);
     }

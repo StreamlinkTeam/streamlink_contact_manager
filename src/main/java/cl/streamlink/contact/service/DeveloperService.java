@@ -38,21 +38,21 @@ public class DeveloperService {
     @Inject
     private ApiMapper mapper;
 
-    public DeveloperResponseDTO createDeveloper(DeveloperDTO developerDTO) {
+    public DeveloperDTO createDeveloper(DeveloperDTO developerDTO) {
 
         Developer developer = mapper.fromDTOToBean(developerDTO);
 
         developer.setReference(MiscUtils.generateReference());
-        return mapper.fromBeanToDTOResponse(developerRepository.save(developer));
+        return mapper.fromBeanToDTO(developerRepository.save(developer));
     }
 
-    public DeveloperResponseDTO updateDeveloper(DeveloperDTO developerDTO, String developerReference) throws ContactApiException {
+    public DeveloperDTO updateDeveloper(DeveloperDTO developerDTO, String developerReference) throws ContactApiException {
 
         Developer developer = developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         mapper.updateBeanFromDto(developerDTO, developer);
-        return mapper.fromBeanToDTOResponse(developerRepository.save(developer));
+        return mapper.fromBeanToDTO(developerRepository.save(developer));
     }
 
     public DeveloperDTO getDeveloper(String developerReference) throws ContactApiException {

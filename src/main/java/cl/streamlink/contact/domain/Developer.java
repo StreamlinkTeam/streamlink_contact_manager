@@ -181,6 +181,9 @@ public class Developer implements Serializable {
     }
 
     public String getMobility() {
+
+        if (MiscUtils.isEmpty(mobility))
+            return "";
         return mobility;
     }
 

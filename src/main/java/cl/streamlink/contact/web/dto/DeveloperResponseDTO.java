@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by chemakh on 12/07/2018.
@@ -31,7 +32,7 @@ public class DeveloperResponseDTO {
 
     private LocalDate availability;
 
-    private String mobility;
+    private List<String> mobility;
 
     private LocalDateTime createdDate;
 
@@ -118,11 +119,11 @@ public class DeveloperResponseDTO {
         this.gender = gender;
     }
 
-    public String getMobility() {
+    public List<String> getMobility() {
         return mobility;
     }
 
-    public void setMobility(String mobility) {
+    public void setMobility(List<String> mobility) {
         this.mobility = mobility;
     }
 
