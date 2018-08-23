@@ -1,5 +1,6 @@
 package cl.streamlink.contact.utils;
 
+import cl.streamlink.contact.config.ApplicationConfig;
 import cl.streamlink.contact.domain.*;
 import gate.*;
 import gate.util.GateException;
@@ -12,6 +13,7 @@ import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.ToXMLContentHandler;
+import org.springframework.core.env.Environment;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -71,8 +73,17 @@ public class ResumeParserService {
         Out.prln("Initialising basic system...");
 
         if (!Gate.isInitialised()) {
-            Gate.setGateHome(new File("C:\\ldk\\streamlink_condidats_manager\\src\\main\\resources\\GATEFiles"));
-            Gate.setPluginsHome(new File("C:\\ldk\\streamlink_condidats_manager\\src\\main\\resources\\GATEFiles\\plugins"));
+            try {
+                Gate.setGateHome(new File(ApplicationConfig.getService(Environment.class).getProperty("contact.gate.home")));
+            } catch (IllegalStateException e) {
+
+            }
+
+            try {
+                Gate.setPluginsHome(new File(ApplicationConfig.getService(Environment.class).getProperty("contact.gate.plugins")));
+            } catch (IllegalStateException e) {
+
+            }
             Gate.init();
         }
 
@@ -89,8 +100,8 @@ public class ResumeParserService {
         URL u = file.toURI().toURL();
         FeatureMap params = Factory.newFeatureMap();
         params.put("sourceUrl", u);
-        params.put("preserveOriginalContent", new Boolean(true));
-        params.put("collectRepositioningInfo", new Boolean(true));
+        params.put("preserveOriginalContent", Boolean.TRUE);
+        params.put("collectRepositioningInfo", Boolean.TRUE);
         Out.prln("Creating doc for " + u);
         Document resume = (Document) Factory.createResource(
                 "gate.corpora.DocumentImpl", params);
@@ -307,7 +318,6 @@ public class ResumeParserService {
             }
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             Out.prln("Sad Face :( .Something went wrong.");
             e.printStackTrace();
         }

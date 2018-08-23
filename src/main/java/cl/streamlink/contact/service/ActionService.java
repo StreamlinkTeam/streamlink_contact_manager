@@ -46,7 +46,7 @@ public class ActionService {
 
         actionDTO.setReference(MiscUtils.generateReference());
         actionDTO.setDeveloperReference(developerReference);
-        actionDTO.setResponsableReference(userService.getCurrentUser().getReference());
+        actionDTO.setResponsibleReference(userService.getCurrentUser().getReference());
 
         Action action = mapper.fromDTOToBean(actionDTO);
 

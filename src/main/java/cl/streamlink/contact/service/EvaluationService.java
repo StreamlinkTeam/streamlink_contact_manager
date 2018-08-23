@@ -46,7 +46,7 @@ public class EvaluationService {
 
         evaluationDTO.setReference(MiscUtils.generateReference());
         evaluationDTO.setDeveloperReference(developerReference);
-        evaluationDTO.setResponsableReference(userService.getCurrentUser().getReference());
+        evaluationDTO.setResponsibleReference(userService.getCurrentUser().getReference());
 
         Evaluation evaluation = mapper.fromDTOToBean(evaluationDTO);
 

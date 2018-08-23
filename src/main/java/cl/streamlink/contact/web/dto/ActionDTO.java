@@ -13,7 +13,7 @@ public class ActionDTO {
 
     private String developerReference;
 
-    private String responsableReference;
+    private String responsibleReference;
 
     private ActionType type;
 
@@ -41,12 +41,12 @@ public class ActionDTO {
         this.developerReference = developerReference;
     }
 
-    public String getResponsableReference() {
-        return responsableReference;
+    public String getResponsibleReference() {
+        return responsibleReference;
     }
 
-    public void setResponsableReference(String responsableReference) {
-        this.responsableReference = responsableReference;
+    public void setResponsibleReference(String responsibleReference) {
+        this.responsibleReference = responsibleReference;
     }
 
     public ActionType getType() {

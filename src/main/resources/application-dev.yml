@@ -30,3 +30,6 @@ contact:
   cv:
     path: C:\ldk\cv\
     url: http://localhost:8000/
+  gate:
+    home: C:\ldk\workspace\streamlink_condidats_manager\src\main\resources\GATEFiles
+    plugins: C:\ldk\workspace\streamlink_condidats_manager\src\main\resources\GATEFiles\plugins

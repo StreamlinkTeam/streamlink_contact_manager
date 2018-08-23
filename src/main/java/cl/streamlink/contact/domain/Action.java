@@ -27,7 +27,7 @@ public class Action {
     private Developer developer;
 
     @ManyToOne
-    private User responsable;
+    private User responsible;
 
     @Enumerated(EnumType.STRING)
     private ActionType type;
@@ -69,12 +69,12 @@ public class Action {
         this.developer = developer;
     }
 
-    public User getResponsable() {
-        return responsable;
+    public User getResponsible() {
+        return responsible;
     }
 
-    public void setResponsable(User responsable) {
-        this.responsable = responsable;
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
     }
 
     public ActionType getType() {

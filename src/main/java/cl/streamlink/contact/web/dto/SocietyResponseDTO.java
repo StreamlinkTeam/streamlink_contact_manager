@@ -1,17 +1,10 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.*;
+import cl.streamlink.contact.domain.SocietyActivityArea;
+import cl.streamlink.contact.domain.SocietyStage;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SocietyResponseDTO {
 

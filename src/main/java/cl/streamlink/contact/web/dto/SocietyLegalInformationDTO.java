@@ -4,15 +4,15 @@ public class SocietyLegalInformationDTO {
 
     private String societyReference;
 
-    private String TVA;
+    private String tva;
 
-    private String Siret;
+    private String siret;
 
-    private String LegalStatus;
+    private String legalStatus;
 
-    private String RCS;
+    private String rcs;
 
-    private String APECode;
+    private String apeCode;
 
     public String getSocietyReference() {
         return societyReference;
@@ -22,43 +22,43 @@ public class SocietyLegalInformationDTO {
         this.societyReference = societyReference;
     }
 
-    public String getTVA() {
-        return TVA;
+    public String getTva() {
+        return tva;
     }
 
-    public void setTVA(String TVA) {
-        this.TVA = TVA;
+    public void setTva(String tva) {
+        this.tva = tva;
     }
 
     public String getSiret() {
-        return Siret;
+        return siret;
     }
 
     public void setSiret(String siret) {
-        Siret = siret;
+        this.siret = siret;
     }
 
     public String getLegalStatus() {
-        return LegalStatus;
+        return legalStatus;
     }
 
     public void setLegalStatus(String legalStatus) {
-        LegalStatus = legalStatus;
+        this.legalStatus = legalStatus;
     }
 
-    public String getRCS() {
-        return RCS;
+    public String getRcs() {
+        return rcs;
     }
 
-    public void setRCS(String RCS) {
-        this.RCS = RCS;
+    public void setRcs(String rcs) {
+        this.rcs = rcs;
     }
 
-    public String getAPECode() {
-        return APECode;
+    public String getApeCode() {
+        return apeCode;
     }
 
-    public void setAPECode(String APECode) {
-        this.APECode = APECode;
+    public void setApeCode(String apeCode) {
+        this.apeCode = apeCode;
     }
 }

@@ -40,7 +40,7 @@ public class SocietyController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Society.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public SocietyResponseDTO createSociety(@RequestBody @Valid SocietyDTO society) {
+    public SocietyDTO createSociety(@RequestBody @Valid SocietyDTO society) {
 
         return societyService.createSociety(society);
     }
@@ -54,7 +54,7 @@ public class SocietyController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Society.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public SocietyResponseDTO updateSociety(@Valid @RequestBody SocietyDTO society, @RequestParam(value = "societyReference") String societyReference) throws ContactApiException {
+    public SocietyDTO updateSociety(@Valid @RequestBody SocietyDTO society, @RequestParam(value = "societyReference") String societyReference) throws ContactApiException {
 
         return societyService.updateSociety(society, societyReference);
     }
@@ -166,7 +166,7 @@ public class SocietyController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = SkillsInformationDTO.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public SocietyLegalInformationDTO updateSocietySkills(@Valid @RequestBody SocietyLegalInformationDTO legalInformation
+    public SocietyLegalInformationDTO updateSocietyLegalInformation(@Valid @RequestBody SocietyLegalInformationDTO legalInformation
             , @RequestParam(value = "societyReference") String societyReference) throws ContactApiException {
 
         return societyService.updateSocietyLegalInformation(legalInformation, societyReference);
@@ -181,7 +181,7 @@ public class SocietyController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = SocietyLegalInformationDTO.class),
             @ApiResponse(code = 404, message = "Society with Ref not Found")
     })
-    public SocietyLegalInformationDTO getSocietySkills(@RequestParam(value = "societyReference") String societyReference) throws ContactApiException {
+    public SocietyLegalInformationDTO getSocietyLegalInformation(@RequestParam(value = "societyReference") String societyReference) throws ContactApiException {
         return societyService.getSocietyLegalInformation(societyReference);
     }
 }

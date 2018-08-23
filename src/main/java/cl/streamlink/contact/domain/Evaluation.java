@@ -27,7 +27,7 @@ public class Evaluation {
     private Developer developer;
 
     @ManyToOne
-    private User responsable;
+    private User responsible;
 
     @Enumerated(EnumType.STRING)
     private EvaluationNote relational;
@@ -70,12 +70,12 @@ public class Evaluation {
         this.developer = developer;
     }
 
-    public User getResponsable() {
-        return responsable;
+    public User getResponsible() {
+        return responsible;
     }
 
-    public void setResponsable(User responsable) {
-        this.responsable = responsable;
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
     }
 
     public EvaluationNote getRelational() {

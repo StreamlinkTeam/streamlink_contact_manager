@@ -121,14 +121,14 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference"),
-            @Mapping(source = "responsable.reference", target = "responsableReference")
+            @Mapping(source = "responsible.reference", target = "responsibleReference")
     })
     public abstract ActionDTO fromBeanToDTO(Action bean);
 
     @Mappings({
             @Mapping(target = "developer",
                     expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
-            @Mapping(target = "responsable", expression = "java(userRepository.findOneByReference(dto.getResponsableReference()).orElse(null))"),
+            @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true)
     })
@@ -136,15 +136,15 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference"),
-            @Mapping(source = "responsable.reference", target = "responsableReference"),
-            @Mapping(target = "responsableName", expression = "java(bean.getResponsable().getFirstname()+\" \"+bean.getResponsable().getLastname())")
+            @Mapping(source = "responsible.reference", target = "responsibleReference"),
+            @Mapping(target = "responsibleName", expression = "java(bean.getResponsible().getFirstname()+\" \"+bean.getResponsible().getLastname())")
     })
     public abstract EvaluationDTO fromBeanToDTO(Evaluation bean);
 
     @Mappings({
             @Mapping(target = "developer",
                     expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
-            @Mapping(target = "responsable", expression = "java(userRepository.findOneByReference(dto.getResponsableReference()).orElse(null))"),
+            @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true)
     })
@@ -259,7 +259,7 @@ public abstract class ApiMapper {
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true),
             @Mapping(target = "developer", ignore = true),
-            @Mapping(target = "responsable", ignore = true)
+            @Mapping(target = "responsible", ignore = true)
     })
     public abstract void updateBeanFromDto(EvaluationDTO dto, @MappingTarget Evaluation bean);
 
@@ -268,7 +268,7 @@ public abstract class ApiMapper {
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true),
             @Mapping(target = "developer", ignore = true),
-            @Mapping(target = "responsable", ignore = true)
+            @Mapping(target = "responsible", ignore = true)
     })
     public abstract void updateBeanFromDto(ActionDTO dto, @MappingTarget Action bean);
 

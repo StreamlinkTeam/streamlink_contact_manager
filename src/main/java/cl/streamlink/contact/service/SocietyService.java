@@ -38,21 +38,21 @@ public class SocietyService {
     @Inject
     private ApiMapper mapper;
 
-    public SocietyResponseDTO createSociety(SocietyDTO societyDTO) {
+    public SocietyDTO createSociety(SocietyDTO societyDTO) {
 
         Society society = mapper.fromDTOToBean(societyDTO);
 
         society.setReference(MiscUtils.generateReference());
-        return mapper.fromBeanToDTOResponse(societyRepository.save(society));
+        return mapper.fromBeanToDTO(societyRepository.save(society));
     }
 
-    public SocietyResponseDTO updateSociety(SocietyDTO societyDTO, String societyReference) throws ContactApiException {
+    public SocietyDTO updateSociety(SocietyDTO societyDTO, String societyReference) throws ContactApiException {
 
         Society society = societyRepository.findOneByReference(societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Society", societyReference));
 
         mapper.updateBeanFromDto(societyDTO, society);
-        return mapper.fromBeanToDTOResponse(societyRepository.save(society));
+        return mapper.fromBeanToDTO(societyRepository.save(society));
     }
 
     public SocietyDTO getSociety(String societyReference) throws ContactApiException {
