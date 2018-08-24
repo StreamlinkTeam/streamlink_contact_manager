@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 /**
  * Created by chemakh on 13/07/2018.
  */
-public class ActionDTO {
+public class DeveloperActionDTO {
 
     private String reference;
 

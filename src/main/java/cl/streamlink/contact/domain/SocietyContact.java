@@ -32,6 +32,8 @@ public class SocietyContact {
     @NotNull
     private String titre;
 
+    private String service;
+
     @Enumerated(EnumType.STRING)
     private SocietyStage stage;
 
@@ -103,6 +105,14 @@ public class SocietyContact {
 
     public void setTitre(String titre) {
         this.titre = titre;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
     }
 
     public SocietyStage getStage() {

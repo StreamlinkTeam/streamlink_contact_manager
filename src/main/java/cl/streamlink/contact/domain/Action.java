@@ -26,6 +26,11 @@ public class Action {
     @ManyToOne
     private Developer developer;
 
+
+    @ManyToOne
+    private SocietyContact societyContact;
+
+
     @ManyToOne
     private User responsible;
 
@@ -67,6 +72,14 @@ public class Action {
 
     public void setDeveloper(Developer developer) {
         this.developer = developer;
+    }
+
+    public SocietyContact getSocietyContact() {
+        return societyContact;
+    }
+
+    public void setSocietyContact(SocietyContact societyContact) {
+        this.societyContact = societyContact;
     }
 
     public User getResponsible() {

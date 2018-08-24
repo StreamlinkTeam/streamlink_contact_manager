@@ -7,6 +7,7 @@ import cl.streamlink.contact.domain.Stage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.CurriculumVitaeService;
 import cl.streamlink.contact.service.DeveloperService;
+import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -88,22 +89,7 @@ public class DeveloperController {
 
         if (fromAngular) {
 
-            pageable = pageable.previousOrFirst();
-
-            if (dir != null) {
-                PageRequest req = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                        new Sort(dir, pageable.getSort().stream().map(order -> {
-
-                            if (order.getProperty().equalsIgnoreCase("email1"))
-                                return "contact.email1";
-
-                            if (order.getProperty().equalsIgnoreCase("experience"))
-                                return "skillsInformation.experience";
-
-                            return order.getProperty();
-                        }).collect(Collectors.toList())));
-                return developerService.searchDevelopers(value, stage, experience, formation, req);
-            }
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir);
         }
         return developerService.searchDevelopers(value, stage, experience, formation, pageable);
 

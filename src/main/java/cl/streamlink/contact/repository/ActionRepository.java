@@ -17,4 +17,11 @@ public interface ActionRepository extends JpaRepository<Action, Long> {
 
     List<Action> findByDeveloperReference(String developerReference);
 
+    Optional<Action> findOneByReferenceAndSocietyContactReference(String reference,String societyContactReference);
+
+    List<Action> findBySocietyContactReference(String societyContactReference);
+
+    List<Action> findBySocietyContactSocietyReference(String societyReference);
+
+
 }

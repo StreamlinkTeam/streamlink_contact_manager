@@ -2,34 +2,25 @@ package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.domain.Gender;
 import cl.streamlink.contact.domain.SocietyStage;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-public class SocietyContactDTO {
+public class SocietyContactResponseDTO {
 
     private String reference;
 
-    @NotNull
-    @Size(min = 2, max = 255)
     private String firstname;
 
-    @NotNull
-    @Size(min = 2, max = 255)
     private String lastname;
 
-    @NotNull
-    @Size(min = 2, max = 255)
     private String titre;
 
-    @Size(max = 255)
     private String service;
 
+    private SocietyStage stage;
 
-    private SocietyStage stage ;
-
-    private Gender gender = Gender.UNDEFINED;
+    private Gender gender;
 
     private String managerReference;
 
@@ -40,6 +31,9 @@ public class SocietyContactDTO {
     private String note;
 
     private String functionalScope;
+
+    @JsonUnwrapped
+    private ContactDTO contact;
 
     private LocalDateTime createdDate;
 
@@ -139,6 +133,14 @@ public class SocietyContactDTO {
 
     public void setFunctionalScope(String functionalScope) {
         this.functionalScope = functionalScope;
+    }
+
+    public ContactDTO getContact() {
+        return contact;
+    }
+
+    public void setContact(ContactDTO contact) {
+        this.contact = contact;
     }
 
     public LocalDateTime getCreatedDate() {

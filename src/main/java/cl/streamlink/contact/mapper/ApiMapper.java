@@ -1,10 +1,7 @@
 package cl.streamlink.contact.mapper;
 
 import cl.streamlink.contact.domain.*;
-import cl.streamlink.contact.repository.DeveloperRepository;
-import cl.streamlink.contact.repository.LanguageRepository;
-import cl.streamlink.contact.repository.SocietyRepository;
-import cl.streamlink.contact.repository.UserRepository;
+import cl.streamlink.contact.repository.*;
 import cl.streamlink.contact.web.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -30,6 +27,9 @@ public abstract class ApiMapper {
 
     @Inject
     SocietyRepository societyRepository;
+
+    @Inject
+    SocietyContactRepository societyContactRepository;
 
     @Value("${contact.cv.url}")
     String baseUrl;
@@ -92,6 +92,8 @@ public abstract class ApiMapper {
     })
     public abstract DeveloperResponseDTO fromBeanToDTOResponse(Developer bean);
 
+    public abstract SocietyContactResponseDTO fromBeanToDTOResponse(SocietyContact bean);
+
     public abstract SocietyResponseDTO fromBeanToDTOResponse(Society bean);
 
 //    @Mappings({
@@ -120,19 +122,36 @@ public abstract class ApiMapper {
     public abstract Developer fromDTOToBean(DeveloperDTO dto);
 
     @Mappings({
+            @Mapping(source = "societyContact.reference", target = "societyContactReference"),
+            @Mapping(source = "responsible.reference", target = "responsibleReference")
+    })
+    public abstract SocietyActionDTO fromBeanToSocietyActionDTO(Action bean);
+
+    @Mappings({
+            @Mapping(target = "societyContact",
+                    expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
+            @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
+            @Mapping(target = "developer", ignore = true),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true)
+    })
+    public abstract Action fromDTOToBean(SocietyActionDTO dto);
+
+    @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference"),
             @Mapping(source = "responsible.reference", target = "responsibleReference")
     })
-    public abstract ActionDTO fromBeanToDTO(Action bean);
+    public abstract DeveloperActionDTO fromBeanToDeveloperActionDTO(Action bean);
 
     @Mappings({
             @Mapping(target = "developer",
                     expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
             @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
+            @Mapping(target = "societyContact", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true)
     })
-    public abstract Action fromDTOToBean(ActionDTO dto);
+    public abstract Action fromDTOToBean(DeveloperActionDTO dto);
 
     @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference"),
@@ -267,10 +286,21 @@ public abstract class ApiMapper {
             @Mapping(target = "reference", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true),
+            @Mapping(target = "societyContact", ignore = true),
             @Mapping(target = "developer", ignore = true),
             @Mapping(target = "responsible", ignore = true)
     })
-    public abstract void updateBeanFromDto(ActionDTO dto, @MappingTarget Action bean);
+    public abstract void updateBeanFromDto(DeveloperActionDTO dto, @MappingTarget Action bean);
+
+    @Mappings({
+            @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true),
+            @Mapping(target = "societyContact", ignore = true),
+            @Mapping(target = "developer", ignore = true),
+            @Mapping(target = "responsible", ignore = true)
+    })
+    public abstract void updateBeanFromDto(SocietyActionDTO dto, @MappingTarget Action bean);
 
     public abstract void updateBeanFromDto(SocietyLegalInformationDTO dto, @MappingTarget SocietyLegalInformation bean);
 

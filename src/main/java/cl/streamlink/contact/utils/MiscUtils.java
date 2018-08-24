@@ -2,13 +2,38 @@ package cl.streamlink.contact.utils;
 
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 public class MiscUtils {
+
+    public static Pageable convertFromAngularPage(Pageable pageable, Sort.Direction dir) {
+
+        pageable = pageable.previousOrFirst();
+
+        if (dir != null) {
+            return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                    new Sort(dir, pageable.getSort().stream().map(order -> {
+
+                        if (order.getProperty().equalsIgnoreCase("email1"))
+                            return "contact.email1";
+
+
+                        if (order.getProperty().equalsIgnoreCase("experience"))
+                            return "skillsInformation.experience";
+
+                        return order.getProperty();
+                    }).collect(Collectors.toList())));
+        }
+        return pageable;
+    }
 
     public static JSONObject createSuccessfullyResult(String info) {
         JSONObject result = new JSONObject();
@@ -36,8 +61,7 @@ public class MiscUtils {
         return result;
     }
 
-    public static String generateReference()
-    {
+    public static String generateReference() {
         return RandomStringUtils.randomAlphanumeric(15);
     }
 

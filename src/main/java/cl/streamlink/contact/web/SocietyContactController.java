@@ -1,14 +1,20 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.SocietyContact;
+import cl.streamlink.contact.domain.SocietyStage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.SocietyContactService;
+import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.ContactDTO;
 import cl.streamlink.contact.web.dto.SocietyContactDTO;
+import cl.streamlink.contact.web.dto.SocietyContactResponseDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +32,24 @@ public class SocietyContactController {
 
     @Inject
     private SocietyContactService societyContactService;
+
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public Page<SocietyContactResponseDTO> searchSocietyContacts(Pageable pageable, @RequestParam boolean fromAngular,
+                                                         @RequestParam(value = "societyReference") String societyReference,
+                                                         @RequestParam(required = false) String value,
+                                                         @RequestParam(required = false) SocietyStage stage,
+                                                         @RequestParam(required = false) Sort.Direction dir) {
+
+        if (fromAngular) {
+
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir);
+        }
+
+
+        return societyContactService.searchSocietyContacts(value, stage,societyReference, pageable);
+
+    }
 
 
     @RequestMapping(value = "",
@@ -54,9 +78,9 @@ public class SocietyContactController {
     })
     public SocietyContactDTO updateSocietyContact(@Valid @RequestBody SocietyContactDTO societyContact,
                                                   @RequestParam(value = "societyReference") String societyReference,
-                                                  @RequestParam(value = "reference") String reference) throws ContactApiException {
+                                                  @RequestParam(value = "societyContactReference") String societyContactReference) throws ContactApiException {
 
-        return societyContactService.updateSocietyContact(societyContact, reference, societyReference);
+        return societyContactService.updateSocietyContact(societyContact, societyContactReference, societyReference);
     }
 
     @RequestMapping(value = "",
@@ -69,9 +93,9 @@ public class SocietyContactController {
             @ApiResponse(code = 404, message = "SocietyContact with Ref not Found")
     })
     public SocietyContactDTO getSocietyContact(@RequestParam(value = "societyReference") String societyReference,
-                                               @RequestParam(value = "reference") String reference) throws ContactApiException {
+                                               @RequestParam(value = "societyContactReference") String societyContactReference) throws ContactApiException {
 
-        return societyContactService.getSocietyContact(reference, societyReference);
+        return societyContactService.getSocietyContact(societyContactReference, societyReference);
     }
 
     @RequestMapping(value = "",
@@ -83,10 +107,10 @@ public class SocietyContactController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = SocietyContact.class),
             @ApiResponse(code = 404, message = "SocietyContact with Ref not Found")
     })
-    public JSONObject deleteSocietyContact(@RequestParam("reference") String reference
+    public JSONObject deleteSocietyContact(@RequestParam("societyContactReference") String societyContactReference
             , @RequestParam(value = "societyReference") String societyReference) throws ContactApiException {
 
-        return societyContactService.deleteSocietyContact(reference, societyReference);
+        return societyContactService.deleteSocietyContact(societyContactReference, societyReference);
     }
 
     @RequestMapping(value = "all",
