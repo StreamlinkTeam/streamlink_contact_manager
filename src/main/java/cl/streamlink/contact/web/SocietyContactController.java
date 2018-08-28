@@ -56,7 +56,7 @@ public class SocietyContactController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Create SocietyContact Service")
+    @ApiOperation(value = "Create Society Contact Service")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = SocietyContact.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
@@ -71,7 +71,7 @@ public class SocietyContactController {
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Create SocietyContact Service")
+    @ApiOperation(value = "Create Society Contact Service")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = SocietyContact.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
@@ -87,7 +87,7 @@ public class SocietyContactController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get SocietyContact Details Service")
+    @ApiOperation(value = "Get Society Contact Details Service")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = SocietyContact.class),
             @ApiResponse(code = 404, message = "SocietyContact with Ref not Found")
@@ -102,7 +102,7 @@ public class SocietyContactController {
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Delete SocietyContact Service")
+    @ApiOperation(value = "Delete Society Contact Service")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = SocietyContact.class),
             @ApiResponse(code = 404, message = "SocietyContact with Ref not Found")
