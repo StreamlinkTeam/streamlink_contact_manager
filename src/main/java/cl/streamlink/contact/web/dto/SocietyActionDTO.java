@@ -12,6 +12,10 @@ public class SocietyActionDTO {
 
     private String responsibleReference;
 
+    private String responsibleFullName;
+
+    private String societyContactFullName;
+
     private ActionType type;
 
     private String note;
@@ -44,6 +48,22 @@ public class SocietyActionDTO {
 
     public void setResponsibleReference(String responsibleReference) {
         this.responsibleReference = responsibleReference;
+    }
+
+    public String getResponsibleFullName() {
+        return responsibleFullName;
+    }
+
+    public void setResponsibleFullName(String responsibleFullName) {
+        this.responsibleFullName = responsibleFullName;
+    }
+
+    public String getSocietyContactFullName() {
+        return societyContactFullName;
+    }
+
+    public void setSocietyContactFullName(String societyContactFullName) {
+        this.societyContactFullName = societyContactFullName;
     }
 
     public ActionType getType() {

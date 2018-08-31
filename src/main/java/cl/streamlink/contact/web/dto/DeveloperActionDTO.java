@@ -15,6 +15,8 @@ public class DeveloperActionDTO {
 
     private String responsibleReference;
 
+    private String responsibleFullName;
+
     private ActionType type;
 
     private String note;
@@ -47,6 +49,14 @@ public class DeveloperActionDTO {
 
     public void setResponsibleReference(String responsibleReference) {
         this.responsibleReference = responsibleReference;
+    }
+
+    public String getResponsibleFullName() {
+        return responsibleFullName;
+    }
+
+    public void setResponsibleFullName(String responsibleFullName) {
+        this.responsibleFullName = responsibleFullName;
     }
 
     public ActionType getType() {

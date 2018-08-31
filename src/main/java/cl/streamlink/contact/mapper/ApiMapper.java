@@ -123,7 +123,9 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(source = "societyContact.reference", target = "societyContactReference"),
-            @Mapping(source = "responsible.reference", target = "responsibleReference")
+            @Mapping(source = "responsible.reference", target = "responsibleReference"),
+            @Mapping(target = "responsibleFullName", expression = "java(bean.getResponsible().getFirstname()+\" \"+bean.getResponsible().getLastname())"),
+            @Mapping(target = "societyContactFullName", expression = "java(bean.getSocietyContact().getFirstname()+\" \"+bean.getSocietyContact().getLastname())")
     })
     public abstract SocietyActionDTO fromBeanToSocietyActionDTO(Action bean);
 
@@ -139,7 +141,8 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference"),
-            @Mapping(source = "responsible.reference", target = "responsibleReference")
+            @Mapping(source = "responsible.reference", target = "responsibleReference"),
+            @Mapping(target = "responsibleFullName", expression = "java(bean.getResponsible().getFirstname()+\" \"+bean.getResponsible().getLastname())")
     })
     public abstract DeveloperActionDTO fromBeanToDeveloperActionDTO(Action bean);
 
@@ -156,7 +159,7 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference"),
             @Mapping(source = "responsible.reference", target = "responsibleReference"),
-            @Mapping(target = "responsibleName", expression = "java(bean.getResponsible().getFirstname()+\" \"+bean.getResponsible().getLastname())")
+            @Mapping(target = "responsibleFullName", expression = "java(bean.getResponsible().getFirstname()+\" \"+bean.getResponsible().getLastname())")
     })
     public abstract EvaluationDTO fromBeanToDTO(Evaluation bean);
 
@@ -296,7 +299,8 @@ public abstract class ApiMapper {
             @Mapping(target = "reference", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true),
-            @Mapping(target = "societyContact", ignore = true),
+            @Mapping(target = "societyContact",
+                    expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
             @Mapping(target = "developer", ignore = true),
             @Mapping(target = "responsible", ignore = true)
     })

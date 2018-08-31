@@ -102,7 +102,7 @@ public class ActionController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public SocietyActionDTO createDeveloperAction(@RequestBody @Valid SocietyActionDTO action,
+    public SocietyActionDTO createSocietyAction(@RequestBody @Valid SocietyActionDTO action,
                                                     @RequestParam String societyContactReference,@RequestParam  String societyReference)
     {
 
@@ -118,7 +118,7 @@ public class ActionController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public SocietyActionDTO updateDeveloperAction(@Valid @RequestBody SocietyActionDTO action, @RequestParam String societyContactReference,@RequestParam  String societyReference,
+    public SocietyActionDTO updateSocietyAction(@Valid @RequestBody SocietyActionDTO action, @RequestParam(required = false) String societyContactReference,@RequestParam  String societyReference,
                                                     @RequestParam(value = "reference") String reference) throws ContactApiException
     {
 
@@ -134,7 +134,7 @@ public class ActionController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
             @ApiResponse(code = 404, message = "Action with Ref not Found")
     })
-    public List<SocietyActionDTO> getDeveloperAction(@RequestParam String societyContactReference,@RequestParam  String societyReference,
+    public List<SocietyActionDTO> getSocietyAction(@RequestParam(required = false) String societyContactReference,@RequestParam  String societyReference,
                                                        @RequestParam(value = "reference", required = false) String reference) throws ContactApiException
     {
 
@@ -150,7 +150,7 @@ public class ActionController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
             @ApiResponse(code = 404, message = "Action with Ref not Found")
     })
-    public JSONObject deleteDeveloperAction(@RequestParam("reference") String reference
+    public JSONObject deleteSocietyAction(@RequestParam("reference") String reference
             ,@RequestParam String societyContactReference,@RequestParam  String societyReference) throws ContactApiException
     {
 

@@ -13,7 +13,7 @@ public class EvaluationDTO {
 
     private String developerReference;
 
-    private String responsibleName;
+    private String responsibleFullName;
 
     private String responsibleReference;
 
@@ -43,12 +43,12 @@ public class EvaluationDTO {
         this.developerReference = developerReference;
     }
 
-    public String getResponsibleName() {
-        return responsibleName;
+    public String getResponsibleFullName() {
+        return responsibleFullName;
     }
 
-    public void setResponsibleName(String responsibleName) {
-        this.responsibleName = responsibleName;
+    public void setResponsibleFullName(String responsibleFullName) {
+        this.responsibleFullName = responsibleFullName;
     }
 
     public String getResponsibleReference() {
