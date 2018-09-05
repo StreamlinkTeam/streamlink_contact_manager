@@ -67,6 +67,11 @@ public class ContactApiException extends RuntimeException {
         this.code = code;
     }
 
+    public static ContactApiException unauthorizedExceptionBuilder(String key,String[] objects) {
+
+        String message = MessageFactory.getMessage("contact.api.service.unauthorized_exception." + key, objects);
+        return new ContactApiException(message, ContactApiError.UNAUTHORIZED, null);
+    }
 
     public static ContactApiException unprocessableEntityExceptionBuilder(String key,String[] objects) {
 

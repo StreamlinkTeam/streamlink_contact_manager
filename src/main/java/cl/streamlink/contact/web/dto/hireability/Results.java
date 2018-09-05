@@ -3,17 +3,20 @@ package cl.streamlink.contact.web.dto.hireability;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Results {
 
-    @JsonAlias(value = "HireAbilityXMLResults")
-    private HireAbilityXMLResults hireAbilityXMLResults;
+    @JsonAlias(value = "Results")
+    private List<Result> results = new ArrayList<>();
 
-    public HireAbilityXMLResults getHireAbilityXMLResults() {
-        return hireAbilityXMLResults;
+    public List<Result> getResults() {
+        return results;
     }
 
-    public void setHireAbilityXMLResults(HireAbilityXMLResults hireAbilityXMLResults) {
-        this.hireAbilityXMLResults = hireAbilityXMLResults;
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 }

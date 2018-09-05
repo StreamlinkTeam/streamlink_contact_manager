@@ -243,7 +243,8 @@ public abstract class ApiMapper {
     public abstract void updateBeanFromDto(LanguageDTO dto, @MappingTarget Language bean);
 
     @Mappings({
-            @Mapping(target = "reference", ignore = true)
+            @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "password", ignore = true)
     })
     public abstract void updateBeanFromDto(UserDTO dto, @MappingTarget User bean);
 

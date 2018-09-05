@@ -1,14 +1,18 @@
 package cl.streamlink.contact.web;
 
+import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.web.dto.UserDTO;
 import io.swagger.annotations.*;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,9 +31,7 @@ public class UserController {
                             @ApiParam("Username") @RequestParam String username, //
                             @ApiParam("Password") @RequestParam String password) {
 
-        JSONObject token = new JSONObject();
-        token.put("access_token", userService.signin(username, password));
-        return token;
+        return userService.signin(username, password);
     }
 
     @PostMapping("")
@@ -44,20 +46,51 @@ public class UserController {
         return userService.signup(user);
     }
 
-    @DeleteMapping(value = "/{username}")
+
+    @RequestMapping(value = "",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @ApiOperation(value = "${UserController.delete}")
-    @ApiResponses(value = {//
-            @ApiResponse(code = 400, message = "Something went wrong"), //
-            @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 404, message = "The user doesn't exist"), //
-            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public String delete(@ApiParam("Username") @PathVariable String username) {
-        userService.delete(username);
-        return username;
+    @ApiOperation(value = "Create User Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = UserDTO.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+    })
+    public UserDTO updateUser(@Valid @RequestBody UserDTO user, @RequestParam(value = "userReference") String userReference) throws ContactApiException {
+
+        return userService.updateUser(user, userReference);
     }
 
-    @GetMapping(value = "")
+    @RequestMapping(value = "",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "${UserController.delete}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = JSONObject.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public JSONObject deleteUser(@RequestParam("userReference") String userReference) throws ContactApiException {
+
+        return userService.deleteUser(userReference);
+    }
+
+    @RequestMapping(value = "",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get User Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = UserDTO.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public UserDTO getUser(@RequestParam(value = "userReference") String userReference) throws ContactApiException {
+        return userService.getUser(userReference);
+    }
+
+    @GetMapping(value = "all")
     @ApiOperation(value = "Get All Users", response = UserDTO.class)
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //

@@ -14,11 +14,11 @@ public enum Gender {
     @JsonCreator
     public static Gender fromString(final String gender) {
 
-        if(MiscUtils.isNotEmpty(gender) && gender.equalsIgnoreCase("female"))
-            return  F;
+        if (MiscUtils.isNotEmpty(gender) && gender.equalsIgnoreCase("female"))
+            return F;
 
-        if(MiscUtils.isNotEmpty(gender) && gender.equalsIgnoreCase("male"))
-            return  M;
+        if (MiscUtils.isNotEmpty(gender) && gender.equalsIgnoreCase("male"))
+            return M;
 
 
         return gender != null ?
@@ -26,6 +26,11 @@ public enum Gender {
                         .filter(val -> MiscUtils.equals(val.toString().toUpperCase(), gender.toUpperCase()))
                         .findFirst().orElse(UNDEFINED)
                 : UNDEFINED;
+    }
+
+    public static Gender fromInt(final int gender) {
+
+        return gender == 1 ? M : gender == 2 ? F : UNDEFINED;
     }
 
 }

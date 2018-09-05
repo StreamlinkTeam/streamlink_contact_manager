@@ -10,7 +10,6 @@ import cl.streamlink.contact.repository.CurriculumVitaeRepository;
 import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.UserRepository;
 import cl.streamlink.contact.utils.MiscUtils;
-import cl.streamlink.contact.utils.ResumeParserService;
 import cl.streamlink.contact.web.dto.CurriculumVitaeDTO;
 import cl.streamlink.contact.web.dto.DeveloperResponseDTO;
 import net.minidev.json.JSONObject;
@@ -46,6 +45,9 @@ public class CurriculumVitaeService {
     private UserRepository userRepository;
 
     @Inject
+    private HireabilityService hireabilityService;
+
+    @Inject
     private UserService userService;
 
     @Inject
@@ -55,28 +57,33 @@ public class CurriculumVitaeService {
     private CurriculumVitaeRepository curriculumVitaeRepository;
 
 
-    public DeveloperResponseDTO generateFromCv(MultipartFile cv) throws IOException {
+    public DeveloperResponseDTO generateFromCv(MultipartFile cv) {
 
-        String reference = MiscUtils.generateReference();
-        File cvFile = saveCvFile(reference + "." + FilenameUtils.getExtension(cv.getOriginalFilename()), cv);
 
-        Developer developer = ResumeParserService.parseResume(cvFile.getPath());
-        if (developer != null) {
-            developer.setManager(userService.getCurrentUser());
-            developer.setReference(MiscUtils.generateReference());
-            developer = developerRepository.save(developer);
+        try {
+            String reference = MiscUtils.generateReference();
+            File cvFile = saveCvFile(reference + "." + FilenameUtils.getExtension(cv.getOriginalFilename()), cv);
+            Developer developer = hireabilityService.parseResume(cvFile);
+            if (developer != null) {
+                developer.setManager(userService.getCurrentUser());
+                developer.setReference(MiscUtils.generateReference());
+                developer = developerRepository.save(developer);
 
-            CurriculumVitae curriculumVitae = new CurriculumVitae();
-            curriculumVitae.setReference(reference);
-            curriculumVitae.setLabel(cv.getOriginalFilename());
-            curriculumVitae.setName(curriculumVitae.getReference() + "." +
-                    FilenameUtils.getExtension(cv.getOriginalFilename()));
-            curriculumVitae.setDeveloper(developer);
+                CurriculumVitae curriculumVitae = new CurriculumVitae();
+                curriculumVitae.setReference(reference);
+                curriculumVitae.setLabel(cv.getOriginalFilename());
+                curriculumVitae.setName(curriculumVitae.getReference() + "." +
+                        FilenameUtils.getExtension(cv.getOriginalFilename()));
+                curriculumVitae.setDeveloper(developer);
 
-            curriculumVitaeRepository.save(curriculumVitae);
+                curriculumVitaeRepository.save(curriculumVitae);
 
-            return mapper.fromBeanToDTOResponse(developer);
-        } else throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("Cv", "CV", "format_error"));
+                return mapper.fromBeanToDTOResponse(developer);
+            } else throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("Cv", "CV", "format_error"));
+        } catch (IOException e) {
+            throw ContactApiException.unprocessableEntityExceptionBuilder("parse_error", null);
+        }
+
 
     }
 

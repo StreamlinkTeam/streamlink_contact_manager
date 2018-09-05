@@ -1,6 +1,7 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.config.ApplicationConfig;
+import cl.streamlink.contact.domain.Role;
 import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiError;
 import cl.streamlink.contact.exception.ContactApiException;
@@ -10,6 +11,7 @@ import cl.streamlink.contact.security.JwtTokenProvider;
 import cl.streamlink.contact.security.SecurityUtils;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.UserDTO;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,11 +41,18 @@ public class UserService {
     private JwtTokenProvider jwtTokenProvider;
 
 
-    public String signin(String username, String password) {
+    public JSONObject signin(String username, String password) {
         try {
             ApplicationConfig.getService(AuthenticationManager.class)
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username, userRepository.findOneByEmail(username).get().getRoles());
+            User user = userRepository.findOneByEmail(username).get();
+            String token = jwtTokenProvider.createToken(username, user.getRoles());
+
+            JSONObject result = new JSONObject();
+            result.put("access_token", token);
+            result.put("roles", user.getRoles());
+            return result;
+
         } catch (AuthenticationException e) {
             throw new ContactApiException("Invalid email/password supplied", ContactApiError.UNAUTHORIZED, null);
         }
@@ -53,14 +63,40 @@ public class UserService {
         if (!userRepository.existsByEmail(user.getEmail())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setReference(MiscUtils.generateReference());
+            if (MiscUtils.isEmpty(user.getRoles()))
+                user.setRoles(Collections.singletonList(Role.ROLE_CLIENT));
             return mapper.fromBeanToDTO(userRepository.save(mapper.fromDTOToBean(user)));
         } else {
-            throw new ContactApiException("Email is already in use", ContactApiError.UNAUTHORIZED, null);
+            throw ContactApiException.unauthorizedExceptionBuilder("email_exist", null);
         }
     }
 
-    public void delete(String email) {
-        userRepository.deleteByEmail(email);
+    public UserDTO updateUser(UserDTO userDTO, String userReference) throws ContactApiException {
+
+        User user = userRepository.findOneByReference(userReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference));
+
+        mapper.updateBeanFromDto(userDTO, user);
+
+        return mapper.fromBeanToDTO(userRepository.save(user));
+    }
+
+    public UserDTO getUser(String userReference) {
+
+        return mapper.fromBeanToDTO(userRepository.findOneByReference(userReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference)));
+
+    }
+
+
+    public JSONObject deleteUser(String userReference) throws ContactApiException {
+
+        User user = userRepository.findOneByReference(userReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference));
+
+        userRepository.delete(user);
+
+        return MiscUtils.createSuccessfullyResult();
     }
 
     public UserDTO search(String email) {

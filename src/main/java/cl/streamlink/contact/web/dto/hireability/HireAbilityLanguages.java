@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class HireabilityLanguages {
+public class HireAbilityLanguages {
 
     @JsonAlias(value = "LanguageCode")
     private String languageCode;

@@ -4,10 +4,7 @@ import cl.streamlink.contact.domain.Role;
 import cl.streamlink.contact.exception.ContactApiError;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.utils.MiscUtils;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,8 +32,8 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
-    @Value("${security.jwt.token.expire-length:3600}")
-    private long validityInSeconds = 3600; // 1h
+    @Value("${security.jwt.token.expire-length:5}")
+    private long validityInHours = 5; // 1h
 
     @Autowired
     private MyUserDetails myUserDetails;
@@ -49,10 +46,11 @@ public class JwtTokenProvider {
     public String createToken(String email, List<Role> roles) {
 
         Claims claims = Jwts.claims().setSubject(email);
-        claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
+        claims.put("auth", roles.stream().map(Role::getAuthority)
+                .filter(MiscUtils::isNotEmpty).collect(Collectors.toList()));
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInSeconds * 1000 * 1000);
+        Date validity = new Date(now.getTime() + validityInHours * 3600 * 1000);
 
         return Jwts.builder()//
                 .setClaims(claims)//
@@ -87,7 +85,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             throw new ContactApiException("Expired or invalid JWT token", ContactApiError.FORBIDDEN, null);

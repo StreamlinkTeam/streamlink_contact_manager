@@ -8,10 +8,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 public class HireabilityError {
 
     @JacksonXmlProperty(isAttribute = true)
+    @JsonAlias(value = "Id")
     private String id;
 
     @JsonAlias(value = "ErrorCode")
-    private String errorCode;
+    private Integer errorCode;
 
     @JsonAlias(value = "ErrorMessage")
     private String errorMessage;
@@ -24,11 +25,11 @@ public class HireabilityError {
         this.id = id;
     }
 
-    public String getErrorCode() {
+    public Integer getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(String errorCode) {
+    public void setErrorCode(Integer errorCode) {
         this.errorCode = errorCode;
     }
 
