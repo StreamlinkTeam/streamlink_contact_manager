@@ -5,6 +5,7 @@ import cl.streamlink.contact.domain.Role;
 import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiError;
 import cl.streamlink.contact.exception.ContactApiException;
+import cl.streamlink.contact.exception.FieldErrorDTO;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.UserRepository;
 import cl.streamlink.contact.security.JwtTokenProvider;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,20 +60,20 @@ public class UserService {
         }
     }
 
-    public UserDTO signup(UserDTO user) {
+    public UserDTO signup(UserDTO userDTO) {
 
-        if (!userRepository.existsByEmail(user.getEmail())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setReference(MiscUtils.generateReference());
-            if (MiscUtils.isEmpty(user.getRoles()))
-                user.setRoles(Collections.singletonList(Role.ROLE_CLIENT));
-            return mapper.fromBeanToDTO(userRepository.save(mapper.fromDTOToBean(user)));
-        } else {
-            throw ContactApiException.unauthorizedExceptionBuilder("email_exist", null);
-        }
+        checkIfEmailIsUsed(userDTO.getEmail(), null);
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userDTO.setReference(MiscUtils.generateReference());
+        if (MiscUtils.isEmpty(userDTO.getRoles()))
+            userDTO.setRoles(Collections.singletonList(Role.ROLE_CLIENT));
+        return mapper.fromBeanToDTO(userRepository.save(mapper.fromDTOToBean(userDTO)));
+
     }
 
     public UserDTO updateUser(UserDTO userDTO, String userReference) throws ContactApiException {
+
+        checkIfEmailIsUsed(userDTO.getEmail(), userReference);
 
         User user = userRepository.findOneByReference(userReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference));
@@ -112,7 +114,20 @@ public class UserService {
                 (jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req))).orElse(null));
     }
 
-    public User getCurrentUser() {
+    public JSONObject changeCurrentUserPassword(String oldPassword, String newPassword) {
+
+        User user = getCurrentUser();
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } else {
+            throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("User", "Password", "must_match"));
+        }
+
+        return MiscUtils.createSuccessfullyResult();
+    }
+
+    User getCurrentUser() {
         String currentUserName = SecurityUtils.getCurrentUserLogin();
 
         if (!SecurityUtils.checkIfThereIsUserLogged())
@@ -125,5 +140,17 @@ public class UserService {
 
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+    }
+
+    private void checkIfEmailIsUsed(String email, String reference) {
+
+        if (MiscUtils.isNotEmpty(email)) {
+            Optional<User> find = userRepository.findOneByEmail(email).
+                    filter(user -> MiscUtils.isEmpty(reference) || !user.getReference().equals(reference));
+            if (find.isPresent()) {
+                throw ContactApiException.unauthorizedExceptionBuilder("email_exist", null);
+            }
+        }
+
     }
 }

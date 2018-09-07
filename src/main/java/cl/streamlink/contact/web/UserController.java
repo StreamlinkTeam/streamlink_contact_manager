@@ -123,4 +123,17 @@ public class UserController {
         return userService.whoami(req);
     }
 
+    @PutMapping(value = "current/password",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Change Password Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully"),
+            @ApiResponse(code = 400, message = "Password Don't Match"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
+    public JSONObject changePassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
+        return userService.changeCurrentUserPassword(oldPassword, newPassword);
+    }
+
 }
