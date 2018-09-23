@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
 
 
 @ControllerAdvice
-public class ContcatApiExceptionHandler {
+public class ContactApiExceptionHandler {
 
-    private final static Logger logger = LoggerFactory.getLogger(ContcatApiExceptionHandler.class);
+    private final static Logger logger = LoggerFactory.getLogger(ContactApiExceptionHandler.class);
 
 
     @ExceptionHandler(ConcurrencyFailureException.class)

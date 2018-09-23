@@ -1,9 +1,9 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Developer;
-import cl.streamlink.contact.domain.Experience;
-import cl.streamlink.contact.domain.Formation;
-import cl.streamlink.contact.domain.Stage;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
+import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.DeveloperRepository;

@@ -1,8 +1,8 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.ContractType;
-import cl.streamlink.contact.domain.Currency;
-import cl.streamlink.contact.domain.WorkTime;
+import cl.streamlink.contact.utils.enums.ContractType;
+import cl.streamlink.contact.utils.enums.Currency;
+import cl.streamlink.contact.utils.enums.WorkTime;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,9 +29,9 @@ public class ContractDTO {
 
     private LocalDate endDate;
 
-    private LocalDate trialPeriodeEndDate;
+    private LocalDate trialPeriodEndDate;
 
-    private LocalDate trialPeriodeRenewalEndDate;
+    private LocalDate trialPeriodRenewalEndDate;
 
     private LocalDateTime createdDate;
 
@@ -101,20 +101,20 @@ public class ContractDTO {
         this.endDate = endDate;
     }
 
-    public LocalDate getTrialPeriodeEndDate() {
-        return trialPeriodeEndDate;
+    public LocalDate getTrialPeriodEndDate() {
+        return trialPeriodEndDate;
     }
 
-    public void setTrialPeriodeEndDate(LocalDate trialPeriodeEndDate) {
-        this.trialPeriodeEndDate = trialPeriodeEndDate;
+    public void setTrialPeriodEndDate(LocalDate trialPeriodEndDate) {
+        this.trialPeriodEndDate = trialPeriodEndDate;
     }
 
-    public LocalDate getTrialPeriodeRenewalEndDate() {
-        return trialPeriodeRenewalEndDate;
+    public LocalDate getTrialPeriodRenewalEndDate() {
+        return trialPeriodRenewalEndDate;
     }
 
-    public void setTrialPeriodeRenewalEndDate(LocalDate trialPeriodeRenewalEndDate) {
-        this.trialPeriodeRenewalEndDate = trialPeriodeRenewalEndDate;
+    public void setTrialPeriodRenewalEndDate(LocalDate trialPeriodRenewalEndDate) {
+        this.trialPeriodRenewalEndDate = trialPeriodRenewalEndDate;
     }
 
     public LocalDateTime getCreatedDate() {

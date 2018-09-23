@@ -1,5 +1,7 @@
 package cl.streamlink.contact.domain;
 
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

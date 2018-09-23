@@ -1,9 +1,9 @@
 package cl.streamlink.contact.repository;
 
 import cl.streamlink.contact.domain.Developer;
-import cl.streamlink.contact.domain.Experience;
-import cl.streamlink.contact.domain.Formation;
-import cl.streamlink.contact.domain.Stage;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
+import cl.streamlink.contact.utils.enums.Stage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

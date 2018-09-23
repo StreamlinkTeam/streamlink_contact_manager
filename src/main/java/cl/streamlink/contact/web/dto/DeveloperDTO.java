@@ -1,19 +1,15 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.Gender;
-import cl.streamlink.contact.domain.Stage;
+import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.utils.MiscUtils;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeveloperDTO {
-
-    private String reference;
+public class DeveloperDTO extends AbstractProfilDTO {
 
     @NotNull
     @Size(min = 2, max = 255)
@@ -25,29 +21,11 @@ public class DeveloperDTO {
 
     private Stage stage;
 
-    private Gender gender;
-
-    private String managerReference;
-
     private String rhReference;
-
-    private String note;
 
     private LocalDate availability;
 
     private List<String> mobility;
-
-    private LocalDateTime createdDate;
-
-    private LocalDateTime modifiedDate;
-
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -73,28 +51,12 @@ public class DeveloperDTO {
         this.stage = stage;
     }
 
-    public String getManagerReference() {
-        return managerReference;
-    }
-
-    public void setManagerReference(String managerReference) {
-        this.managerReference = managerReference;
-    }
-
     public String getRhReference() {
         return rhReference;
     }
 
     public void setRhReference(String rhReference) {
         this.rhReference = rhReference;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
     }
 
     public LocalDate getAvailability() {
@@ -113,29 +75,5 @@ public class DeveloperDTO {
 
     public void setMobility(List<String> mobility) {
         this.mobility = mobility;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
     }
 }

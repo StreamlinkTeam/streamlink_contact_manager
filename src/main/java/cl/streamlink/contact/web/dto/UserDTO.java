@@ -1,6 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.Role;
+import cl.streamlink.contact.utils.enums.Role;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;

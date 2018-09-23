@@ -1,4 +1,4 @@
-package cl.streamlink.contact.domain;
+package cl.streamlink.contact.utils.enums;
 
 
 import cl.streamlink.contact.utils.MiscUtils;

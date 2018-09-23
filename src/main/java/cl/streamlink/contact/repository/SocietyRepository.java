@@ -1,8 +1,8 @@
 package cl.streamlink.contact.repository;
 
 import cl.streamlink.contact.domain.Society;
-import cl.streamlink.contact.domain.SocietyActivityArea;
-import cl.streamlink.contact.domain.SocietyStage;
+import cl.streamlink.contact.utils.enums.SocietyActivityArea;
+import cl.streamlink.contact.utils.enums.SocietyStage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

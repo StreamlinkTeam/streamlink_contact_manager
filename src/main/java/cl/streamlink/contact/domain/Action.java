@@ -1,5 +1,6 @@
 package cl.streamlink.contact.domain;
 
+import cl.streamlink.contact.utils.enums.ActionType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class Action {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)

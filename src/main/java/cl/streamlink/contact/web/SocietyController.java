@@ -1,8 +1,8 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Society;
-import cl.streamlink.contact.domain.SocietyActivityArea;
-import cl.streamlink.contact.domain.SocietyStage;
+import cl.streamlink.contact.utils.enums.SocietyActivityArea;
+import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.SocietyService;
 import cl.streamlink.contact.utils.MiscUtils;

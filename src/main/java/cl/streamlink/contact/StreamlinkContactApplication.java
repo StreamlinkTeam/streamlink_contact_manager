@@ -1,6 +1,6 @@
 package cl.streamlink.contact;
 
-import cl.streamlink.contact.domain.Role;
+import cl.streamlink.contact.utils.enums.Role;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.utils.FakerService;
@@ -60,7 +60,8 @@ public class StreamlinkContactApplication implements CommandLineRunner {
         }
 
 //        fakerService.deleteAll();
-//        fakerService.generateFakerDeveloperData(20);
+//        fakerService.generateFakerDeveloperData(10);
+//        fakerService.generateFakerResourceDate(10);
 //        fakerService.generateFakerSocietyData(20,10);
     }
 }

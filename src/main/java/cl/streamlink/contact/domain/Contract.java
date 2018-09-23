@@ -1,5 +1,8 @@
 package cl.streamlink.contact.domain;
 
+import cl.streamlink.contact.utils.enums.ContractType;
+import cl.streamlink.contact.utils.enums.Currency;
+import cl.streamlink.contact.utils.enums.WorkTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,7 +21,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Contract {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -42,9 +45,9 @@ public class Contract {
 
     private LocalDate endDate;
 
-    private LocalDate trialPeriodeEndDate;
+    private LocalDate trialPeriodEndDate;
 
-    private LocalDate trialPeriodeRenewalEndDate;
+    private LocalDate trialPeriodRenewalEndDate;
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
@@ -126,20 +129,20 @@ public class Contract {
         this.endDate = endDate;
     }
 
-    public LocalDate getTrialPeriodeEndDate() {
-        return trialPeriodeEndDate;
+    public LocalDate getTrialPeriodEndDate() {
+        return trialPeriodEndDate;
     }
 
-    public void setTrialPeriodeEndDate(LocalDate trialPeriodeEndDate) {
-        this.trialPeriodeEndDate = trialPeriodeEndDate;
+    public void setTrialPeriodEndDate(LocalDate trialPeriodEndDate) {
+        this.trialPeriodEndDate = trialPeriodEndDate;
     }
 
-    public LocalDate getTrialPeriodeRenewalEndDate() {
-        return trialPeriodeRenewalEndDate;
+    public LocalDate getTrialPeriodRenewalEndDate() {
+        return trialPeriodRenewalEndDate;
     }
 
-    public void setTrialPeriodeRenewalEndDate(LocalDate trialPeriodeRenewalEndDate) {
-        this.trialPeriodeRenewalEndDate = trialPeriodeRenewalEndDate;
+    public void setTrialPeriodRenewalEndDate(LocalDate trialPeriodRenewalEndDate) {
+        this.trialPeriodRenewalEndDate = trialPeriodRenewalEndDate;
     }
 
     public LocalDateTime getCreatedDate() {

@@ -1,9 +1,9 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Developer;
-import cl.streamlink.contact.domain.Experience;
-import cl.streamlink.contact.domain.Formation;
-import cl.streamlink.contact.domain.Stage;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
+import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.CurriculumVitaeService;
 import cl.streamlink.contact.service.DeveloperService;
@@ -14,7 +14,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,6 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ws/developers")

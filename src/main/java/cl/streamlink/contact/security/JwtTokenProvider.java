@@ -1,15 +1,12 @@
 package cl.streamlink.contact.security;
 
-import cl.streamlink.contact.domain.Role;
-import cl.streamlink.contact.exception.ContactApiError;
-import cl.streamlink.contact.exception.ContactApiException;
+import cl.streamlink.contact.utils.enums.Role;
 import cl.streamlink.contact.utils.MiscUtils;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -19,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -88,7 +84,8 @@ public class JwtTokenProvider {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new ContactApiException("Expired or invalid JWT token", ContactApiError.FORBIDDEN, null);
+//            throw new ContactApiException("Expired or invalid JWT token", ContactApiError.FORBIDDEN, null);
+            return false;
         }
     }
 

@@ -1,5 +1,8 @@
 package cl.streamlink.contact.domain;
 
+import cl.streamlink.contact.utils.enums.ContractType;
+import cl.streamlink.contact.utils.enums.Currency;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -12,7 +15,7 @@ import java.math.BigDecimal;
 public class WishedContract {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)

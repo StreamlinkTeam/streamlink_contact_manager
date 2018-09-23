@@ -2,6 +2,7 @@ package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.*;
 import cl.streamlink.contact.exception.ContactApiException;
+import cl.streamlink.contact.utils.enums.*;
 import cl.streamlink.contact.web.dto.hireability.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FilenameUtils;

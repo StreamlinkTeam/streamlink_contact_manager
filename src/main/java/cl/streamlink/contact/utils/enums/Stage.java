@@ -1,4 +1,4 @@
-package cl.streamlink.contact.domain;
+package cl.streamlink.contact.utils.enums;
 
 import cl.streamlink.contact.utils.MiscUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -15,8 +15,8 @@ public enum Stage {
     InTheProcessOfQualifying,
     Vivier,
     VivierPlus,
-    ConvertedToResource,
-    StopContacting;
+    StopContacting,
+    ConvertedToResource;
 
     @JsonCreator
     public static Stage fromString(final String stage) {

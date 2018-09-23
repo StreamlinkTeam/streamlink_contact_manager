@@ -1,6 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.FamilySituation;
+import cl.streamlink.contact.utils.enums.FamilySituation;
 
 import java.time.LocalDate;
 

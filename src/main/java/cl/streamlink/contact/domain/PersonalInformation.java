@@ -1,5 +1,7 @@
 package cl.streamlink.contact.domain;
 
+import cl.streamlink.contact.utils.enums.FamilySituation;
+
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

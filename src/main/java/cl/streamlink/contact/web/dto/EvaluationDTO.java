@@ -1,6 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.EvaluationNote;
+import cl.streamlink.contact.utils.enums.EvaluationNote;
 
 import java.time.LocalDateTime;
 

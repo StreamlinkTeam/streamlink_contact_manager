@@ -1,21 +1,17 @@
 package cl.streamlink.contact.domain;
 
-import cl.streamlink.contact.utils.enums.EvaluationNote;
+import cl.streamlink.contact.utils.enums.Gender;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * Created by chemakh on 12/07/2018.
- */
-
-@Entity
-@Table(indexes = {@Index(name = "index_evaluation_reference", columnList = "reference", unique = true)})
+@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class Evaluation {
+public class AbstractProfil implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,20 +20,17 @@ public class Evaluation {
     @Column(unique = true)
     private String reference;
 
-    @ManyToOne
-    private Developer developer;
-
-    @ManyToOne
-    private User responsible;
-
     @Enumerated(EnumType.STRING)
-    private EvaluationNote relational;
-
-    @Enumerated(EnumType.STRING)
-    private EvaluationNote technical;
+    private Gender gender = Gender.UNDEFINED;
 
     @Lob
     private String note;
+
+    @ManyToOne
+    private User manager;
+
+    @Embedded
+    private Contact contact = new Contact();
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
@@ -63,37 +56,33 @@ public class Evaluation {
         this.reference = reference;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public Gender getGender() {
+        return gender;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
-    public User getResponsible() {
-        return responsible;
+    public Contact getContact() {
+        if (contact == null)
+            contact = new Contact();
+        return contact;
     }
 
-    public void setResponsible(User responsible) {
-        this.responsible = responsible;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
-    public EvaluationNote getRelational() {
-        return relational;
+
+    public User getManager() {
+        return manager;
     }
 
-    public void setRelational(EvaluationNote relational) {
-        this.relational = relational;
+    public void setManager(User manager) {
+        this.manager = manager;
     }
 
-    public EvaluationNote getTechnical() {
-        return technical;
-    }
-
-    public void setTechnical(EvaluationNote technical) {
-        this.technical = technical;
-    }
 
     public String getNote() {
         return note;

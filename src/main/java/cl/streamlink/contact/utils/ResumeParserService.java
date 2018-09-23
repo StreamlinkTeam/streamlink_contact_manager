@@ -2,6 +2,10 @@ package cl.streamlink.contact.utils;
 
 import cl.streamlink.contact.config.ApplicationConfig;
 import cl.streamlink.contact.domain.*;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
+import cl.streamlink.contact.utils.enums.Gender;
+import cl.streamlink.contact.utils.enums.Stage;
 import gate.*;
 import gate.util.GateException;
 import gate.util.Out;

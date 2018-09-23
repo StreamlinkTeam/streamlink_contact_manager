@@ -1,5 +1,7 @@
 package cl.streamlink.contact.domain;
 
+import cl.streamlink.contact.utils.enums.Role;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

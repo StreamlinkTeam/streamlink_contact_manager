@@ -1,4 +1,4 @@
-package cl.streamlink.contact.domain;
+package cl.streamlink.contact.utils.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

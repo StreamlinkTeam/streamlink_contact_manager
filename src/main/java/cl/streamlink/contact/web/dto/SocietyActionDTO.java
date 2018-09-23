@@ -1,6 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.ActionType;
+import cl.streamlink.contact.utils.enums.ActionType;
 
 import java.time.LocalDateTime;
 

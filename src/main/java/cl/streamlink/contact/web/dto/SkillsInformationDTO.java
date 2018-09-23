@@ -1,7 +1,7 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.Experience;
-import cl.streamlink.contact.domain.Formation;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
 
 import java.util.ArrayList;
 import java.util.List;

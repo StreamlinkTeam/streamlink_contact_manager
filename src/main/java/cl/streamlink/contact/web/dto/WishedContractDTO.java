@@ -1,7 +1,7 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.ContractType;
-import cl.streamlink.contact.domain.Currency;
+import cl.streamlink.contact.utils.enums.ContractType;
+import cl.streamlink.contact.utils.enums.Currency;
 
 import java.math.BigDecimal;
 
