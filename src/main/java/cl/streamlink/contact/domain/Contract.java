@@ -27,8 +27,11 @@ public class Contract {
     @Column(unique = true)
     private String reference;
 
-    @OneToOne
+    @OneToOne(optional = false)
     private Developer developer;
+
+    @ManyToOne(optional = false)
+    private User responsible;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
@@ -36,7 +39,7 @@ public class Contract {
     private BigDecimal salary;
 
     @Enumerated(EnumType.STRING)
-    private ContractType contractType;
+    private ContractType type;
 
     @Enumerated(EnumType.STRING)
     private WorkTime workTime;
@@ -81,6 +84,14 @@ public class Contract {
         this.developer = developer;
     }
 
+    public User getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
+    }
+
     public Currency getCurrency() {
         return currency;
     }
@@ -97,12 +108,12 @@ public class Contract {
         this.salary = salary;
     }
 
-    public ContractType getContractType() {
-        return contractType;
+    public ContractType getType() {
+        return type;
     }
 
-    public void setContractType(ContractType contractType) {
-        this.contractType = contractType;
+    public void setType(ContractType type) {
+        this.type = type;
     }
 
     public WorkTime getWorkTime() {

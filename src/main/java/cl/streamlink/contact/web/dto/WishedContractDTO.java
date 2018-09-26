@@ -12,13 +12,15 @@ public class WishedContractDTO {
 
     private String developerReference;
 
+    private String responsibleReference;
+
     private String reference;
 
     private Currency currency;
 
     private BigDecimal currentSalary;
 
-    private ContractType wishedContractType;
+    private ContractType type;
 
     private BigDecimal wishedSalaryMax;
 
@@ -30,6 +32,14 @@ public class WishedContractDTO {
 
     public void setDeveloperReference(String developerReference) {
         this.developerReference = developerReference;
+    }
+
+    public String getResponsibleReference() {
+        return responsibleReference;
+    }
+
+    public void setResponsibleReference(String responsibleReference) {
+        this.responsibleReference = responsibleReference;
     }
 
     public String getReference() {
@@ -56,12 +66,12 @@ public class WishedContractDTO {
         this.currentSalary = currentSalary;
     }
 
-    public ContractType getWishedContractType() {
-        return wishedContractType;
+    public ContractType getType() {
+        return type;
     }
 
-    public void setWishedContractType(ContractType wishedContractType) {
-        this.wishedContractType = wishedContractType;
+    public void setType(ContractType type) {
+        this.type = type;
     }
 
     public BigDecimal getWishedSalaryMax() {

@@ -9,7 +9,7 @@ security:
 spring:
   jpa:
     database: MYSQL
-    show_sql: false
+    show_sql: true
     hibernate:
       ddl-auto: update
     properties:

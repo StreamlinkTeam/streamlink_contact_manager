@@ -1,7 +1,7 @@
 package cl.streamlink.contact.domain;
 
 import cl.streamlink.contact.utils.MiscUtils;
-import cl.streamlink.contact.utils.enums.SocietyActivityArea;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.SocietyStage;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Entity
 @Table(indexes = {@Index(name = "index_society_reference", columnList = "reference", unique = true)})
-public class Society extends AbstractProfil {
+public class Society extends AbstractProfile {
 
     @NotNull
     private String label;
@@ -27,7 +27,7 @@ public class Society extends AbstractProfil {
     private SocietyStage stage;
 
     @Enumerated(EnumType.STRING)
-    private SocietyActivityArea activityArea;
+    private ActivityArea activityArea;
 
     @Embedded
     private SocietyLegalInformation legalInformation = new SocietyLegalInformation();
@@ -68,11 +68,11 @@ public class Society extends AbstractProfil {
         this.stage = stage;
     }
 
-    public SocietyActivityArea getActivityArea() {
+    public ActivityArea getActivityArea() {
         return activityArea;
     }
 
-    public void setActivityArea(SocietyActivityArea activityArea) {
+    public void setActivityArea(ActivityArea activityArea) {
         this.activityArea = activityArea;
     }
 

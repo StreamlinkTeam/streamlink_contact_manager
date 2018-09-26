@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeveloperDTO extends AbstractProfilDTO {
+public class DeveloperDTO extends AbstractProfileDTO {
 
     @NotNull
     @Size(min = 2, max = 255)

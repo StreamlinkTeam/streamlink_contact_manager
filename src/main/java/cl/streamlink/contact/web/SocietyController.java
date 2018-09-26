@@ -1,7 +1,7 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Society;
-import cl.streamlink.contact.utils.enums.SocietyActivityArea;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.SocietyService;
@@ -73,7 +73,7 @@ public class SocietyController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<SocietyResponseDTO> getSocieties(Pageable pageable, @RequestParam boolean fromAngular,
                                                  @RequestParam(required = false) String value,
-                                                 @RequestParam(required = false) SocietyActivityArea activityArea,
+                                                 @RequestParam(required = false) ActivityArea activityArea,
                                                  @RequestParam(required = false) SocietyStage stage,
                                                  @RequestParam(required = false) Sort.Direction dir) {
 

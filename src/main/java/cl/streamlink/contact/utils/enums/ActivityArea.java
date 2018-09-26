@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Arrays;
 import java.util.List;
 
-public enum SocietyActivityArea {
+public enum ActivityArea {
 
     Other,
     Aerospace,
@@ -39,14 +39,14 @@ public enum SocietyActivityArea {
     Telecommunications;
 
     @JsonCreator
-    public static SocietyActivityArea fromString(final String value) {
+    public static ActivityArea fromString(final String value) {
         return value != null ?
                 Arrays.stream(values()).filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
                         .findFirst().orElse(Other)
                 : Other;
     }
 
-    public static List<SocietyActivityArea> getAll() {
+    public static List<ActivityArea> getAll() {
         return Arrays.asList(values());
     }
 }

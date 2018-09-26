@@ -3,7 +3,6 @@ package cl.streamlink.contact.mapper;
 import cl.streamlink.contact.domain.*;
 import cl.streamlink.contact.repository.*;
 import cl.streamlink.contact.web.dto.*;
-import com.sun.org.apache.regexp.internal.RE;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -18,13 +17,16 @@ import java.util.stream.Collectors;
 public abstract class ApiMapper {
 
     @Inject
-    LanguageRepository languageRepository;
+    ProjectRepository projectRepository;
 
     @Inject
     UserRepository userRepository;
 
     @Inject
     DeveloperRepository developerRepository;
+
+    @Inject
+    ResourceRepository resourceRepository;
 
     @Inject
     SocietyRepository societyRepository;
@@ -39,17 +41,39 @@ public abstract class ApiMapper {
     public abstract Resource fromDeveloperToResource(Developer bean);
 
     @Mappings({
-            @Mapping(source = "developer.reference", target = "developerReference")
+            @Mapping(source = "developer.reference", target = "developerReference"),
+            @Mapping(source = "responsible.reference", target = "responsibleReference")
     })
     public abstract ContractDTO fromBeanToDTO(Contract bean);
 
     @Mappings({
             @Mapping(target = "developer",
                     expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
+            @Mapping(target = "responsible",
+                    expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true)
     })
     public abstract Contract fromDTOToBean(ContractDTO dto);
+
+    @Mappings({
+            @Mapping(source = "resource.reference", target = "resourceReference"),
+            @Mapping(source = "project.reference", target = "projectReference"),
+            @Mapping(source = "responsible.reference", target = "responsibleReference")
+    })
+    public abstract PositioningDTO fromBeanToDTO(Positioning bean);
+
+    @Mappings({
+            @Mapping(target = "resource",
+                    expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))"),
+            @Mapping(target = "project",
+                    expression = "java(projectRepository.findOneByReference(dto.getProjectReference()).orElse(null))"),
+            @Mapping(target = "responsible",
+                    expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true)
+    })
+    public abstract Positioning fromDTOToBean(PositioningDTO dto);
 
     @Mappings({
             @Mapping(source = "ownerReference", target = "ownerReference")
@@ -66,26 +90,31 @@ public abstract class ApiMapper {
     public abstract PersonalInformation fromDTOToBean(PersonalInformationDTO dto);
 
     @Mappings({
+            @Mapping(source = "projectReference", target = "projectReference")
+    })
+    public abstract ProjectInformationDTO fromBeanToDTO(ProjectInformation bean, String projectReference);
+
+    public abstract ProjectInformation fromDTOToBean(ProjectInformationDTO dto);
+
+    @Mappings({
             @Mapping(source = "developerReference", target = "developerReference")
     })
     public abstract SkillsInformationDTO fromBeanToDTO(SkillsInformation bean, String developerReference);
 
-    /*@Mappings(
-            {@Mapping(target = "languages", expression = "java(dto.getLanguages().stream()" +
-                    ".map(lan -> languageRepository.findOneByReference(lan.getReference()).orElse(null))" +
-                    ".filter(lan -> lan != null).collect(Collectors.toSet()))")
-            }
-    )*/
+
     public abstract SkillsInformation fromDTOToBean(SkillsInformationDTO dto);
 
     @Mappings({
-            @Mapping(source = "developer.reference", target = "developerReference")
+            @Mapping(source = "developer.reference", target = "developerReference"),
+            @Mapping(source = "responsible.reference", target = "responsibleReference")
     })
     public abstract WishedContractDTO fromBeanToDTO(WishedContract bean);
 
     @Mappings({
             @Mapping(target = "developer",
-                    expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))")
+                    expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
+            @Mapping(target = "responsible",
+                    expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
     })
     public abstract WishedContract fromDTOToBean(WishedContractDTO dto);
 
@@ -107,22 +136,20 @@ public abstract class ApiMapper {
 
     public abstract SocietyResponseDTO fromBeanToDTOResponse(Society bean);
 
-//    @Mappings({
-//            @Mapping(source = "society.reference", target = "societyReference"),
-//    })
-//    public abstract SocietyContactResponseDTO fromBeanToDTOResponse(SocietyContact bean);
+    public abstract ProjectResponseDTO fromBeanToDTOResponse(Project bean);
+
 
     @Mappings({
             @Mapping(source = "manager.reference", target = "managerReference")
     })
-    public abstract AbstractProfilDTO fromBeanToDTO(AbstractProfil bean);
+    public abstract AbstractProfileDTO fromBeanToDTO(AbstractProfile bean);
 
     @Mappings({
             @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true)
     })
-    public abstract AbstractProfil fromDTOToBean(AbstractProfilDTO dto);
+    public abstract AbstractProfile fromDTOToBean(AbstractProfileDTO dto);
 
 
     @Mappings({
@@ -165,6 +192,7 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(source = "societyContact.reference", target = "societyContactReference"),
+            @Mapping(source = "project.reference", target = "projectReference"),
             @Mapping(source = "responsible.reference", target = "responsibleReference"),
             @Mapping(target = "responsibleFullName", expression = "java(bean.getResponsible().getFirstname()+\" \"+bean.getResponsible().getLastname())"),
             @Mapping(target = "societyContactFullName", expression = "java(bean.getSocietyContact().getFirstname()+\" \"+bean.getSocietyContact().getLastname())")
@@ -174,6 +202,8 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(target = "societyContact",
                     expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
+            @Mapping(target = "project",
+                    expression = "java(projectRepository.findOneByReference(dto.getProjectReference()).orElse(null))"),
             @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
             @Mapping(target = "developer", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
@@ -260,6 +290,24 @@ public abstract class ApiMapper {
     })
     public abstract Society fromDTOToBean(SocietyDTO dto);
 
+
+    @Mappings({
+            @Mapping(source = "societyContact.reference", target = "societyContactReference"),
+            @Mapping(source = "manager.reference", target = "managerReference"),
+            @Mapping(source = "rh.reference", target = "rhReference"),
+    })
+    public abstract ProjectDTO fromBeanToDTO(Project bean);
+
+    @Mappings({
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
+            @Mapping(target = "rh", expression = "java(userRepository.findOneByReference(dto.getRhReference()).orElse(null))"),
+            @Mapping(target = "societyContact",
+                    expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true)
+    })
+    public abstract Project fromDTOToBean(ProjectDTO dto);
+
     @Mappings({
             @Mapping(source = "societyReference", target = "societyReference")
     })
@@ -281,6 +329,7 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "stage", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "mobility",
                     expression = "java(String.join(\" , \", dto.getMobility()))"),
@@ -289,6 +338,17 @@ public abstract class ApiMapper {
             @Mapping(target = "rh", expression = "java(userRepository.findOneByReference(dto.getRhReference()).orElse(null))")
     })
     public abstract void updateBeanFromDto(ResourceDTO dto, @MappingTarget Resource bean);
+
+    @Mappings({
+            @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true),
+            @Mapping(target = "societyContact",
+                    expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
+            @Mapping(target = "rh", expression = "java(userRepository.findOneByReference(dto.getRhReference()).orElse(null))")
+    })
+    public abstract void updateBeanFromDto(ProjectDTO dto, @MappingTarget Project bean);
 
     @Mappings({
             @Mapping(target = "reference", ignore = true)
@@ -305,16 +365,30 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(target = "reference", ignore = true),
             @Mapping(target = "developer", ignore = true),
+            @Mapping(target = "responsible", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true)
     })
     public abstract void updateBeanFromDto(ContractDTO dto, @MappingTarget Contract bean);
 
 
+    @Mappings({
+            @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "resource", ignore = true),
+            @Mapping(target = "responsible", ignore = true),
+            @Mapping(target = "project", ignore = true),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true)
+    })
+    public abstract void updateBeanFromDto(PositioningDTO dto, @MappingTarget Positioning bean);
+
+
     public abstract void updateBeanFromDto(ContactDTO dto, @MappingTarget Contact bean);
 
 
     public abstract void updateBeanFromDto(PersonalInformationDTO dto, @MappingTarget PersonalInformation bean);
+
+    public abstract void updateBeanFromDto(ProjectInformationDTO dto, @MappingTarget ProjectInformation bean);
 
     /*@Mappings(
             {@Mapping(target = "languages", expression = "java(dto.getLanguages().stream()" +
@@ -326,7 +400,8 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(target = "reference", ignore = true),
-            @Mapping(target = "developer", ignore = true),
+            @Mapping(target = "responsible", ignore = true),
+            @Mapping(target = "developer", ignore = true)
     })
     public abstract void updateBeanFromDto(WishedContractDTO dto, @MappingTarget WishedContract bean);
 
@@ -385,7 +460,7 @@ public abstract class ApiMapper {
             @Mapping(target = "modifiedDate", ignore = true),
             @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
     })
-    public abstract void updateBeanFromDto(AbstractProfilDTO dto, @MappingTarget AbstractProfil bean);
+    public abstract void updateBeanFromDto(AbstractProfileDTO dto, @MappingTarget AbstractProfile bean);
 
 
 }

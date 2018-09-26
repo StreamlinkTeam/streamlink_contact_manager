@@ -2,7 +2,7 @@ package cl.streamlink.contact.service;
 
 
 import cl.streamlink.contact.domain.Society;
-import cl.streamlink.contact.utils.enums.SocietyActivityArea;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
@@ -73,7 +73,7 @@ public class SocietyService {
     }
 
     public Page<SocietyResponseDTO> searchSocieties(String value, SocietyStage stage,
-                                                    SocietyActivityArea activityArea, Pageable pageable) {
+                                                    ActivityArea activityArea, Pageable pageable) {
 
 
         if (MiscUtils.isEmpty(value))
@@ -85,11 +85,11 @@ public class SocietyService {
         else
             stages = SocietyStage.getAll();
 
-        List<SocietyActivityArea> activityAreas;
+        List<ActivityArea> activityAreas;
         if (activityArea != null)
             activityAreas = Collections.singletonList(activityArea);
         else
-            activityAreas = SocietyActivityArea.getAll();
+            activityAreas = ActivityArea.getAll();
 
         return societyRepository.
                 findByLabelContainingAndStageInAndActivityAreaIn

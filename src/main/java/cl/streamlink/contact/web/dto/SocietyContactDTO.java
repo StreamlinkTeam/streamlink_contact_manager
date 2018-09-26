@@ -5,7 +5,7 @@ import cl.streamlink.contact.utils.enums.SocietyStage;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class SocietyContactDTO extends AbstractProfilDTO{
+public class SocietyContactDTO extends AbstractProfileDTO {
 
     @NotNull
     @Size(min = 2, max = 255)

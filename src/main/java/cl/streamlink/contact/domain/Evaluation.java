@@ -24,10 +24,10 @@ public class Evaluation {
     @Column(unique = true)
     private String reference;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Developer developer;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User responsible;
 
     @Enumerated(EnumType.STRING)

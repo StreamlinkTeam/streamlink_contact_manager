@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,7 @@ public class FakerService {
 
     private Faker faker = new Faker(new Locale("fr", "fr"));
 
-    public void generateFakerSocietyData(Integer societySize,Integer societyContactSize) {
+    public void generateFakerSocietyData(Integer societySize, Integer societyContactSize) {
 
         List<UserDTO> users = userService.getAllUsers();
 
@@ -49,16 +50,16 @@ public class FakerService {
             society.setLabel(faker.company().name());
             society.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
             society.setNote(faker.lorem().paragraph());
-            society.setStaffNumber(faker.number().numberBetween(5,500));
+            society.setStaffNumber(faker.number().numberBetween(5, 500));
             society.setSupplierNumber(faker.code().asin());
             society.setStage(SocietyStage.values()[faker.number().numberBetween(0, SocietyStage.values().length)]);
-            society.setActivityArea(SocietyActivityArea.values()[faker.number().numberBetween(0, SocietyActivityArea.values().length)]);
+            society.setActivityArea(ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
             society.setServices(Arrays.asList(faker.job().keySkills(),
                     faker.job().keySkills(), faker.job().keySkills()));
 
             society = societyService.createSociety(society);
 
-            ContactDTO contact = generateContact(society.getReference()) ;
+            ContactDTO contact = generateContact(society.getReference());
 
             societyService.updateSocietyContact(contact, society.getReference());
 
@@ -94,12 +95,12 @@ public class FakerService {
                 societyContactDTO.setSocietyReference(society.getReference());
 
 
-                societyContactDTO  = societyContactService.createSocietyContact
-                        (societyContactDTO,society.getReference());
+                societyContactDTO = societyContactService.createSocietyContact
+                        (societyContactDTO, society.getReference());
 
                 ContactDTO cont = generateContact(societyContactDTO.getReference());
 
-                societyContactService.updateSocietyContactContact(cont, societyContactDTO.getReference(),society.getReference());
+                societyContactService.updateSocietyContactContact(cont, societyContactDTO.getReference(), society.getReference());
             }
 
         }
@@ -114,66 +115,69 @@ public class FakerService {
                 .forEach(societyResponseDTO -> societyService.deleteSociety(societyResponseDTO.getReference()));
 
     }
-    
-     public void generateFakerResourceDate(Integer size)
-     {
 
-         List<UserDTO> users = userService.getAllUsers();
+    public void generateFakerResourceDate(Integer size) {
 
-
-         for (Integer i = 0; i < size; i++) {
-
-             ResourceDTO res = new ResourceDTO();
-
-             res.setAvailability(LocalDate.now().plusMonths(faker.number().numberBetween(2, 18)));
-             res.setFirstname(faker.name().firstName());
-             res.setLastname(faker.name().lastName());
-             res.setGender(Gender.values()[i % 2]);
-             res.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
-             res.setRhReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
-             res.setNote(faker.lorem().paragraph());
-             res.setStage(Stage.ConvertedToResource);
-             res.setResourceStage(ResourceStage.values()[faker.number().numberBetween(1, ResourceStage.values().length-1)]);
-             res.setResourceType(ResourceType.values()[faker.number().numberBetween(1, ResourceType.values().length-1)]);
-             res.setRegistrationNumber(faker.idNumber().valid());
+        List<UserDTO> users = userService.getAllUsers();
 
 
-             res.setMobility(Arrays.asList(faker.address().country(), faker.address().country(), faker.address().country()));
+        for (Integer i = 0; i < size; i++) {
 
-             res = resourceService.createResource(res);
+            ResourceDTO res = new ResourceDTO();
 
-             ContactDTO contact = generateContact(res.getReference());
-
-             developerService.updateDeveloperContact(contact, res.getReference());
-
-             PersonalInformationDTO information = new PersonalInformationDTO();
-
-             information.setDeveloperReference(res.getReference());
-             information.setBirthDate(LocalDate.now().minusYears(faker.number().numberBetween(25, 40)));
-             information.setFamilySituation(FamilySituation.values()[faker.number().numberBetween(0, 6)]);
-             information.setNationality(faker.address().country());
-             information.setSocialSecurityNumber(faker.number().digits(6));
-
-             developerService.updateDeveloperPersonalInformation(information, res.getReference());
-
-             SkillsInformationDTO skills = new SkillsInformationDTO();
-
-             skills.setDeveloperReference(res.getReference());
-             skills.setTitle(faker.job().title());
-             skills.setExperience(Experience.values()[faker.number().numberBetween(1, Experience.values().length-1)]);
-             skills.setFormation(Formation.values()[faker.number().numberBetween(1, Formation.values().length-1)]);
-
-             skills.setQualifications(Arrays.asList(faker.educator().university(),
-                     faker.educator().university(), faker.educator().university()));
-
-             skills.setLanguages(String.join(", ", faker.job().keySkills(),
-                     faker.job().keySkills(), faker.job().keySkills()));
+            res.setAvailability(LocalDate.now().plusMonths(faker.number().numberBetween(2, 18)));
+            res.setFirstname(faker.name().firstName());
+            res.setLastname(faker.name().lastName());
+            res.setGender(Gender.values()[i % 2]);
+            res.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+            res.setRhReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+            res.setNote(faker.lorem().paragraph());
+            res.setStage(Stage.ConvertedToResource);
+            res.setResourceStage(ResourceStage.values()[faker.number().numberBetween(2, ResourceStage.values().length) - 1]);
+            res.setResourceType(ResourceType.values()[faker.number().numberBetween(2, ResourceType.values().length) - 1]);
+            res.setRegistrationNumber(faker.idNumber().valid());
 
 
-             developerService.updateDeveloperSkills(skills, res.getReference());
+            res.setMobility(Arrays.asList(faker.address().country(), faker.address().country(), faker.address().country()));
 
-         }
-     }
+            res = resourceService.createResource(res);
+
+            ContactDTO contact = generateContact(res.getReference());
+
+            developerService.updateDeveloperContact(contact, res.getReference());
+
+            PersonalInformationDTO information = new PersonalInformationDTO();
+
+            information.setDeveloperReference(res.getReference());
+            information.setBirthDate(LocalDate.now().minusYears(faker.number().numberBetween(25, 40)));
+            information.setFamilySituation(FamilySituation.values()[faker.number().numberBetween(0, 6)]);
+            information.setNationality(faker.address().country());
+            information.setPlaceOfBirth(faker.address().city());
+            information.setRole(faker.job().position());
+            information.setTjm(new BigDecimal(Math.random()));
+
+            information.setSocialSecurityNumber(faker.number().digits(6));
+
+            developerService.updateDeveloperPersonalInformation(information, res.getReference());
+
+            SkillsInformationDTO skills = new SkillsInformationDTO();
+
+            skills.setDeveloperReference(res.getReference());
+            skills.setTitle(faker.job().title());
+            skills.setExperience(Experience.values()[faker.number().numberBetween(2, Experience.values().length) - 1]);
+            skills.setFormation(Formation.values()[faker.number().numberBetween(2, Formation.values().length) - 1]);
+
+            skills.setQualifications(Arrays.asList(faker.educator().university(),
+                    faker.educator().university(), faker.educator().university()));
+
+            skills.setLanguages(String.join(", ", faker.job().keySkills(),
+                    faker.job().keySkills(), faker.job().keySkills()));
+
+
+            developerService.updateDeveloperSkills(skills, res.getReference());
+
+        }
+    }
 
     public void generateFakerDeveloperData(Integer size) {
 
@@ -191,7 +195,7 @@ public class FakerService {
             dev.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
             dev.setRhReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
             dev.setNote(faker.lorem().paragraph());
-            dev.setStage(Stage.values()[faker.number().numberBetween(0, 5)]);
+            dev.setStage(Stage.values()[faker.number().numberBetween(1, Stage.values().length - 1) - 1]);
 
             dev.setMobility(Arrays.asList(faker.address().country(), faker.address().country(), faker.address().country()));
 
@@ -207,6 +211,7 @@ public class FakerService {
             information.setBirthDate(LocalDate.now().minusYears(faker.number().numberBetween(25, 40)));
             information.setFamilySituation(FamilySituation.values()[faker.number().numberBetween(0, 6)]);
             information.setNationality(faker.address().country());
+            information.setPlaceOfBirth(faker.address().city());
             information.setSocialSecurityNumber(faker.number().digits(6));
 
             developerService.updateDeveloperPersonalInformation(information, dev.getReference());
@@ -215,8 +220,8 @@ public class FakerService {
 
             skills.setDeveloperReference(dev.getReference());
             skills.setTitle(faker.job().title());
-            skills.setExperience(Experience.values()[faker.number().numberBetween(1, Experience.values().length-1)]);
-            skills.setFormation(Formation.values()[faker.number().numberBetween(1, Formation.values().length-1)]);
+            skills.setExperience(Experience.values()[faker.number().numberBetween(2, Experience.values().length) - 1]);
+            skills.setFormation(Formation.values()[faker.number().numberBetween(2, Formation.values().length) - 1]);
 
             skills.setQualifications(Arrays.asList(faker.educator().university(),
                     faker.educator().university(), faker.educator().university()));
@@ -230,8 +235,7 @@ public class FakerService {
         }
     }
 
-    private ContactDTO generateContact(String ownerReference)
-    {
+    private ContactDTO generateContact(String ownerReference) {
         ContactDTO contact = new ContactDTO();
 
         contact.setOwnerReference(ownerReference);

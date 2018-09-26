@@ -31,8 +31,11 @@ public class Action {
     @ManyToOne
     private SocietyContact societyContact;
 
-
     @ManyToOne
+    private Project project;
+
+
+    @ManyToOne(optional = false)
     private User responsible;
 
     @Enumerated(EnumType.STRING)
@@ -81,6 +84,14 @@ public class Action {
 
     public void setSocietyContact(SocietyContact societyContact) {
         this.societyContact = societyContact;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public User getResponsible() {

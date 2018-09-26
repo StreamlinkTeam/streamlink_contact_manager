@@ -21,8 +21,11 @@ public class WishedContract {
     @Column(unique = true)
     private String reference;
 
-    @OneToOne
+    @OneToOne(optional = false)
     private Developer developer;
+
+    @ManyToOne(optional = false)
+    private User responsible;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
@@ -30,7 +33,7 @@ public class WishedContract {
     private BigDecimal currentSalary;
 
     @Enumerated(EnumType.STRING)
-    private ContractType wishedContractType;
+    private ContractType type;
 
     private BigDecimal wishedSalaryMax;
 
@@ -76,12 +79,20 @@ public class WishedContract {
         this.currentSalary = currentSalary;
     }
 
-    public ContractType getWishedContractType() {
-        return wishedContractType;
+    public User getResponsible() {
+        return responsible;
     }
 
-    public void setWishedContractType(ContractType wishedContractType) {
-        this.wishedContractType = wishedContractType;
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
+    }
+
+    public ContractType getType() {
+        return type;
+    }
+
+    public void setType(ContractType type) {
+        this.type = type;
     }
 
     public BigDecimal getWishedSalaryMax() {

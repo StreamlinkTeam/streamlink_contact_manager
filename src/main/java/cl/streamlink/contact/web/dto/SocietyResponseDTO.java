@@ -1,6 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.utils.enums.SocietyActivityArea;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.SocietyStage;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
@@ -18,7 +18,7 @@ public class SocietyResponseDTO {
 
     private SocietyStage stage;
 
-    private SocietyActivityArea activityArea;
+    private ActivityArea activityArea;
 
     @JsonUnwrapped
     private ContactDTO contact ;
@@ -72,11 +72,11 @@ public class SocietyResponseDTO {
         this.stage = stage;
     }
 
-    public SocietyActivityArea getActivityArea() {
+    public ActivityArea getActivityArea() {
         return activityArea;
     }
 
-    public void setActivityArea(SocietyActivityArea activityArea) {
+    public void setActivityArea(ActivityArea activityArea) {
         this.activityArea = activityArea;
     }
 

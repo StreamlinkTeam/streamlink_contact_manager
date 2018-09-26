@@ -36,6 +36,9 @@ public class ContractService {
     private DeveloperRepository developerRepository;
 
     @Inject
+    private UserService userService;
+
+    @Inject
     private ApiMapper mapper;
 
 
@@ -46,6 +49,7 @@ public class ContractService {
 
         Contract contract = mapper.fromDTOToBean(contractDTO);
         contract.setReference(MiscUtils.generateReference());
+        contract.setResponsible(userService.getCurrentUser());
         contract.setDeveloper(developer);
 
         return mapper.fromBeanToDTO(contractRepository.save(contract));
@@ -62,6 +66,8 @@ public class ContractService {
             contract = new Contract();
             contract.setReference(MiscUtils.generateReference());
             contract.setDeveloper(developer);
+            contract.setResponsible(userService.getCurrentUser());
+
         }
 
         mapper.updateBeanFromDto(contractDTO, contract);
@@ -109,6 +115,7 @@ public class ContractService {
             wishedContract = new WishedContract();
             wishedContract.setReference(MiscUtils.generateReference());
             wishedContract.setDeveloper(developer);
+            wishedContract.setResponsible(userService.getCurrentUser());
         }
 
         mapper.updateBeanFromDto(wishedContractDTO, wishedContract);

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Entity
 @Table(indexes = {@Index(name = "index_society_contact_reference", columnList = "reference", unique = true)})
-public class SocietyContact extends AbstractProfil {
+public class SocietyContact extends AbstractProfile {
 
     @NotNull
     private String firstname;
@@ -26,7 +26,7 @@ public class SocietyContact extends AbstractProfil {
     @Enumerated(EnumType.STRING)
     private SocietyStage stage;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Society society;
 
     @Lob

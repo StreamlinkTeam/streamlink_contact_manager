@@ -15,13 +15,15 @@ public class ContractDTO {
 
     private String developerReference;
 
+    private String responsibleReference;
+
     private String reference;
 
     private Currency currency;
 
     private BigDecimal salary;
 
-    private ContractType contractType;
+    private ContractType type;
 
     private WorkTime workTime;
 
@@ -69,12 +71,20 @@ public class ContractDTO {
         this.salary = salary;
     }
 
-    public ContractType getContractType() {
-        return contractType;
+    public String getResponsibleReference() {
+        return responsibleReference;
     }
 
-    public void setContractType(ContractType contractType) {
-        this.contractType = contractType;
+    public void setResponsibleReference(String responsibleReference) {
+        this.responsibleReference = responsibleReference;
+    }
+
+    public ContractType getType() {
+        return type;
+    }
+
+    public void setType(ContractType type) {
+        this.type = type;
     }
 
     public WorkTime getWorkTime() {

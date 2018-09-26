@@ -1,22 +1,15 @@
-///*
-//package cl.streamlink.contact.utils;
-//
-//
-//import cl.streamlink.contact.domain.*;
-//import cl.streamlink.contact.web.dto.hireability.*;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.springframework.web.client.RestTemplate;
-//
-//import java.io.File;
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.Locale;
-//import java.util.Objects;
-//import java.util.stream.Collectors;
-//
-//public class TestClass {
-//
-//
+
+package cl.streamlink.contact.utils;
+
+
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.util.Date;
+
+public class TestClass {
+
+
 //    private static Developer loadDeveloperFromHireAbility(HireAbilityJSONResults resume) {
 //
 //        Developer developer = new Developer();
@@ -100,58 +93,61 @@
 //
 //        return developer;
 //    }
+
+    public static void main(String[] args) throws IOException {
+
+
+        System.err.println(new Date(1536255949));
+        System.err.println(new Date().getTime());
+//        MultiValueMap<String, Object> parts =
+//                new LinkedMultiValueMap<>();
+//        parts.add("document", new File("C:\\ldk\\cv","CHEMAKH_Lazher_Ingénieur Informatique __FR.docx"));
+//        parts.add("product_code", "e11adbba5cffb9a8b529097145a2a86f");
 //
-//    public static void main(String[] args) throws IOException {
 //
-////        MultiValueMap<String, Object> parts =
-////                new LinkedMultiValueMap<>();
-////        parts.add("document", new File("C:\\ldk\\cv","CHEMAKH_Lazher_Ingénieur Informatique __FR.docx"));
-////        parts.add("product_code", "e11adbba5cffb9a8b529097145a2a86f");
+        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//
+//        HttpEntity<MultiValueMap<String, Object>> requestEntity =
+//                new HttpEntity<>(parts, headers);
+//
+//        ResponseEntity<String> response =
+//                restTemplate.exchange("http://processing.resumeparser.com/requestprocessing.html",
+//                        HttpMethod.POST, requestEntity, String.class);
+//
+//        System.out.println(response.getBody());
+
+//        LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+//        map.add("document", new FileSystemResource(new File("C:\\ldk\\cv", "CHEMAKH_Lazher_Ingénieur Informatique __FR.docx")));
+//        map.add("product_code", "e11adbba5cffb9a8b529097145a2a86f");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//
+//        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(
+//                map, headers);
+//        ResponseEntity<String> result = restTemplate.exchange(
+//                "http://processing.resumeparser.com/requestprocessing.html",
+//                HttpMethod.POST, requestEntity, String.class);
+
+
+//        System.out.println(result.getBody()); ObjectMapper xmlMapper = new ObjectMapper();
+//////        xmlMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
+//////        xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+////
+////        Results value = xmlMapper.readValue(new File("C:\\Users\\Utilisateur\\Desktop", "hireability_fr.json"),
+////                Results.class);
 ////
 ////
-//        RestTemplate restTemplate = new RestTemplate();
-////        HttpHeaders headers = new HttpHeaders();
-////        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+////        System.err.println(value);
 ////
-////        HttpEntity<MultiValueMap<String, Object>> requestEntity =
-////                new HttpEntity<>(parts, headers);
-////
-////        ResponseEntity<String> response =
-////                restTemplate.exchange("http://processing.resumeparser.com/requestprocessing.html",
-////                        HttpMethod.POST, requestEntity, String.class);
-////
-////        System.out.println(response.getBody());
+////        Developer dev = loadDeveloperFromHireAbility(value.getResults().stream().flatMap(result -> result.getHireAbilityJSONResults().stream()).filter(HireAbilityJSONResults::isNotEmpty)
+////                .findFirst().orElse(new HireAbilityJSONResults()));
+////        System.err.println(dev);
+
 //
-////        LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-////        map.add("document", new FileSystemResource(new File("C:\\ldk\\cv", "CHEMAKH_Lazher_Ingénieur Informatique __FR.docx")));
-////        map.add("product_code", "e11adbba5cffb9a8b529097145a2a86f");
-////        HttpHeaders headers = new HttpHeaders();
-////        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-////
-////        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(
-////                map, headers);
-////        ResponseEntity<String> result = restTemplate.exchange(
-////                "http://processing.resumeparser.com/requestprocessing.html",
-////                HttpMethod.POST, requestEntity, String.class);
+
 //
-//
-////        System.out.println(result.getBody());
-//
-//        ObjectMapper xmlMapper = new ObjectMapper();
-////        xmlMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
-////        xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//
-//        Results value = xmlMapper.readValue(new File("C:\\Users\\Utilisateur\\Desktop", "hireability_fr.json"),
-//                Results.class);
-//
-//
-//        System.err.println(value);
-//
-//        Developer dev = loadDeveloperFromHireAbility(value.getResults().stream().flatMap(result -> result.getHireAbilityJSONResults().stream()).filter(HireAbilityJSONResults::isNotEmpty)
-//                .findFirst().orElse(new HireAbilityJSONResults()));
-//        System.err.println(dev);
-//
-////
-//    }
-//}
-//*/
+    }
+}
+

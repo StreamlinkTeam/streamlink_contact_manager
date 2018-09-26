@@ -15,7 +15,7 @@ import java.util.Optional;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE")
 @DiscriminatorValue("DEVELOPER")
-public class Developer extends AbstractProfil {
+public class Developer extends AbstractProfile {
 
     @NotNull
     private String firstname;

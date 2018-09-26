@@ -10,6 +10,8 @@ public class SocietyActionDTO {
 
     private String societyContactReference;
 
+    private String projectReference;
+
     private String responsibleReference;
 
     private String responsibleFullName;
@@ -40,6 +42,14 @@ public class SocietyActionDTO {
 
     public void setSocietyContactReference(String societyContactReference) {
         this.societyContactReference = societyContactReference;
+    }
+
+    public String getProjectReference() {
+        return projectReference;
+    }
+
+    public void setProjectReference(String projectReference) {
+        this.projectReference = projectReference;
     }
 
     public String getResponsibleReference() {

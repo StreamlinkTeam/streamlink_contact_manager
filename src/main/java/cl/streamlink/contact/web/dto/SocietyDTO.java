@@ -1,12 +1,12 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.utils.enums.SocietyActivityArea;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.SocietyStage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SocietyDTO extends AbstractProfilDTO {
+public class SocietyDTO extends AbstractProfileDTO {
 
     private String label;
 
@@ -16,7 +16,7 @@ public class SocietyDTO extends AbstractProfilDTO {
 
     private SocietyStage stage;
 
-    private SocietyActivityArea activityArea;
+    private ActivityArea activityArea;
 
     private List<String> services = new ArrayList<String>();
 
@@ -52,11 +52,11 @@ public class SocietyDTO extends AbstractProfilDTO {
         this.stage = stage;
     }
 
-    public SocietyActivityArea getActivityArea() {
+    public ActivityArea getActivityArea() {
         return activityArea;
     }
 
-    public void setActivityArea(SocietyActivityArea activityArea) {
+    public void setActivityArea(ActivityArea activityArea) {
         this.activityArea = activityArea;
     }
 

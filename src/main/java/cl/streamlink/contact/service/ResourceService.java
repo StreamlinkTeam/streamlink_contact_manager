@@ -42,6 +42,7 @@ public class ResourceService {
         Resource resource = mapper.fromDTOToBean(resourceDTO);
 
         resource.setReference(MiscUtils.generateReference());
+        resource.setStage(Stage.ConvertedToResource);
         return mapper.fromBeanToDTO(resourceRepository.save(resource));
     }
 

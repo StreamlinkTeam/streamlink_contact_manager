@@ -4,11 +4,11 @@ import cl.streamlink.contact.utils.enums.Gender;
 
 import java.time.LocalDateTime;
 
-public class AbstractProfilDTO {
+public class AbstractProfileDTO {
 
     private String reference;
 
-    private Gender gender;
+    private Gender gender = Gender.UNDEFINED;
 
     private String managerReference;
 

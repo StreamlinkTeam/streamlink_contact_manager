@@ -2,6 +2,7 @@ package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.utils.enums.FamilySituation;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -20,6 +21,10 @@ public class PersonalInformationDTO {
     private String socialSecurityNumber;
 
     private FamilySituation familySituation;
+
+    private BigDecimal tjm;
+
+    private String role;
 
     public String getDeveloperReference() {
         return developerReference;
@@ -67,5 +72,21 @@ public class PersonalInformationDTO {
 
     public void setFamilySituation(FamilySituation familySituation) {
         this.familySituation = familySituation;
+    }
+
+    public BigDecimal getTjm() {
+        return tjm;
+    }
+
+    public void setTjm(BigDecimal tjm) {
+        this.tjm = tjm;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
