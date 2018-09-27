@@ -18,7 +18,7 @@ public interface SocietyContactRepository extends JpaRepository<SocietyContact, 
 
     Optional<SocietyContact> findOneByReferenceAndSocietyReference(String reference, String societyReference);
 
-    Page<SocietyContact> findByFirstnameContainingAndStageInAndSocietyReferenceOrLastnameContainingAndStageInAndSocietyReferenceOrTitreContainingAndStageInAndSocietyReference
+    Page<SocietyContact> findByFirstnameContainingAndStageInAndSocietyReferenceOrLastnameContainingAndStageInAndSocietyReferenceOrTitleContainingAndStageInAndSocietyReference
             (String value1, List<SocietyStage> stages1, String societyReference1,
              String value2, List<SocietyStage> stages2, String societyReference2,
              String value3, List<SocietyStage> stages3, String societyReference3,

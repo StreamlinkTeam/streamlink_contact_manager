@@ -120,7 +120,7 @@ public class PositioningService {
             types = ResourceType.getAll();
 
         return positioningRepository.
-                findByProjectTitleContainingAndProjectStageInAndProjectTypeInAndResourceTypeInAndStageIn
+                findByProjectTitleContainingAndProjectStageInAndProjectTypeInAndResourceResourceTypeInAndStageIn
                         (value, projectStages, projectTypes, types, stages, pageable)
                 .map(positioning -> mapper.fromBeanToDTO(positioning));
     }

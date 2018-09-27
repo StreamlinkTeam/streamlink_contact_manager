@@ -25,6 +25,8 @@ public class DeveloperDTO extends AbstractProfileDTO {
 
     private LocalDate availability;
 
+    private boolean resource;
+
     private List<String> mobility;
 
     public String getFirstname() {
@@ -75,5 +77,13 @@ public class DeveloperDTO extends AbstractProfileDTO {
 
     public void setMobility(List<String> mobility) {
         this.mobility = mobility;
+    }
+
+    public boolean isResource() {
+        return resource;
+    }
+
+    public void setResource(boolean resource) {
+        this.resource = resource;
     }
 }

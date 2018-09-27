@@ -17,7 +17,7 @@ public interface PositioningRepository extends JpaRepository<Positioning, Long> 
     Optional<Positioning> findOneByReferenceAndProjectReference(String reference,String projectReference);
 
 
-    Page<Positioning> findByProjectTitleContainingAndProjectStageInAndProjectTypeInAndResourceTypeInAndStageIn
+    Page<Positioning> findByProjectTitleContainingAndProjectStageInAndProjectTypeInAndResourceResourceTypeInAndStageIn
             (String value, List<ProjectStage> projectStages ,List<ProjectType> projectTypes,
              List<ResourceType> resourceTypes, List<PositioningStage> stages , Pageable pageable);
 }

@@ -40,6 +40,9 @@ public abstract class ApiMapper {
 
     public abstract Resource fromDeveloperToResource(Developer bean);
 
+    public abstract ResourceDTO fromDeveloperToResource(DeveloperDTO bean);
+
+
     @Mappings({
             @Mapping(source = "developer.reference", target = "developerReference"),
             @Mapping(source = "responsible.reference", target = "responsibleReference")
@@ -121,7 +124,8 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(target = "mobility",
                     expression = "java(Arrays.asList(bean.getMobility().split(\",\")))"),
-
+            @Mapping(target = "resource",
+                    expression = "java(bean instanceof Resource)")
     })
     public abstract DeveloperResponseDTO fromBeanToDTOResponse(Developer bean);
 
@@ -155,6 +159,8 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(source = "manager.reference", target = "managerReference"),
             @Mapping(source = "rh.reference", target = "rhReference"),
+            @Mapping(target = "resource",
+                    expression = "java(bean instanceof Resource)"),
             @Mapping(target = "mobility",
                     expression = "java(Arrays.asList(bean.getMobility().split(\",\")))"),
 

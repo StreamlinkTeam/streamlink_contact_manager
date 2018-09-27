@@ -34,4 +34,9 @@ public class ResourceDTO extends DeveloperDTO {
     public void setResourceStage(ResourceStage resourceStage) {
         this.resourceStage = resourceStage;
     }
+
+    @Override
+    public boolean isResource() {
+        return true;
+    }
 }

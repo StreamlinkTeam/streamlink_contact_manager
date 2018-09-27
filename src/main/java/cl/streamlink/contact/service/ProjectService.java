@@ -6,9 +6,9 @@ import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.ProjectRepository;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.ProjectStage;
 import cl.streamlink.contact.utils.enums.ProjectType;
-import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.web.dto.ProjectDTO;
 import cl.streamlink.contact.web.dto.ProjectInformationDTO;
 import cl.streamlink.contact.web.dto.ProjectResponseDTO;
@@ -31,7 +31,7 @@ public class ProjectService {
 
     @Inject
     private ProjectRepository projectRepository;
-    
+
 
     @Inject
     private ApiMapper mapper;
@@ -97,7 +97,7 @@ public class ProjectService {
 
         return projectRepository.
                 findByTitleContainingAndStageInAndTypeInAndProjectInformationActivityAreaIn
-                        (value, stages, types,activityAreas, pageable)
+                        (value, stages, types, activityAreas, pageable)
                 .map(project -> mapper.fromBeanToDTOResponse(project));
     }
 
@@ -105,12 +105,21 @@ public class ProjectService {
 
         Project project = projectRepository.findOneByReference(projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
-        
+
         projectRepository.delete(project);
 
         return MiscUtils.createSuccessfullyResult();
     }
-    
+
+    public void deleteBySociety(String societyReference, String societyContactReference) throws ContactApiException {
+
+        if (MiscUtils.isNotEmpty(societyReference))
+            projectRepository.deleteBySocietyContactSocietyReference(societyReference);
+        else if (MiscUtils.isNotEmpty(societyContactReference))
+            projectRepository.deleteBySocietyContactReference(societyContactReference);
+
+    }
+
 
     public ProjectInformationDTO updateProjectInformation(ProjectInformationDTO projectInformation, String projectReference) {
 

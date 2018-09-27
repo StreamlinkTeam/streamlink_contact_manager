@@ -33,6 +33,9 @@ public class SocietyContactService {
     private SocietyContactRepository societyContactRepository;
 
     @Inject
+    private ProjectService projectService;
+
+    @Inject
     private SocietyRepository societyRepository;
 
     @Inject
@@ -92,14 +95,14 @@ public class SocietyContactService {
 
 
         return societyContactRepository.
-                findByFirstnameContainingAndStageInAndSocietyReferenceOrLastnameContainingAndStageInAndSocietyReferenceOrTitreContainingAndStageInAndSocietyReference
+                findByFirstnameContainingAndStageInAndSocietyReferenceOrLastnameContainingAndStageInAndSocietyReferenceOrTitleContainingAndStageInAndSocietyReference
                         (value, stages, societyReference, value, stages, societyReference, value, stages, societyReference, pageable)
                 .map(societyContact -> mapper.fromBeanToDTOResponse(societyContact));
     }
 
     public JSONObject deleteSocietyContacts(String societyReference) throws ContactApiException {
 
-
+        projectService.deleteBySociety(societyReference,null);
         societyContactRepository.deleteBySocietyReference(societyReference);
 
         return MiscUtils.createSuccessfullyResult();
@@ -109,6 +112,8 @@ public class SocietyContactService {
 
         SocietyContact societyContact = societyContactRepository.findOneByReferenceAndSocietyReference(societyContactReference, societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("SocietyContact", societyContactReference));
+
+        projectService.deleteBySociety(null,societyContactReference);
 
         societyContactRepository.delete(societyContact);
 

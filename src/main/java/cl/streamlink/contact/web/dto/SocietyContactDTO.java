@@ -17,7 +17,7 @@ public class SocietyContactDTO extends AbstractProfileDTO {
 
     @NotNull
     @Size(min = 2, max = 255)
-    private String titre;
+    private String title;
 
     @Size(max = 255)
     private String service;
@@ -46,12 +46,12 @@ public class SocietyContactDTO extends AbstractProfileDTO {
         this.lastname = lastname;
     }
 
-    public String getTitre() {
-        return titre;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getService() {

@@ -26,6 +26,9 @@ public class FakerService {
     private DeveloperService developerService;
 
     @Inject
+    private ProjectService projectService;
+
+    @Inject
     private ResourceService resourceService;
 
     @Inject
@@ -83,7 +86,7 @@ public class FakerService {
                 societyContactDTO.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
                 societyContactDTO.setNote(faker.lorem().paragraph());
                 societyContactDTO.setStage(SocietyStage.values()[faker.number().numberBetween(0, SocietyStage.values().length)]);
-                societyContactDTO.setTitre(faker.job().title());
+                societyContactDTO.setTitle(faker.job().title());
                 societyContactDTO.setService(faker.job().position());
 
                 societyContactDTO.setTechnicalScope(String.join(", ", faker.job().keySkills(),
@@ -100,10 +103,45 @@ public class FakerService {
 
                 ContactDTO cont = generateContact(societyContactDTO.getReference());
 
-                societyContactService.updateSocietyContactContact(cont, societyContactDTO.getReference(), society.getReference());
+                societyContactService.updateSocietyContactContact(cont,
+                        societyContactDTO.getReference(), society.getReference());
+                if (j % 2 == 0) {
+                    generateProject(societyContactDTO.getReference());
+                }
             }
 
         }
+    }
+
+    private void generateProject(String societyContactReference) {
+
+        List<UserDTO> users = userService.getAllUsers();
+        ProjectDTO project = new ProjectDTO();
+
+        project.setSocietyContactReference(societyContactReference);
+
+        project.setTitle(faker.name().title());
+        project.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+        project.setRhReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+        project.setNote(faker.lorem().paragraph());
+        project.setStage(ProjectStage.values()[faker.number().numberBetween(1, ProjectStage.values().length - 1) - 1]);
+        project.setType(ProjectType.values()[faker.number().numberBetween(1, ProjectType.values().length - 1) - 1]);
+
+        project = projectService.createProject(project);
+
+        ProjectInformationDTO projectInformation = new ProjectInformationDTO();
+        projectInformation.setBudget(BigDecimal.valueOf(faker.number().randomNumber(4, true)));
+        projectInformation.setActivityArea(ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
+        projectInformation.setClosingDate(LocalDate.now().plusMonths(faker.number().numberBetween(10, 20)));
+        projectInformation.setResponseDate(LocalDate.now().plusMonths(faker.number().numberBetween(0, 6)));
+        projectInformation.setStartingDate(LocalDate.now().plusMonths(faker.number().numberBetween(5, 8)));
+        projectInformation.setDurationByMonth(faker.number().numberBetween(5, 15));
+        projectInformation.setCurrency(Currency.values()[faker.number().numberBetween(0, Currency.values().length)]);
+        projectInformation.setPlace(faker.address().country());
+
+        projectService.updateProjectInformation(projectInformation, project.getReference());
+
+
     }
 
     public void deleteAll() {

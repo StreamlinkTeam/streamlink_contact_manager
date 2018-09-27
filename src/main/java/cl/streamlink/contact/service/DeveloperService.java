@@ -1,14 +1,14 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Developer;
-import cl.streamlink.contact.utils.enums.Experience;
-import cl.streamlink.contact.utils.enums.Formation;
-import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.LanguageRepository;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
+import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.web.dto.*;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
@@ -30,6 +30,9 @@ public class DeveloperService {
     private DeveloperRepository developerRepository;
 
     @Inject
+    private ResourceService resourceService;
+
+    @Inject
     private LanguageService languageService;
 
     @Inject
@@ -40,6 +43,9 @@ public class DeveloperService {
 
     public DeveloperDTO createDeveloper(DeveloperDTO developerDTO) {
 
+        if (developerDTO.getStage() == Stage.ConvertedToResource)
+            return resourceService.createResource(mapper.fromDeveloperToResource(developerDTO));
+
         Developer developer = mapper.fromDTOToBean(developerDTO);
 
         developer.setReference(MiscUtils.generateReference());
@@ -48,8 +54,12 @@ public class DeveloperService {
 
     public DeveloperDTO updateDeveloper(DeveloperDTO developerDTO, String developerReference) throws ContactApiException {
 
+
         Developer developer = developerRepository.findOneByReference(developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+
+        if (developerDTO.getStage() == Stage.ConvertedToResource && developer.getStage() != Stage.ConvertedToResource)
+            return resourceService.createResourceFromDeveloper(developerReference, developerDTO);
 
         mapper.updateBeanFromDto(developerDTO, developer);
         return mapper.fromBeanToDTO(developerRepository.save(developer));
@@ -97,7 +107,7 @@ public class DeveloperService {
 
         return developerRepository.
                 findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn
-                        (value,stages,formations,experiences, value, stages,formations,experiences,value,stages,formations,experiences, value, stages,formations,experiences, pageable)
+                        (value, stages, formations, experiences, value, stages, formations, experiences, value, stages, formations, experiences, value, stages, formations, experiences, pageable)
                 .map(developer -> mapper.fromBeanToDTOResponse(developer));
     }
 

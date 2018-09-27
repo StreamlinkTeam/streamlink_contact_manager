@@ -34,6 +34,8 @@ public class DeveloperResponseDTO {
 
     private List<String> mobility;
 
+    private boolean resource;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
@@ -167,5 +169,11 @@ public class DeveloperResponseDTO {
         this.contact = contact;
     }
 
+    public boolean isResource() {
+        return resource;
+    }
 
+    public void setResource(boolean resource) {
+        this.resource = resource;
+    }
 }

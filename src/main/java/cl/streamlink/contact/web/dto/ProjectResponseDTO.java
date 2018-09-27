@@ -98,6 +98,11 @@ public class ProjectResponseDTO {
         this.note = note;
     }
 
+    public String getClient() {
+        return societyContact.getSociety().getLabel().concat(" - ")
+                .concat(societyContact.getFirstname()).concat(" ").concat(societyContact.getLastname());
+    }
+
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }

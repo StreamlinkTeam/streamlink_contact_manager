@@ -19,7 +19,7 @@ public class SocietyContact extends AbstractProfile {
     private String lastname;
 
     @NotNull
-    private String titre;
+    private String title;
 
     private String service;
 
@@ -52,12 +52,12 @@ public class SocietyContact extends AbstractProfile {
         this.lastname = lastname;
     }
 
-    public String getTitre() {
-        return titre;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getService() {

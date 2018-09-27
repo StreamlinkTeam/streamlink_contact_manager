@@ -8,6 +8,7 @@ import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.ResourceRepository;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.*;
+import cl.streamlink.contact.web.dto.DeveloperDTO;
 import cl.streamlink.contact.web.dto.ResourceDTO;
 import cl.streamlink.contact.web.dto.ResourceResponseDTO;
 import net.minidev.json.JSONObject;
@@ -48,16 +49,38 @@ public class ResourceService {
 
     public ResourceDTO createResourceFromDeveloper(String developerReference) {
 
-        Developer developer = developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+        if (!resourceRepository.existsByReference(developerReference)) {
+            Developer developer = developerRepository.findOneByReference(developerReference)
+                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
-        Resource resource = mapper.fromDeveloperToResource(developer);
-        resource.setResourceStage(ResourceStage.NOT_DEFINED);
-        resource.setResourceType(ResourceType.NOT_DEFINED);
-        resource.setStage(Stage.ConvertedToResource);
+            Resource resource = mapper.fromDeveloperToResource(developer);
+            resource.setResourceStage(ResourceStage.NOT_DEFINED);
+            resource.setResourceType(ResourceType.NOT_DEFINED);
+            resource.setStage(Stage.ConvertedToResource);
 
-        developerRepository.delete(developer);
-        return mapper.fromBeanToDTO(resourceRepository.save(resource));
+            developerRepository.delete(developer);
+            return mapper.fromBeanToDTO(resourceRepository.save(resource));
+        } else
+            throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
+    }
+
+    public ResourceDTO createResourceFromDeveloper(String developerReference, DeveloperDTO developerDTO) {
+
+        if (!resourceRepository.existsByReference(developerReference)) {
+            Developer developer = developerRepository.findOneByReference(developerReference)
+                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+
+            mapper.updateBeanFromDto(developerDTO, developer);
+
+            Resource resource = mapper.fromDeveloperToResource(developer);
+            resource.setResourceStage(ResourceStage.NOT_DEFINED);
+            resource.setResourceType(ResourceType.NOT_DEFINED);
+            resource.setStage(Stage.ConvertedToResource);
+
+            developerRepository.delete(developer);
+            return mapper.fromBeanToDTO(resourceRepository.save(resource));
+        } else
+            throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
     }
 
     public ResourceDTO updateResource(ResourceDTO resourceDTO, String resourceReference) throws ContactApiException {
