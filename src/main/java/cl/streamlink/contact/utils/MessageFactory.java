@@ -37,7 +37,7 @@ public class MessageFactory {
         try {
             return messageSource.getMessage(s, getObjectsLabel(objects), lang != null ? new Locale(lang) : getLocalFromHeader());
         } catch (NoSuchMessageException ex) {
-            //logger.error(ex.getMessage());
+
             try {
                 return messageSource.getMessage(s, objects, getLocalFromHeader());
             } catch (NoSuchMessageException e) {

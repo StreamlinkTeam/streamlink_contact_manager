@@ -20,6 +20,8 @@ public class ProjectDTO {
     @NotEmpty
     private String societyContactReference;
 
+    private String societyReference;
+
     private ProjectType type;
 
     private ProjectStage stage;
@@ -62,6 +64,14 @@ public class ProjectDTO {
 
     public void setSocietyContactReference(String societyContactReference) {
         this.societyContactReference = societyContactReference;
+    }
+
+    public String getSocietyReference() {
+        return societyReference;
+    }
+
+    public void setSocietyReference(String societyReference) {
+        this.societyReference = societyReference;
     }
 
     public ProjectType getType() {

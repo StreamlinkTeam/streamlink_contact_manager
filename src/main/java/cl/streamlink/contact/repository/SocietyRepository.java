@@ -16,4 +16,6 @@ public interface SocietyRepository extends JpaRepository<Society, Long> {
 
     Page<Society> findByLabelContainingAndStageInAndActivityAreaIn
             (String value, List<SocietyStage> stages, List<ActivityArea> activityAreas, Pageable pageable);
+
+    List<Society> findByLabelContaining(String value);
 }

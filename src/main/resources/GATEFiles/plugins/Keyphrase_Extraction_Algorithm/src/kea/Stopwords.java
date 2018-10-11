@@ -30,11 +30,11 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public abstract class Stopwords implements Serializable {
-  
-  /** 
-   * Returns true if the given string is a stop word.
-   */
-  public abstract boolean isStopword(String str);
+
+    /**
+     * Returns true if the given string is a stop word.
+     */
+    public abstract boolean isStopword(String str);
 }
 
 

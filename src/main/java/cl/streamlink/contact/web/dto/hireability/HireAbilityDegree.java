@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HireAbilityDegree {
 
-    @JsonAlias(value = {"LicenseName","CertificationName","Name"})
+    @JsonAlias(value = {"LicenseName", "CertificationName", "Name"})
     private String name;
 
 

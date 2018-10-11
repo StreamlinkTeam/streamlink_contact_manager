@@ -13,7 +13,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
     Optional<Evaluation> findOneByReference(String reference);
 
-    Optional<Evaluation> findOneByReferenceAndDeveloperReference(String reference,String developerReference);
+    Optional<Evaluation> findOneByReferenceAndDeveloperReference(String reference, String developerReference);
 
     List<Evaluation> findByDeveloperReference(String developerReference);
 

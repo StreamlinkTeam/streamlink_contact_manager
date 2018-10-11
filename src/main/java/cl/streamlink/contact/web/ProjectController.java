@@ -81,11 +81,11 @@ public class ProjectController {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir,true);
 
         }
 
-        return projectService.searchProjects(value, stage, type,activityArea, pageable);
+        return projectService.searchProjects(value, stage, type, activityArea, pageable);
 
     }
 
@@ -131,7 +131,7 @@ public class ProjectController {
             , @RequestParam(value = "projectReference") String projectReference) throws ContactApiException {
 
         return projectService.updateProjectInformation(legalInformation, projectReference);
-}
+    }
 
     @RequestMapping(value = "information",
             method = RequestMethod.GET,

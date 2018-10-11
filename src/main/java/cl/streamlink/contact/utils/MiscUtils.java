@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class MiscUtils {
 
-    public static Pageable convertFromAngularPage(Pageable pageable, Sort.Direction dir) {
+    public static Pageable convertFromAngularPage(Pageable pageable, Sort.Direction dir, boolean isProject) {
 
         pageable = pageable.previousOrFirst();
 
@@ -25,9 +25,18 @@ public class MiscUtils {
                         if (order.getProperty().equalsIgnoreCase("email1"))
                             return "contact.email1";
 
+                        if (order.getProperty().equalsIgnoreCase("city"))
+                            return "contact.city";
+
 
                         if (order.getProperty().equalsIgnoreCase("experience"))
                             return "skillsInformation.experience";
+
+                        if (isProject && order.getProperty().equalsIgnoreCase("activityArea"))
+                            return "projectInformation.activityArea";
+
+                        if (isProject && order.getProperty().equalsIgnoreCase("client"))
+                            return "societyContact.society.label";
 
                         return order.getProperty();
                     }).collect(Collectors.toList())));

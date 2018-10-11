@@ -27,148 +27,148 @@ import gate.Gate;
 
 
 public class SearchPR extends AbstractProcessingResource
-                      implements ProcessingResource{
+        implements ProcessingResource {
 
-  private static final long serialVersionUID = 1316224997021873795L;
-  
-  private IndexedCorpus corpus = null;
-  private String query  = null;
-  private String searcherClassName = null;
-  private QueryResultList resultList = null;
-  private int limit = -1;
-  private List<String> fieldNames = null;
+    private static final long serialVersionUID = 1316224997021873795L;
 
-  private Search searcher = null;
+    private IndexedCorpus corpus = null;
+    private String query = null;
+    private String searcherClassName = null;
+    private QueryResultList resultList = null;
+    private int limit = -1;
+    private List<String> fieldNames = null;
 
-  /** Constructor of the class*/
-  public SearchPR(){
-  }
+    private Search searcher = null;
 
-   /** Initialise this resource, and return it. */
-  @Override
-  public Resource init() throws ResourceInstantiationException {
-    Resource result = super.init();
-    return result;
-  }
-
-  /**
-   * Reinitialises the processing resource. After calling this method the
-   * resource should be in the state it is after calling init.
-   * If the resource depends on external resources (such as rules files) then
-   * the resource will re-read those resources. If the data used to create
-   * the resource has changed since the resource has been created then the
-   * resource will change too after calling reInit().
-  */
-  @Override
-  public void reInit() throws ResourceInstantiationException {
-    init();
-  }
-
-  /**
-   * This method runs the coreferencer. It assumes that all the needed parameters
-   * are set. If they are not, an exception will be fired.
-   */
-  @Override
-  public void execute() throws ExecutionException {
-    if ( corpus == null){
-      throw new ExecutionException("Corpus is not initialized");
-    }
-    if ( query == null){
-      throw new ExecutionException("Query is not initialized");
-    }
-    if ( searcher == null){
-      throw new ExecutionException("Searcher is not initialized");
+    /**
+     * Constructor of the class
+     */
+    public SearchPR() {
     }
 
-    /* Niraj */
-    // we need to check if this is the corpus with the specified feature
-    String val = (String) corpus.getFeatures().get(gate.creole.ir.lucene.LuceneIndexManager.CORPUS_INDEX_FEATURE);
-    if(!gate.creole.ir.lucene.LuceneIndexManager.CORPUS_INDEX_FEATURE_VALUE.equals(val)) {
-      throw new ExecutionException("This corpus was not indexed by the specified IR");
-    }
-    /* End */
-
-
-    try {
-      if (corpus.getIndexManager() == null){
-        MainFrame.unlockGUI();
-        JOptionPane.showMessageDialog(MainFrame.getInstance(), "Corpus is not indexed!\n"
-                                    +"Please index first this corpus!",
-                       "Search Processing", JOptionPane.WARNING_MESSAGE);
-        return;
-      }
-
-      fireProgressChanged(0);
-      resultList = null;
-      searcher.setCorpus(corpus);
-      resultList = searcher.search(query, limit, fieldNames);
-      fireProcessFinished();
+    /**
+     * Initialise this resource, and return it.
+     */
+    @Override
+    public Resource init() throws ResourceInstantiationException {
+        Resource result = super.init();
+        return result;
     }
 
-    catch (SearchException ie) {
-      throw new ExecutionException(ie.getMessage());
+    /**
+     * Reinitialises the processing resource. After calling this method the
+     * resource should be in the state it is after calling init.
+     * If the resource depends on external resources (such as rules files) then
+     * the resource will re-read those resources. If the data used to create
+     * the resource has changed since the resource has been created then the
+     * resource will change too after calling reInit().
+     */
+    @Override
+    public void reInit() throws ResourceInstantiationException {
+        init();
     }
-    catch (IndexException ie) {
-      throw new ExecutionException(ie.getMessage());
+
+    /**
+     * This method runs the coreferencer. It assumes that all the needed parameters
+     * are set. If they are not, an exception will be fired.
+     */
+    @Override
+    public void execute() throws ExecutionException {
+        if (corpus == null) {
+            throw new ExecutionException("Corpus is not initialized");
+        }
+        if (query == null) {
+            throw new ExecutionException("Query is not initialized");
+        }
+        if (searcher == null) {
+            throw new ExecutionException("Searcher is not initialized");
+        }
+
+        /* Niraj */
+        // we need to check if this is the corpus with the specified feature
+        String val = (String) corpus.getFeatures().get(gate.creole.ir.lucene.LuceneIndexManager.CORPUS_INDEX_FEATURE);
+        if (!gate.creole.ir.lucene.LuceneIndexManager.CORPUS_INDEX_FEATURE_VALUE.equals(val)) {
+            throw new ExecutionException("This corpus was not indexed by the specified IR");
+        }
+        /* End */
+
+
+        try {
+            if (corpus.getIndexManager() == null) {
+                MainFrame.unlockGUI();
+                JOptionPane.showMessageDialog(MainFrame.getInstance(), "Corpus is not indexed!\n"
+                                + "Please index first this corpus!",
+                        "Search Processing", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            fireProgressChanged(0);
+            resultList = null;
+            searcher.setCorpus(corpus);
+            resultList = searcher.search(query, limit, fieldNames);
+            fireProcessFinished();
+        } catch (SearchException ie) {
+            throw new ExecutionException(ie.getMessage());
+        } catch (IndexException ie) {
+            throw new ExecutionException(ie.getMessage());
+        }
     }
-  }
 
-  public void setCorpus(IndexedCorpus corpus) {
-    this.corpus = corpus;
-  }
-
-  public IndexedCorpus getCorpus() {
-    return this.corpus;
-  }
-
-  public void setQuery(String query) {
-    this.query = query;
-  }
-
-  public String getQuery() {
-    return this.query;
-  }
-
-  public void setSearcherClassName(String name){
-    this.searcherClassName = name;
-    try {
-      // load searcher class through GATE classloader
-      searcher = (Search)
-        Class.forName(searcherClassName, true, Gate.getClassLoader())
-        .newInstance();
+    public void setCorpus(IndexedCorpus corpus) {
+        this.corpus = corpus;
     }
-    catch(Exception e){
-      e.printStackTrace();
+
+    public IndexedCorpus getCorpus() {
+        return this.corpus;
     }
-  }
 
-  public String getSearcherClassName(){
+    public void setQuery(String query) {
+        this.query = query;
+    }
 
-    return this.searcher.getClass().getName();
-  }
+    public String getQuery() {
+        return this.query;
+    }
 
-  public void setLimit(Integer limit){
-    this.limit = limit.intValue();
-  }
+    public void setSearcherClassName(String name) {
+        this.searcherClassName = name;
+        try {
+            // load searcher class through GATE classloader
+            searcher = (Search)
+                    Class.forName(searcherClassName, true, Gate.getClassLoader())
+                            .newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-  public Integer getLimit(){
-    return new Integer(this.limit);
-  }
+    public String getSearcherClassName() {
 
-  public void setFieldNames(List<String> fieldNames){
-    this.fieldNames = fieldNames;
-  }
+        return this.searcher.getClass().getName();
+    }
 
-  public List<String> getFieldNames(){
-    return this.fieldNames;
-  }
+    public void setLimit(Integer limit) {
+        this.limit = limit.intValue();
+    }
 
-  public QueryResultList getResult(){
-    return resultList;
-  }
+    public Integer getLimit() {
+        return new Integer(this.limit);
+    }
 
-  public void setResult(QueryResultList qr){
-    throw new UnsupportedOperationException();
-  }
+    public void setFieldNames(List<String> fieldNames) {
+        this.fieldNames = fieldNames;
+    }
+
+    public List<String> getFieldNames() {
+        return this.fieldNames;
+    }
+
+    public QueryResultList getResult() {
+        return resultList;
+    }
+
+    public void setResult(QueryResultList qr) {
+        throw new UnsupportedOperationException();
+    }
 
 }

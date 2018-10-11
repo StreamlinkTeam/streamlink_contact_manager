@@ -27,40 +27,39 @@ import gate.creole.metadata.CreoleResource;
  * Packages a {@link LuceneIndexManager} and a {@link LuceneSearch}.
  */
 @CreoleResource(name = "Lucene IR Engine", tool = true, autoinstances = @AutoInstance)
-public class LuceneIREngine extends AbstractResource implements IREngine{
+public class LuceneIREngine extends AbstractResource implements IREngine {
 
-  private static final long serialVersionUID = -152880506664125169L;
-  
-  static {
-    try {
-      Gate.registerIREngine(LuceneIREngine.class.getName());
+    private static final long serialVersionUID = -152880506664125169L;
+
+    static {
+        try {
+            Gate.registerIREngine(LuceneIREngine.class.getName());
+        } catch (Exception cnfe) {
+            throw new RuntimeException(cnfe);
+        }
     }
-    catch(Exception cnfe) {
-      throw new RuntimeException(cnfe);
+
+    public LuceneIREngine() {
+        search = new LuceneSearch();
+        indexManager = new LuceneIndexManager();
     }
-  }
 
-  public LuceneIREngine() {
-    search = new LuceneSearch();
-    indexManager = new LuceneIndexManager();
-  }
+    @Override
+    public Search getSearch() {
+        return search;
+    }
 
-  @Override
-  public Search getSearch() {
-    return search;
-  }
+    @Override
+    public IndexManager getIndexmanager() {
+        return indexManager;
+    }
 
-  @Override
-  public IndexManager getIndexmanager() {
-    return indexManager;
-  }
+    @Override
+    public String getName() {
+        return "Lucene IR engine";
+    }
 
-  @Override
-  public String getName(){
-    return "Lucene IR engine";
-  }
-
-  Search search;
-  IndexManager indexManager;
+    Search search;
+    IndexManager indexManager;
 
 }

@@ -25,9 +25,8 @@ public class EvaluationController {
 
     @Inject
     private EvaluationService evaluationService;
-    
-    
-    
+
+
     @RequestMapping(value = "",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,10 +37,9 @@ public class EvaluationController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public EvaluationDTO createEvaluation(@RequestBody @Valid EvaluationDTO evaluation,
-                                          @RequestParam(value = "developerReference") String developerReference)
-    {
+                                          @RequestParam(value = "developerReference") String developerReference) {
 
-        return evaluationService.createEvaluation(evaluation,developerReference);
+        return evaluationService.createEvaluation(evaluation, developerReference);
     }
 
     @RequestMapping(value = "",
@@ -54,10 +52,9 @@ public class EvaluationController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public EvaluationDTO updateEvaluation(@Valid @RequestBody EvaluationDTO evaluation, @RequestParam(value = "developerReference") String developerReference,
-                                          @RequestParam(value = "reference") String reference) throws ContactApiException
-    {
+                                          @RequestParam(value = "reference") String reference) throws ContactApiException {
 
-        return evaluationService.updateEvaluation(evaluation, reference,developerReference);
+        return evaluationService.updateEvaluation(evaluation, reference, developerReference);
     }
 
     @RequestMapping(value = "",
@@ -70,10 +67,9 @@ public class EvaluationController {
             @ApiResponse(code = 404, message = "Evaluation with Ref not Found")
     })
     public List<EvaluationDTO> getEvaluation(@RequestParam(value = "developerReference") String developerReference,
-                                             @RequestParam(value = "reference", required = false) String reference) throws ContactApiException
-    {
+                                             @RequestParam(value = "reference", required = false) String reference) throws ContactApiException {
 
-        return evaluationService.getEvaluation(reference,developerReference);
+        return evaluationService.getEvaluation(reference, developerReference);
     }
 
     @RequestMapping(value = "",
@@ -86,9 +82,8 @@ public class EvaluationController {
             @ApiResponse(code = 404, message = "Evaluation with Ref not Found")
     })
     public JSONObject deleteEvaluation(@RequestParam("reference") String reference
-    ,@RequestParam(value = "developerReference") String developerReference) throws ContactApiException
-    {
+            , @RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
 
-        return evaluationService.deleteEvaluation(reference,developerReference);
+        return evaluationService.deleteEvaluation(reference, developerReference);
     }
 }

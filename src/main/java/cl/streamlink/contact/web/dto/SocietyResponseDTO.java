@@ -21,10 +21,10 @@ public class SocietyResponseDTO {
     private ActivityArea activityArea;
 
     @JsonUnwrapped
-    private ContactDTO contact ;
+    private ContactDTO contact;
 
     @JsonUnwrapped
-    private SocietyLegalInformationDTO legalInformation ;
+    private SocietyLegalInformationDTO legalInformation;
 
     private String note;
 

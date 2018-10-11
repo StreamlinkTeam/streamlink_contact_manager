@@ -83,7 +83,7 @@ public class HireabilityService {
                 .flatMap(result -> result.getHireAbilityJSONResults().stream())
                 .filter(HireAbilityJSONResults::isNotEmpty)
                 .findFirst()
-                .orElseThrow(()-> ContactApiException.unprocessableEntityExceptionBuilder("parse_error", null)));
+                .orElseThrow(() -> ContactApiException.unprocessableEntityExceptionBuilder("parse_error", null)));
     }
 
 

@@ -10,7 +10,7 @@ public class HireAbilityContact {
     @JsonAlias(value = "Label")
     private String label;
 
-    @JsonAlias(value = {"Address","Number"})
+    @JsonAlias(value = {"Address", "Number"})
     private String value;
 
     public String getLabel() {

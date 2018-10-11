@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 
 public class ContactApiException extends RuntimeException {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8072531105668136904L;
+     *
+     */
+    private static final long serialVersionUID = 8072531105668136904L;
 
-	private Logger logger = LoggerFactory.getLogger(ContactApiException.class);
+    private Logger logger = LoggerFactory.getLogger(ContactApiException.class);
 
     private ContactApiError motif;
     private String code;
@@ -67,13 +67,13 @@ public class ContactApiException extends RuntimeException {
         this.code = code;
     }
 
-    public static ContactApiException unauthorizedExceptionBuilder(String key,String[] objects) {
+    public static ContactApiException unauthorizedExceptionBuilder(String key, String[] objects) {
 
         String message = MessageFactory.getMessage("contact.api.service.unauthorized_exception." + key, objects);
         return new ContactApiException(message, ContactApiError.UNAUTHORIZED, null);
     }
 
-    public static ContactApiException unprocessableEntityExceptionBuilder(String key,String[] objects) {
+    public static ContactApiException unprocessableEntityExceptionBuilder(String key, String[] objects) {
 
         String message = MessageFactory.getMessage("contact.api.service.unprocessable_entity_exception." + key, objects);
         return new ContactApiException(message, ContactApiError.UNPROCESSABLE_ENTITY, null);

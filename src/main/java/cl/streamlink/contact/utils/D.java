@@ -1,6 +1,6 @@
 package cl.streamlink.contact.utils;
 
-public class D extends C implements B,A {
+public class D extends C implements B, A {
 
 
     @Override
@@ -8,6 +8,7 @@ public class D extends C implements B,A {
 
     }
 }
+
 interface A {
     default void draw() {
         System.err.println("A");

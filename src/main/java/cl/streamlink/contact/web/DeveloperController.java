@@ -87,7 +87,7 @@ public class DeveloperController {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir, false);
         }
         return developerService.searchDevelopers(value, stage, experience, formation, pageable);
 

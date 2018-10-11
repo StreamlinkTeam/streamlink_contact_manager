@@ -229,6 +229,7 @@ public abstract class ApiMapper {
                     expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
             @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
             @Mapping(target = "societyContact", ignore = true),
+            @Mapping(target = "project", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "modifiedDate", ignore = true)
     })
@@ -299,6 +300,7 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(source = "societyContact.reference", target = "societyContactReference"),
+            @Mapping(source = "societyContact.society.reference", target = "societyReference"),
             @Mapping(source = "manager.reference", target = "managerReference"),
             @Mapping(source = "rh.reference", target = "rhReference"),
     })
@@ -436,6 +438,7 @@ public abstract class ApiMapper {
             @Mapping(target = "modifiedDate", ignore = true),
             @Mapping(target = "societyContact",
                     expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
+            @Mapping(target = "project",ignore = true),
             @Mapping(target = "developer", ignore = true),
             @Mapping(target = "responsible", ignore = true)
     })

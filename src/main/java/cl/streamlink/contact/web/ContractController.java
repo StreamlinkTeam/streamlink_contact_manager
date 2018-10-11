@@ -36,7 +36,7 @@ public class ContractController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public ContractDTO createContract(@RequestBody @Valid ContractDTO contract,
-                                       @RequestParam(value = "developerReference") String developerReference) {
+                                      @RequestParam(value = "developerReference") String developerReference) {
 
         return contractService.createContract(contract, developerReference);
     }

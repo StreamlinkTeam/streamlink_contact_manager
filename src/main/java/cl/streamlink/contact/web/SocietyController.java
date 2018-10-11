@@ -79,11 +79,19 @@ public class SocietyController {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir,false);
 
         }
 
         return societyService.searchSocieties(value, stage, activityArea, pageable);
+
+    }
+
+    @RequestMapping(value = "/auto-complete", method = RequestMethod.GET)
+    public List<SocietyResponseDTO> getSocieties(@RequestParam(required = false) String term) {
+
+
+        return societyService.searchSocieties(term);
 
     }
 

@@ -21,7 +21,7 @@ public class CurriculumVitae {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Developer developer;
 
     public Long getId() {

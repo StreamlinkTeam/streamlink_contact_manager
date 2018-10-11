@@ -104,9 +104,9 @@ public class ResourceController {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir,false);
         }
-        return resourceService.searchResources(value, stage, experience, formation,type, pageable);
+        return resourceService.searchResources(value, stage, experience, formation, type, pageable);
 
     }
 

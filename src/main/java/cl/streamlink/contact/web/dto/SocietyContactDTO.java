@@ -22,7 +22,7 @@ public class SocietyContactDTO extends AbstractProfileDTO {
     @Size(max = 255)
     private String service;
 
-    private SocietyStage stage ;
+    private SocietyStage stage;
 
     private String societyReference;
 
@@ -93,4 +93,4 @@ public class SocietyContactDTO extends AbstractProfileDTO {
     public void setFunctionalScope(String functionalScope) {
         this.functionalScope = functionalScope;
     }
-    }
+}

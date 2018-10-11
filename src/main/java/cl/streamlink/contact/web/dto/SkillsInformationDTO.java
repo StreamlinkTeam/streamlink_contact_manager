@@ -15,7 +15,7 @@ public class SkillsInformationDTO {
 
     private String title;
 
-    private String languages ;
+    private String languages;
 
     private List<String> qualifications = new ArrayList<String>();
 

@@ -1,7 +1,6 @@
 package cl.streamlink.contact.domain;
 
 
-
 import cl.streamlink.contact.utils.enums.ResourceStage;
 import cl.streamlink.contact.utils.enums.ResourceType;
 

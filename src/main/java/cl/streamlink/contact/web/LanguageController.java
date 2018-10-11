@@ -18,8 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ws/languages")
-public class LanguageController
-{
+public class LanguageController {
     @Inject
     private LanguageService languageService;
 
@@ -32,8 +31,7 @@ public class LanguageController
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Language.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public LanguageDTO createLanguage(@RequestBody @Valid LanguageDTO language)
-    {
+    public LanguageDTO createLanguage(@RequestBody @Valid LanguageDTO language) {
 
         return languageService.createLanguage(language);
     }
@@ -47,8 +45,7 @@ public class LanguageController
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Language.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public LanguageDTO updateLanguage(@Valid @RequestBody LanguageDTO language, @RequestParam(value = "reference") String reference) throws ContactApiException
-    {
+    public LanguageDTO updateLanguage(@Valid @RequestBody LanguageDTO language, @RequestParam(value = "reference") String reference) throws ContactApiException {
 
         return languageService.updateLanguage(language, reference);
     }
@@ -62,8 +59,7 @@ public class LanguageController
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Language.class),
             @ApiResponse(code = 404, message = "Language with Ref not Found")
     })
-    public List<LanguageDTO> getLanguage(@RequestParam(value = "reference", required = false) String reference) throws ContactApiException
-    {
+    public List<LanguageDTO> getLanguage(@RequestParam(value = "reference", required = false) String reference) throws ContactApiException {
 
         return languageService.getLanguage(reference);
     }
@@ -77,8 +73,7 @@ public class LanguageController
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Language.class),
             @ApiResponse(code = 404, message = "Language with Ref not Found")
     })
-    public JSONObject deleteLanguage(@RequestParam("reference") String reference) throws ContactApiException
-    {
+    public JSONObject deleteLanguage(@RequestParam("reference") String reference) throws ContactApiException {
 
         return languageService.deleteLanguage(reference);
     }

@@ -32,175 +32,188 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class TestIndex extends TestCase{
+public class TestIndex extends TestCase {
 
-  private static String TEMP_LOCATION = null;
-  private Corpus corpus = null;
-  private DataStore sds = null;
+    private static String TEMP_LOCATION = null;
+    private Corpus corpus = null;
+    private DataStore sds = null;
 
-  public TestIndex(String name) throws GateException {
-    super(name);
-    try{
-      Gate.init();
-      Gate.getCreoleRegister().registerDirectories(
-        (new File(Gate.getPluginsHome(), "Information_Retrieval")).toURI()
-          .toURL());
-      
-      setUp();
-      testIndex_01();
-      tearDown();
+    public TestIndex(String name) throws GateException {
+        super(name);
+        try {
+            Gate.init();
+            Gate.getCreoleRegister().registerDirectories(
+                    (new File(Gate.getPluginsHome(), "Information_Retrieval")).toURI()
+                            .toURL());
 
-      setUp();
-      testIndex_02();
-      tearDown();
+            setUp();
+            testIndex_01();
+            tearDown();
 
-      setUp();
-      testIndex_10();
-      tearDown();
+            setUp();
+            testIndex_02();
+            tearDown();
 
-      setUp();
-      testIndex_101();
-      tearDown();
+            setUp();
+            testIndex_10();
+            tearDown();
 
-    } catch (Exception e){
-      e.printStackTrace();
+            setUp();
+            testIndex_101();
+            tearDown();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-  }
 
-  /** Fixture set up */
-  @Override
-  public void setUp() throws Exception {
-    try {
-      
-      
-      File storageDir = File.createTempFile("TestIndex__", "__StorageDir");
+    /**
+     * Fixture set up
+     */
+    @Override
+    public void setUp() throws Exception {
+        try {
 
-      if (null == TEMP_LOCATION) {
-        File indexDir = File.createTempFile("LuceneIndex__", "__Dir");
-        TEMP_LOCATION = indexDir.getAbsolutePath();
-      }
+
+            File storageDir = File.createTempFile("TestIndex__", "__StorageDir");
+
+            if (null == TEMP_LOCATION) {
+                File indexDir = File.createTempFile("LuceneIndex__", "__Dir");
+                TEMP_LOCATION = indexDir.getAbsolutePath();
+            }
 
 //System.out.println("temp=["+TEMP_LOCATION+"]");
 //System.out.println("temp2=["+indexDir.getAbsoluteFile()+"]");
 
-      storageDir.delete();
-      // create and open a serial data store
-      sds = Factory.createDataStore(
-        "gate.persist.SerialDataStore", storageDir.toURI().toURL().toString()
-      );
+            storageDir.delete();
+            // create and open a serial data store
+            sds = Factory.createDataStore(
+                    "gate.persist.SerialDataStore", storageDir.toURI().toURL().toString()
+            );
 
-      sds.open();
+            sds.open();
 
-      String server = Gate.getClassLoader().getResource("gate/resources/gate.ac.uk/").toExternalForm();
+            String server = Gate.getClassLoader().getResource("gate/resources/gate.ac.uk/").toExternalForm();
 
-      Document doc0 = Factory.newDocument(new URL(server + "tests/doc0.html"));
-      doc0.getFeatures().put("author","John Smit");
+            Document doc0 = Factory.newDocument(new URL(server + "tests/doc0.html"));
+            doc0.getFeatures().put("author", "John Smit");
 
-      Corpus corp = Factory.newCorpus("LuceneTestCorpus");
-      corp.add(doc0);
-      corpus = (Corpus) sds.adopt(corp);
-      sds.sync(corpus);
+            Corpus corp = Factory.newCorpus("LuceneTestCorpus");
+            corp.add(doc0);
+            corpus = (Corpus) sds.adopt(corp);
+            sds.sync(corpus);
 
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new GateException(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GateException(e.getMessage());
+        }
+    } // setUp
+
+    /**
+     * Put things back as they should be after running tests
+     * (reinitialise the CREOLE register).
+     */
+    @Override
+    public void tearDown() throws Exception {
+        sds.delete();
+    } // tearDown
+
+    /**
+     * Test suite routine for the test runner
+     */
+    public static Test suite() {
+        return new TestSuite(TestIndex.class);
+    } // suite
+
+    /**
+     * Create new index.
+     */
+    public void testIndex_01() throws IndexException {
+        IndexedCorpus ic = (IndexedCorpus) corpus;
+        DefaultIndexDefinition did = new DefaultIndexDefinition();
+        did.setIrEngineClassName(gate.creole.ir.lucene.
+                LuceneIREngine.class.getName());
+
+//    did.setIndexType(GateConstants.IR_LUCENE_INVFILE);
+
+        did.setIndexLocation(TEMP_LOCATION);
+        did.addIndexField(new IndexField("content", new DocumentContentReader(), false));
+        did.addIndexField(new IndexField("author", null, false));
+
+        ic.setIndexDefinition(did);
+
+        ic.getIndexManager().deleteIndex();
+        ic.getIndexManager().createIndex();
+
     }
-  } // setUp
 
-  /** Put things back as they should be after running tests
-    * (reinitialise the CREOLE register).
-    */
-  @Override
-  public void tearDown() throws Exception {
-    sds.delete();
-  } // tearDown
-
-  /** Test suite routine for the test runner */
-  public static Test suite() {
-    return new TestSuite(TestIndex.class);
-  } // suite
-
-  /** Create new index. */
-  public void testIndex_01() throws IndexException{
-    IndexedCorpus ic = (IndexedCorpus) corpus;
-    DefaultIndexDefinition did = new DefaultIndexDefinition();
-    did.setIrEngineClassName(gate.creole.ir.lucene.
-                             LuceneIREngine.class.getName());
-
+    /**
+     * Optimize existing index.
+     */
+    public void testIndex_02() throws IndexException {
+        IndexedCorpus ic = (IndexedCorpus) corpus;
+        DefaultIndexDefinition did = new DefaultIndexDefinition();
 //    did.setIndexType(GateConstants.IR_LUCENE_INVFILE);
+        did.setIrEngineClassName(gate.creole.ir.lucene.
+                LuceneIREngine.class.getName());
 
-    did.setIndexLocation(TEMP_LOCATION);
-    did.addIndexField(new IndexField("content", new DocumentContentReader(), false));
-    did.addIndexField(new IndexField("author", null, false));
 
-    ic.setIndexDefinition(did);
+        did.setIndexLocation(TEMP_LOCATION);
 
-    ic.getIndexManager().deleteIndex();
-    ic.getIndexManager().createIndex();
+        ic.setIndexDefinition(did);
 
-  }
+        ic.getIndexManager().optimizeIndex();
+    }
 
-  /** Optimize existing index. */
-  public void testIndex_02() throws IndexException{
-    IndexedCorpus ic = (IndexedCorpus) corpus;
-    DefaultIndexDefinition did = new DefaultIndexDefinition();
+    /**
+     * Search in existing index.
+     */
+    public void testIndex_10() throws IndexException, SearchException {
+        IndexedCorpus ic = (IndexedCorpus) corpus;
+        DefaultIndexDefinition did = new DefaultIndexDefinition();
 //    did.setIndexType(GateConstants.IR_LUCENE_INVFILE);
-    did.setIrEngineClassName(gate.creole.ir.lucene.
-                             LuceneIREngine.class.getName());
+        did.setIrEngineClassName(gate.creole.ir.lucene.
+                LuceneIREngine.class.getName());
 
+        did.setIndexLocation(TEMP_LOCATION);
 
-    did.setIndexLocation(TEMP_LOCATION);
+        ic.setIndexDefinition(did);
 
-    ic.setIndexDefinition(did);
+        Search search = new LuceneSearch();
+        search.setCorpus(ic);
 
-    ic.getIndexManager().optimizeIndex();
-  }
+        QueryResultList res = search.search("+content:Diller +author:John", 10);
 
-  /** Search in existing index. */
-  public void testIndex_10() throws IndexException, SearchException{
-    IndexedCorpus ic = (IndexedCorpus) corpus;
-    DefaultIndexDefinition did = new DefaultIndexDefinition();
+        Iterator<QueryResult> it = res.getQueryResults();
+        //while (it.hasNext()) {
+        //  QueryResult qr = (QueryResult) it.next();
+        //  System.out.println("DOCUMENT_ID="+ qr.getDocumentID() +",   scrore="+qr.getScore());
+        //}
+        Assert.assertTrue(it.hasNext());
+    }
+
+    public void testIndex_11() {
+
+    }
+
+    public void testIndex_12() {
+
+    }
+
+    /**
+     * Delete index.
+     */
+    public void testIndex_101() throws IndexException {
+        IndexedCorpus ic = (IndexedCorpus) corpus;
+        DefaultIndexDefinition did = new DefaultIndexDefinition();
 //    did.setIndexType(GateConstants.IR_LUCENE_INVFILE);
-    did.setIrEngineClassName(gate.creole.ir.lucene.
-                             LuceneIREngine.class.getName());
+        did.setIrEngineClassName(gate.creole.ir.lucene.
+                LuceneIREngine.class.getName());
 
-    did.setIndexLocation(TEMP_LOCATION);
+        did.setIndexLocation(TEMP_LOCATION);
 
-    ic.setIndexDefinition(did);
+        ic.setIndexDefinition(did);
 
-    Search search = new LuceneSearch();
-    search.setCorpus(ic);
-
-    QueryResultList res = search.search("+content:Diller +author:John",10);
-
-    Iterator<QueryResult> it = res.getQueryResults();
-    //while (it.hasNext()) {
-    //  QueryResult qr = (QueryResult) it.next();
-    //  System.out.println("DOCUMENT_ID="+ qr.getDocumentID() +",   scrore="+qr.getScore());
-    //}
-    Assert.assertTrue(it.hasNext());
-  }
-
-  public void testIndex_11(){
-
-  }
-
-  public void testIndex_12(){
-
-  }
-
-  /** Delete index. */
-  public void testIndex_101() throws IndexException{
-    IndexedCorpus ic = (IndexedCorpus) corpus;
-    DefaultIndexDefinition did = new DefaultIndexDefinition();
-//    did.setIndexType(GateConstants.IR_LUCENE_INVFILE);
-    did.setIrEngineClassName(gate.creole.ir.lucene.
-                             LuceneIREngine.class.getName());
-
-    did.setIndexLocation(TEMP_LOCATION);
-
-    ic.setIndexDefinition(did);
-
-    ic.getIndexManager().deleteIndex();
-  }
+        ic.getIndexManager().deleteIndex();
+    }
 }

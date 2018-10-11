@@ -2,6 +2,8 @@ package cl.streamlink.contact.service;
 
 
 import cl.streamlink.contact.domain.Positioning;
+import cl.streamlink.contact.domain.Project;
+import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.PositioningRepository;
@@ -33,8 +35,8 @@ public class PositioningService {
     @Inject
     private ProjectRepository projectRepository;
 
-    @Inject
-    private ProjectService projectService;
+//    @Inject
+//    private ProjectService projectService;
 
     @Inject
     private ResourceRepository resourceRepository;
@@ -48,7 +50,11 @@ public class PositioningService {
 
     public PositioningDTO createPositioning(PositioningDTO positioningDTO, String projectReference) {
 
-        projectService.getProject(projectReference);
+        Project project = projectRepository.findOneByReference(projectReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
+
+        Resource resource = resourceRepository.findOneByReference(positioningDTO.getResourceReference())
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", positioningDTO.getResourceReference()));
 
 
         positioningDTO.setProjectReference(projectReference);
@@ -61,7 +67,11 @@ public class PositioningService {
     public PositioningDTO updatePositioning(PositioningDTO positioningDTO, String positioningReference, String projectReference) throws ContactApiException {
 
 
-        projectService.getProject(projectReference);
+        Project project = projectRepository.findOneByReference(projectReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
+
+        Resource resource = resourceRepository.findOneByReference(positioningDTO.getResourceReference())
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", positioningDTO.getResourceReference()));
 
         Positioning positioning = positioningRepository.findOneByReferenceAndProjectReference(positioningReference, projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference));
@@ -72,7 +82,9 @@ public class PositioningService {
 
     public PositioningDTO getPositioning(String positioningReference, String projectReference) throws ContactApiException {
 
-        projectService.getProject(projectReference);
+        Project project = projectRepository.findOneByReference(projectReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
+
         return mapper.fromBeanToDTO(positioningRepository.findOneByReferenceAndProjectReference(positioningReference, projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference)));
     }
@@ -80,7 +92,7 @@ public class PositioningService {
 
     public List<PositioningDTO> getPositionings(String positioningReference) throws ContactApiException {
 
-        if (positioningReference != null)
+        if (MiscUtils.isNotEmpty(positioningReference))
             return Collections.singletonList(mapper.fromBeanToDTO(positioningRepository.findOneByReference(positioningReference)
                     .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference))));
 
@@ -127,7 +139,9 @@ public class PositioningService {
 
     public JSONObject deletePositioning(String positioningReference, String projectReference) throws ContactApiException {
 
-        projectService.getProject(projectReference);
+        Project project = projectRepository.findOneByReference(projectReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
+
         Positioning positioning = positioningRepository.findOneByReferenceAndProjectReference(positioningReference, projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference));
 

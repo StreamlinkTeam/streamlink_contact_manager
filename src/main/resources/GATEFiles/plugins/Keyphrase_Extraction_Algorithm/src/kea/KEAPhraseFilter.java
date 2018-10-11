@@ -35,25 +35,25 @@ import weka.filters.Filter;
  * attributes into phrases. The resulting
  * string attributes contain these phrases
  * separated by '\n' characters.
- *
+ * <p>
  * Phrases are identified according to the
  * following definitions:
- * 
+ * <p>
  * A phrase is a sequence of words interrupted
  * only by sequences of whitespace characters,
  * where each sequence of whitespace characters
  * contains at most one '\n'.
- *
+ * <p>
  * A word is a sequence of letters or digits
  * that contains at least one letter, with
  * the following exceptions:
- *
+ * <p>
  * a) '.', '@', '_', '&', '/', '-' are allowed
  * if surrounded by letters or digits,
- *
+ * <p>
  * b) '\'' is allowed if preceeded by a letter
  * or digit,
- * 
+ * <p>
  * c) '-', '/' are also allowed if succeeded by
  * whitespace characters followed by another
  * word. In that case the whitespace characters
@@ -62,435 +62,440 @@ import weka.filters.Filter;
  * @author Eibe Frank (eibe@cs.waikato.ac.nz)
  * @version 1.0
  */
-@SuppressWarnings({"serial","rawtypes","unchecked","cast"})
+@SuppressWarnings({"serial", "rawtypes", "unchecked", "cast"})
 public class KEAPhraseFilter extends Filter implements OptionHandler {
 
-  /** Stores which columns to select as a funky range */
-  protected Range m_SelectCols = new Range();
+    /**
+     * Stores which columns to select as a funky range
+     */
+    protected Range m_SelectCols = new Range();
 
-  /** Determines whether internal periods are allowed */
-  protected boolean m_DisallowInternalPeriods = false;
+    /**
+     * Determines whether internal periods are allowed
+     */
+    protected boolean m_DisallowInternalPeriods = false;
 
-  /**
-   * Returns a string describing this filter
-   *
-   * @return a description of the filter suitable for
-   * displaying in the explorer/experimenter gui
-   */
-  public String globalInfo() {
-    return "This filter splits the text contained " +
-      "by the selected string attributes into phrases.";
-  }
-
-  /**
-   * Returns an enumeration describing the available options
-   *
-   * @return an enumeration of all the available options
-   */
-  public Enumeration listOptions() {
-
-    Vector newVector = new Vector(3);
-
-    newVector.addElement(new Option(
-              "\tSpecify list of attributes to process. First and last are valid\n"
-	      +"\tindexes. (default none)",
-              "R", 1, "-R <index1,index2-index4,...>"));
-    newVector.addElement(new Option(
-	      "\tInvert matching sense",
-              "V", 0, "-V"));
-    newVector.addElement(new Option(
-	      "\tDisallow internal periods",
-              "P", 0, "-P"));
-
-    return newVector.elements();
-  }
-
-  /**
-   * Parses a given list of options controlling the behaviour of this object.
-   * Valid options are:<p>
-   *
-   * -R index1,index2-index4,...<br>
-   * Specify list of attributes to process. First and last are valid indexes.
-   * (default none)<p>
-   *
-   * -V<br>
-   * Invert matching sense <p>
-   *
-   * -P<br>
-   * Disallow internal periods <p>
-   *
-   * @param options the list of options as an array of strings
-   * @exception Exception if an option is not supported
-   */
-  public void setOptions(String[] options) throws Exception {
-
-    String list = Utils.getOption('R', options);
-    if (list.length() != 0) {
-      setAttributeIndices(list);
-    }
-    setInvertSelection(Utils.getFlag('V', options));
-
-    setDisallowInternalPeriods(Utils.getFlag('P', options));
-    
-    if (getInputFormat() != null) {
-      setInputFormat(getInputFormat());
-    }
-  }
-
-  /**
-   * Gets the current settings of the filter.
-   *
-   * @return an array of strings suitable for passing to setOptions
-   */
-  public String [] getOptions() {
-
-    String [] options = new String [4];
-    int current = 0;
-
-    if (getInvertSelection()) {
-      options[current++] = "-V";
-    }
-    if (getDisallowInternalPeriods()) {
-      options[current++] = "-P";
-    }
-    if (!getAttributeIndices().equals("")) {
-      options[current++] = "-R"; options[current++] = getAttributeIndices();
+    /**
+     * Returns a string describing this filter
+     *
+     * @return a description of the filter suitable for
+     * displaying in the explorer/experimenter gui
+     */
+    public String globalInfo() {
+        return "This filter splits the text contained " +
+                "by the selected string attributes into phrases.";
     }
 
-    while (current < options.length) {
-      options[current++] = "";
+    /**
+     * Returns an enumeration describing the available options
+     *
+     * @return an enumeration of all the available options
+     */
+    public Enumeration listOptions() {
+
+        Vector newVector = new Vector(3);
+
+        newVector.addElement(new Option(
+                "\tSpecify list of attributes to process. First and last are valid\n"
+                        + "\tindexes. (default none)",
+                "R", 1, "-R <index1,index2-index4,...>"));
+        newVector.addElement(new Option(
+                "\tInvert matching sense",
+                "V", 0, "-V"));
+        newVector.addElement(new Option(
+                "\tDisallow internal periods",
+                "P", 0, "-P"));
+
+        return newVector.elements();
     }
-    return options;
-  }
 
-  /**
-   * Sets the format of the input instances.
-   *
-   * @param instanceInfo an Instances object containing the input
-   * instance structure (any instances contained in the object are
-   * ignored - only the structure is required).
-   * @return true if the outputFormat may be collected immediately 
-   */
-  public boolean setInputFormat(Instances instanceInfo) throws Exception {
+    /**
+     * Parses a given list of options controlling the behaviour of this object.
+     * Valid options are:<p>
+     * <p>
+     * -R index1,index2-index4,...<br>
+     * Specify list of attributes to process. First and last are valid indexes.
+     * (default none)<p>
+     * <p>
+     * -V<br>
+     * Invert matching sense <p>
+     * <p>
+     * -P<br>
+     * Disallow internal periods <p>
+     *
+     * @param options the list of options as an array of strings
+     * @throws Exception if an option is not supported
+     */
+    public void setOptions(String[] options) throws Exception {
 
-    super.setInputFormat(instanceInfo);
-    setOutputFormat(instanceInfo);
-    m_SelectCols.setUpper(instanceInfo.numAttributes() - 1);
+        String list = Utils.getOption('R', options);
+        if (list.length() != 0) {
+            setAttributeIndices(list);
+        }
+        setInvertSelection(Utils.getFlag('V', options));
 
-    return true;
-  }
+        setDisallowInternalPeriods(Utils.getFlag('P', options));
 
-  /**
-   * Input an instance for filtering. Ordinarily the instance is processed
-   * and made available for output immediately. Some filters require all
-   * instances be read before producing output.
-   *
-   * @param instance the input instance
-   * @return true if the filtered instance may now be
-   * collected with output().
-   * @exception Exception if the input instance was not of the correct 
-   * format or if there was a problem with the filtering.
-   */
-  public boolean input(Instance instance) throws Exception {
-
-    if (getInputFormat() == null) {
-      throw new Exception("No input instance format defined");
+        if (getInputFormat() != null) {
+            setInputFormat(getInputFormat());
+        }
     }
-    if (m_NewBatch) {
-      resetQueue();
-      m_NewBatch = false;
+
+    /**
+     * Gets the current settings of the filter.
+     *
+     * @return an array of strings suitable for passing to setOptions
+     */
+    public String[] getOptions() {
+
+        String[] options = new String[4];
+        int current = 0;
+
+        if (getInvertSelection()) {
+            options[current++] = "-V";
+        }
+        if (getDisallowInternalPeriods()) {
+            options[current++] = "-P";
+        }
+        if (!getAttributeIndices().equals("")) {
+            options[current++] = "-R";
+            options[current++] = getAttributeIndices();
+        }
+
+        while (current < options.length) {
+            options[current++] = "";
+        }
+        return options;
     }
-    convertInstance(instance);
-    return true;
-  }
 
-  /**
-   * Signify that this batch of input to the filter is finished. If
-   * the filter requires all instances prior to filtering, output()
-   * may now be called to retrieve the filtered instances. Any
-   * subsequent instances filtered should be filtered based on setting
-   * obtained from the first batch (unless the inputFormat has been
-   * re-assigned or new options have been set). This default
-   * implementation assumes all instance processing occurs during
-   * inputFormat() and input().
-   *
-   * @return true if there are instances pending output
-   * @exception NullPointerException if no input structure has been defined,
-   * @exception Exception if there was a problem finishing the batch.
-   */
-  public boolean batchFinished() throws Exception {
+    /**
+     * Sets the format of the input instances.
+     *
+     * @param instanceInfo an Instances object containing the input
+     *                     instance structure (any instances contained in the object are
+     *                     ignored - only the structure is required).
+     * @return true if the outputFormat may be collected immediately
+     */
+    public boolean setInputFormat(Instances instanceInfo) throws Exception {
 
-    if (getInputFormat() == null) {
-      throw new NullPointerException("No input instance format defined");
+        super.setInputFormat(instanceInfo);
+        setOutputFormat(instanceInfo);
+        m_SelectCols.setUpper(instanceInfo.numAttributes() - 1);
+
+        return true;
     }
-    m_NewBatch = true;
-    return (numPendingOutput() != 0);
-  }
 
-  /**
-   * Main method for testing this class.
-   *
-   * @param argv should contain arguments to the filter: use -h for help
-   */
-  public static void main(String [] argv) {
-    
-    try {
-      if (Utils.getFlag('b', argv)) {
-	Filter.batchFilterFile(new KEAPhraseFilter(), argv);
-      } else {
-	Filter.filterFile(new KEAPhraseFilter(), argv);
-      }
-    } catch (Exception ex) {
-      System.out.println(ex.getMessage());
+    /**
+     * Input an instance for filtering. Ordinarily the instance is processed
+     * and made available for output immediately. Some filters require all
+     * instances be read before producing output.
+     *
+     * @param instance the input instance
+     * @return true if the filtered instance may now be
+     * collected with output().
+     * @throws Exception if the input instance was not of the correct
+     *                   format or if there was a problem with the filtering.
+     */
+    public boolean input(Instance instance) throws Exception {
+
+        if (getInputFormat() == null) {
+            throw new Exception("No input instance format defined");
+        }
+        if (m_NewBatch) {
+            resetQueue();
+            m_NewBatch = false;
+        }
+        convertInstance(instance);
+        return true;
     }
-  }
- 
-  /** 
-   * Converts an instance by removing all non-alphanumeric characters
-   * from its string attribute values.
-   */
-  private void convertInstance(Instance instance) throws Exception {
-  
-    double[] instVals = new double[instance.numAttributes()];
 
-    for (int i = 0; i < instance.numAttributes(); i++) {
-      if (!instance.attribute(i).isString() || 
-	  instance.isMissing(i)) {
-	instVals[i] = instance.value(i);
-      } else {
-	if (!m_SelectCols.isInRange(i)) {
-	  int index = getOutputFormat().attribute(i).
-	    addStringValue(instance.stringValue(i));
-	  instVals[i] = (double)index;
-	  continue;
-	}
-	String str = instance.stringValue(i);
-	StringBuffer resultStr = new StringBuffer();
-	int j = 0;
-	boolean phraseStart = true;
-	boolean seenNewLine = false;
-	boolean haveSeenHyphen = false;
-	boolean haveSeenSlash = false;
-	while (j < str.length()) {
-	  boolean isWord = false;
-	  boolean potNumber = false;
-	  int startj = j;
-	  while (j < str.length()) {
-	    char ch = str.charAt(j);
-	    if (Character.isLetterOrDigit(ch)) {
-	      potNumber = true;
-	      if (Character.isLetter(ch)) {
-		isWord = true;
-	      }
-	      j++;
-	    } else if ((!m_DisallowInternalPeriods && (ch == '.')) ||
-		       (ch == '@') ||
-		       (ch == '_') ||
-		       (ch == '&') ||
-		       (ch == '/') ||
-		       (ch == '-')) {
-	      if ((j > 0) && (j  + 1 < str.length()) &&
-		  Character.isLetterOrDigit(str.charAt(j - 1)) &&
-		  Character.isLetterOrDigit(str.charAt(j + 1))) {
-		j++;
-	      } else {
-		break;
-	      }
-	    } else if (ch == '\'') {
-	      if ((j > 0) &&
-		  Character.isLetterOrDigit(str.charAt(j - 1))) {
-		j++;
-	      } else {
-		break;
-	      }
-	    } else {
-	      break;
-	    }
-	  }
-	  if (isWord == true) {
-	    if (!phraseStart) {
-	      if (haveSeenHyphen) {
-		resultStr.append('-');
-	      } else if (haveSeenSlash) {
-		resultStr.append('/');
-	      } else {
-		resultStr.append(' ');
-	      }
-	    }
-	    resultStr.append(str.substring(startj, j));
-	    if (j == str.length()) {
-	      break;
-	    }
-	    phraseStart = false;
-	    seenNewLine = false;
-	    haveSeenHyphen = false;
-	    haveSeenSlash = false;
-	    if (Character.isWhitespace(str.charAt(j))) {
-	      if (str.charAt(j) == '\n') {
-		seenNewLine = true;
-	      } 
-	    } else if (str.charAt(j) == '-') {
-	      haveSeenHyphen = true;
-	    } else if (str.charAt(j) == '/') {
-	      haveSeenSlash = true;
-	    } else {
-	      phraseStart = true;
-	      resultStr.append('\n');
-	    }
-	    j++;
-	  } else if (j == str.length()) {
-	    break;
-	  } else if (str.charAt(j) == '\n') {
-	    if (seenNewLine) {
-	      if (phraseStart == false) {
-		resultStr.append('\n');
-		phraseStart = true;
-	      }
-	    } else if (potNumber) {
-	      if (phraseStart == false) {
-		phraseStart = true;
-		resultStr.append('\n');
-	      }
-	    }
-	    seenNewLine = true;
-	    j++;
-	  } else if (Character.isWhitespace(str.charAt(j))) {
-	    if (potNumber) {
-	      if (phraseStart == false) {
-		phraseStart = true;
-		resultStr.append('\n');
-	      }
-	    }
-	    j++;
-	  } else {
-	    if (phraseStart == false) {
-	      resultStr.append('\n');
-	      phraseStart = true;
-	    }
-	    j++;
-	  }
-	}
-	int index = getOutputFormat().attribute(i).
-	  addStringValue(resultStr.toString());
-	instVals[i] = (double)index;
-      }
+    /**
+     * Signify that this batch of input to the filter is finished. If
+     * the filter requires all instances prior to filtering, output()
+     * may now be called to retrieve the filtered instances. Any
+     * subsequent instances filtered should be filtered based on setting
+     * obtained from the first batch (unless the inputFormat has been
+     * re-assigned or new options have been set). This default
+     * implementation assumes all instance processing occurs during
+     * inputFormat() and input().
+     *
+     * @return true if there are instances pending output
+     * @throws NullPointerException if no input structure has been defined,
+     * @throws Exception            if there was a problem finishing the batch.
+     */
+    public boolean batchFinished() throws Exception {
+
+        if (getInputFormat() == null) {
+            throw new NullPointerException("No input instance format defined");
+        }
+        m_NewBatch = true;
+        return (numPendingOutput() != 0);
     }
-    Instance inst = new Instance(instance.weight(), instVals);
-    inst.setDataset(getOutputFormat());
-    push(inst);
-  }
 
-  /**
-   * Returns the tip text for this property
-   *
-   * @return tip text for this property suitable for
-   * displaying in the explorer/experimenter gui
-   */
-  public String invertSelectionTipText() {
+    /**
+     * Main method for testing this class.
+     *
+     * @param argv should contain arguments to the filter: use -h for help
+     */
+    public static void main(String[] argv) {
 
-    return "If set to false, the specified attributes will be processed;"
-      + " If set to true, specified attributes won't be processed.";
-  }
+        try {
+            if (Utils.getFlag('b', argv)) {
+                Filter.batchFilterFile(new KEAPhraseFilter(), argv);
+            } else {
+                Filter.filterFile(new KEAPhraseFilter(), argv);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
-  /**
-   * Get whether the supplied columns are to be processed
-   *
-   * @return true if the supplied columns won't be processed
-   */
-  public boolean getInvertSelection() {
+    /**
+     * Converts an instance by removing all non-alphanumeric characters
+     * from its string attribute values.
+     */
+    private void convertInstance(Instance instance) throws Exception {
 
-    return m_SelectCols.getInvert();
-  }
+        double[] instVals = new double[instance.numAttributes()];
 
-  /**
-   * Set whether selected columns should be processed. If true the 
-   * selected columns won't be processed.
-   *
-   * @param invert the new invert setting
-   */
-  public void setInvertSelection(boolean invert) {
+        for (int i = 0; i < instance.numAttributes(); i++) {
+            if (!instance.attribute(i).isString() ||
+                    instance.isMissing(i)) {
+                instVals[i] = instance.value(i);
+            } else {
+                if (!m_SelectCols.isInRange(i)) {
+                    int index = getOutputFormat().attribute(i).
+                            addStringValue(instance.stringValue(i));
+                    instVals[i] = (double) index;
+                    continue;
+                }
+                String str = instance.stringValue(i);
+                StringBuffer resultStr = new StringBuffer();
+                int j = 0;
+                boolean phraseStart = true;
+                boolean seenNewLine = false;
+                boolean haveSeenHyphen = false;
+                boolean haveSeenSlash = false;
+                while (j < str.length()) {
+                    boolean isWord = false;
+                    boolean potNumber = false;
+                    int startj = j;
+                    while (j < str.length()) {
+                        char ch = str.charAt(j);
+                        if (Character.isLetterOrDigit(ch)) {
+                            potNumber = true;
+                            if (Character.isLetter(ch)) {
+                                isWord = true;
+                            }
+                            j++;
+                        } else if ((!m_DisallowInternalPeriods && (ch == '.')) ||
+                                (ch == '@') ||
+                                (ch == '_') ||
+                                (ch == '&') ||
+                                (ch == '/') ||
+                                (ch == '-')) {
+                            if ((j > 0) && (j + 1 < str.length()) &&
+                                    Character.isLetterOrDigit(str.charAt(j - 1)) &&
+                                    Character.isLetterOrDigit(str.charAt(j + 1))) {
+                                j++;
+                            } else {
+                                break;
+                            }
+                        } else if (ch == '\'') {
+                            if ((j > 0) &&
+                                    Character.isLetterOrDigit(str.charAt(j - 1))) {
+                                j++;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    if (isWord == true) {
+                        if (!phraseStart) {
+                            if (haveSeenHyphen) {
+                                resultStr.append('-');
+                            } else if (haveSeenSlash) {
+                                resultStr.append('/');
+                            } else {
+                                resultStr.append(' ');
+                            }
+                        }
+                        resultStr.append(str.substring(startj, j));
+                        if (j == str.length()) {
+                            break;
+                        }
+                        phraseStart = false;
+                        seenNewLine = false;
+                        haveSeenHyphen = false;
+                        haveSeenSlash = false;
+                        if (Character.isWhitespace(str.charAt(j))) {
+                            if (str.charAt(j) == '\n') {
+                                seenNewLine = true;
+                            }
+                        } else if (str.charAt(j) == '-') {
+                            haveSeenHyphen = true;
+                        } else if (str.charAt(j) == '/') {
+                            haveSeenSlash = true;
+                        } else {
+                            phraseStart = true;
+                            resultStr.append('\n');
+                        }
+                        j++;
+                    } else if (j == str.length()) {
+                        break;
+                    } else if (str.charAt(j) == '\n') {
+                        if (seenNewLine) {
+                            if (phraseStart == false) {
+                                resultStr.append('\n');
+                                phraseStart = true;
+                            }
+                        } else if (potNumber) {
+                            if (phraseStart == false) {
+                                phraseStart = true;
+                                resultStr.append('\n');
+                            }
+                        }
+                        seenNewLine = true;
+                        j++;
+                    } else if (Character.isWhitespace(str.charAt(j))) {
+                        if (potNumber) {
+                            if (phraseStart == false) {
+                                phraseStart = true;
+                                resultStr.append('\n');
+                            }
+                        }
+                        j++;
+                    } else {
+                        if (phraseStart == false) {
+                            resultStr.append('\n');
+                            phraseStart = true;
+                        }
+                        j++;
+                    }
+                }
+                int index = getOutputFormat().attribute(i).
+                        addStringValue(resultStr.toString());
+                instVals[i] = (double) index;
+            }
+        }
+        Instance inst = new Instance(instance.weight(), instVals);
+        inst.setDataset(getOutputFormat());
+        push(inst);
+    }
 
-    m_SelectCols.setInvert(invert);
-  }
+    /**
+     * Returns the tip text for this property
+     *
+     * @return tip text for this property suitable for
+     * displaying in the explorer/experimenter gui
+     */
+    public String invertSelectionTipText() {
 
-  /**
-   * Returns the tip text for this property
-   *
-   * @return tip text for this property suitable for
-   * displaying in the explorer/experimenter gui
-   */
-  public String disallowInternalPeriodsTipText() {
+        return "If set to false, the specified attributes will be processed;"
+                + " If set to true, specified attributes won't be processed.";
+    }
 
-    return "If set to false, internal periods are allowed.";
-  }
+    /**
+     * Get whether the supplied columns are to be processed
+     *
+     * @return true if the supplied columns won't be processed
+     */
+    public boolean getInvertSelection() {
 
-  /**
-   * Get whether the supplied columns are to be processed
-   *
-   * @return true if the supplied columns won't be processed
-   */
-  public boolean getDisallowInternalPeriods() {
+        return m_SelectCols.getInvert();
+    }
 
-    return m_DisallowInternalPeriods;
-  }
+    /**
+     * Set whether selected columns should be processed. If true the
+     * selected columns won't be processed.
+     *
+     * @param invert the new invert setting
+     */
+    public void setInvertSelection(boolean invert) {
 
-  /**
-   * Set whether selected columns should be processed. If true the 
-   * selected columns won't be processed.
-   *
-   * @param invert the new invert setting
-   */
-  public void setDisallowInternalPeriods(boolean disallow) {
+        m_SelectCols.setInvert(invert);
+    }
 
-    m_DisallowInternalPeriods = disallow;
-  }
+    /**
+     * Returns the tip text for this property
+     *
+     * @return tip text for this property suitable for
+     * displaying in the explorer/experimenter gui
+     */
+    public String disallowInternalPeriodsTipText() {
 
-  /**
-   * Returns the tip text for this property
-   *
-   * @return tip text for this property suitable for
-   * displaying in the explorer/experimenter gui
-   */
-  public String attributeIndicesTipText() {
+        return "If set to false, internal periods are allowed.";
+    }
 
-    return "Specify range of attributes to act on."
-      + " This is a comma separated list of attribute indices, with"
-      + " \"first\" and \"last\" valid values. Specify an inclusive"
-      + " range with \"-\". E.g: \"first-3,5,6-10,last\".";
-  }
+    /**
+     * Get whether the supplied columns are to be processed
+     *
+     * @return true if the supplied columns won't be processed
+     */
+    public boolean getDisallowInternalPeriods() {
 
-  /**
-   * Get the current range selection.
-   *
-   * @return a string containing a comma separated list of ranges
-   */
-  public String getAttributeIndices() {
+        return m_DisallowInternalPeriods;
+    }
 
-    return m_SelectCols.getRanges();
-  }
+    /**
+     * Set whether selected columns should be processed. If true the
+     * selected columns won't be processed.
+     *
+     * @param invert the new invert setting
+     */
+    public void setDisallowInternalPeriods(boolean disallow) {
 
-  /**
-   * Set which attributes are to be processed
-   *
-   * @param rangeList a string representing the list of attributes.  Since
-   * the string will typically come from a user, attributes are indexed from
-   * 1. <br>
-   * eg: first-3,5,6-last
-   */
-  public void setAttributeIndices(String rangeList) {
+        m_DisallowInternalPeriods = disallow;
+    }
 
-    m_SelectCols.setRanges(rangeList);
-  }
+    /**
+     * Returns the tip text for this property
+     *
+     * @return tip text for this property suitable for
+     * displaying in the explorer/experimenter gui
+     */
+    public String attributeIndicesTipText() {
 
-  /**
-   * Set which attributes are to be processed
-   *
-   * @param attributes an array containing indexes of attributes to select.
-   * Since the array will typically come from a program, attributes are indexed
-   * from 0.
-   */
-  public void setAttributeIndicesArray(int [] attributes) {
-    
-    setAttributeIndices(Range.indicesToRangeList(attributes));
-  }
+        return "Specify range of attributes to act on."
+                + " This is a comma separated list of attribute indices, with"
+                + " \"first\" and \"last\" valid values. Specify an inclusive"
+                + " range with \"-\". E.g: \"first-3,5,6-10,last\".";
+    }
+
+    /**
+     * Get the current range selection.
+     *
+     * @return a string containing a comma separated list of ranges
+     */
+    public String getAttributeIndices() {
+
+        return m_SelectCols.getRanges();
+    }
+
+    /**
+     * Set which attributes are to be processed
+     *
+     * @param rangeList a string representing the list of attributes.  Since
+     *                  the string will typically come from a user, attributes are indexed from
+     *                  1. <br>
+     *                  eg: first-3,5,6-last
+     */
+    public void setAttributeIndices(String rangeList) {
+
+        m_SelectCols.setRanges(rangeList);
+    }
+
+    /**
+     * Set which attributes are to be processed
+     *
+     * @param attributes an array containing indexes of attributes to select.
+     *                   Since the array will typically come from a program, attributes are indexed
+     *                   from 0.
+     */
+    public void setAttributeIndicesArray(int[] attributes) {
+
+        setAttributeIndices(Range.indicesToRangeList(attributes));
+    }
 }

@@ -37,220 +37,213 @@ import javax.swing.JOptionPane;
 @CreoleResource(name = "Corpus Indexing Support", tool = true, autoinstances = @AutoInstance)
 public class CorpusIndexingSupport extends ResourceHelper {
 
-  private static final long serialVersionUID = -968628391030653008L;
+    private static final long serialVersionUID = -968628391030653008L;
 
-  @Override
-  public void resourceLoaded(CreoleEvent e) {
-    super.resourceLoaded(e);
-    
-    if (e.getResource() instanceof IndexedCorpus) {
-      IndexedCorpus ic = (IndexedCorpus)e.getResource();
-      
-      IndexDefinition definition = (IndexDefinition)ic.getFeatures().get(GateConstants.CORPUS_INDEX_DEFINITION_FEATURE_KEY);
-      if(definition != null) {
-        ic.setIndexDefinition(definition);
-      }
-    }
-  }
-  
-  @Override
-  protected List<Action> buildActions(NameBearerHandle handle) {
-    List<Action> actions = new ArrayList<Action>();
-    
-    if(handle.getTarget() instanceof IndexedCorpus) {
-      IndexedCorpus ic = (IndexedCorpus)handle.getTarget();
-      if(ic.getDataStore() != null
-              && ic.getDataStore() instanceof LuceneDataStoreImpl) {
-        // do nothing
-      }
-      else {
-        actions.add(new CreateIndexAction(handle));
-        actions.add(new OptimizeIndexAction(handle));
-        actions.add(new DeleteIndexAction(handle));
-      }
-    }
-    
-    return actions;
-  }
-  
-  class CreateIndexAction extends AbstractAction {
-    private static final long serialVersionUID = -292879296310753260L;
+    @Override
+    public void resourceLoaded(CreoleEvent e) {
+        super.resourceLoaded(e);
 
-    private IndexedCorpus target;
-    final private NameBearerHandle handle;
-    
-    CreateIndexAction(NameBearerHandle handle) {
-      super("Index Corpus");
-      this.target = (IndexedCorpus)handle.getTarget();
-      this.handle = handle;
-      putValue(SHORT_DESCRIPTION, "Create index with documents from the corpus");
-      createIndexGui = new CreateIndexGUI();
+        if (e.getResource() instanceof IndexedCorpus) {
+            IndexedCorpus ic = (IndexedCorpus) e.getResource();
+
+            IndexDefinition definition = (IndexDefinition) ic.getFeatures().get(GateConstants.CORPUS_INDEX_DEFINITION_FEATURE_KEY);
+            if (definition != null) {
+                ic.setIndexDefinition(definition);
+            }
+        }
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-      boolean ok = OkCancelDialog.showDialog(handle.getLargeView(), createIndexGui,
-              "Index \"" + target.getName() + "\" corpus");
-      if(ok) {
-        DefaultIndexDefinition did = new DefaultIndexDefinition();
-        IREngine engine = createIndexGui.getIREngine();
-        did.setIrEngineClassName(engine.getClass().getName());
+    protected List<Action> buildActions(NameBearerHandle handle) {
+        List<Action> actions = new ArrayList<Action>();
 
-        did.setIndexLocation(createIndexGui.getIndexLocation().toString());
-
-        // add the content if wanted
-        if(createIndexGui.getUseDocumentContent()) {
-          did.addIndexField(new IndexField("body", new DocumentContentReader(),
-                  false));
-        }
-        // add all the features
-        Iterator<String> featIter = createIndexGui.getFeaturesList().iterator();
-        while(featIter.hasNext()) {
-          String featureName = featIter.next();
-          did.addIndexField(new IndexField(featureName, new FeatureReader(
-                  featureName), false));
+        if (handle.getTarget() instanceof IndexedCorpus) {
+            IndexedCorpus ic = (IndexedCorpus) handle.getTarget();
+            if (ic.getDataStore() != null
+                    && ic.getDataStore() instanceof LuceneDataStoreImpl) {
+                // do nothing
+            } else {
+                actions.add(new CreateIndexAction(handle));
+                actions.add(new OptimizeIndexAction(handle));
+                actions.add(new DeleteIndexAction(handle));
+            }
         }
 
-        target.setIndexDefinition(did);
-
-        Thread thread = new Thread(new Runnable() {
-          @Override
-          public void run() {
-            try {
-              handle.fireProgressChanged(1);
-              handle.fireStatusChanged("Indexing corpus...");
-              long start = System.currentTimeMillis();
-              target.getIndexManager().deleteIndex();
-              handle.fireProgressChanged(10);
-              target.getIndexManager().createIndex();
-              handle.fireProgressChanged(100);
-              handle.fireProcessFinished();
-              handle.fireStatusChanged("Corpus indexed in "
-                      + NumberFormat
-                              .getInstance()
-                              .format(
-                                      (double)(System.currentTimeMillis() - start) / 1000)
-                      + " seconds");
-            }
-            catch(IndexException ie) {
-              JOptionPane.showMessageDialog(handle.getLargeView() != null
-                      ? handle.getLargeView()
-                      : handle.getSmallView(), "Could not create index!\n "
-                      + "See \"Messages\" tab for details!", "GATE",
-                      JOptionPane.ERROR_MESSAGE);
-              ie.printStackTrace(Err.getPrintWriter());
-            }
-            finally {
-              handle.fireProcessFinished();
-            }
-          }
-        });
-        thread.setPriority(Thread.MIN_PRIORITY);
-        thread.start();
-      }
+        return actions;
     }
 
-    CreateIndexGUI createIndexGui;
-  }
+    class CreateIndexAction extends AbstractAction {
+        private static final long serialVersionUID = -292879296310753260L;
 
-  class OptimizeIndexAction extends AbstractAction {
-    private static final long serialVersionUID = 261845730081082766L;
+        private IndexedCorpus target;
+        final private NameBearerHandle handle;
 
-    private IndexedCorpus target;
-    final private NameBearerHandle handle;
-    
-    OptimizeIndexAction(NameBearerHandle handle) {
-      super("Optimize Index");
-      this.handle = handle;
-      this.target = (IndexedCorpus)handle.getTarget();
-      putValue(SHORT_DESCRIPTION, "Optimize existing index");
-    }
+        CreateIndexAction(NameBearerHandle handle) {
+            super("Index Corpus");
+            this.target = (IndexedCorpus) handle.getTarget();
+            this.handle = handle;
+            putValue(SHORT_DESCRIPTION, "Create index with documents from the corpus");
+            createIndexGui = new CreateIndexGUI();
+        }
 
-    @Override
-    public boolean isEnabled() {
-      return target.getIndexDefinition() != null;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      Thread thread = new Thread(new Runnable() {
         @Override
-        public void run() {
-          try {
-            handle.fireProgressChanged(1);
-            handle.fireStatusChanged("Optimising index...");
-            long start = System.currentTimeMillis();
-            target.getIndexManager().optimizeIndex();
-            handle.fireStatusChanged("Index optimised in "
-                    + NumberFormat
-                            .getInstance()
-                            .format(
-                                    (double)(System.currentTimeMillis() - start) / 1000)
-                    + " seconds");
-            handle.fireProcessFinished();
-          }
-          catch(IndexException ie) {
-            JOptionPane.showMessageDialog(handle.getLargeView() != null
-                    ? handle.getLargeView()
-                    : handle.getSmallView(), "Errors during optimisation!", "GATE",
-                    JOptionPane.PLAIN_MESSAGE);
-            ie.printStackTrace(Err.getPrintWriter());
-          }
-          finally {
-            handle.fireProcessFinished();
-          }
+        public void actionPerformed(ActionEvent e) {
+            boolean ok = OkCancelDialog.showDialog(handle.getLargeView(), createIndexGui,
+                    "Index \"" + target.getName() + "\" corpus");
+            if (ok) {
+                DefaultIndexDefinition did = new DefaultIndexDefinition();
+                IREngine engine = createIndexGui.getIREngine();
+                did.setIrEngineClassName(engine.getClass().getName());
+
+                did.setIndexLocation(createIndexGui.getIndexLocation().toString());
+
+                // add the content if wanted
+                if (createIndexGui.getUseDocumentContent()) {
+                    did.addIndexField(new IndexField("body", new DocumentContentReader(),
+                            false));
+                }
+                // add all the features
+                Iterator<String> featIter = createIndexGui.getFeaturesList().iterator();
+                while (featIter.hasNext()) {
+                    String featureName = featIter.next();
+                    did.addIndexField(new IndexField(featureName, new FeatureReader(
+                            featureName), false));
+                }
+
+                target.setIndexDefinition(did);
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            handle.fireProgressChanged(1);
+                            handle.fireStatusChanged("Indexing corpus...");
+                            long start = System.currentTimeMillis();
+                            target.getIndexManager().deleteIndex();
+                            handle.fireProgressChanged(10);
+                            target.getIndexManager().createIndex();
+                            handle.fireProgressChanged(100);
+                            handle.fireProcessFinished();
+                            handle.fireStatusChanged("Corpus indexed in "
+                                    + NumberFormat
+                                    .getInstance()
+                                    .format(
+                                            (double) (System.currentTimeMillis() - start) / 1000)
+                                    + " seconds");
+                        } catch (IndexException ie) {
+                            JOptionPane.showMessageDialog(handle.getLargeView() != null
+                                            ? handle.getLargeView()
+                                            : handle.getSmallView(), "Could not create index!\n "
+                                            + "See \"Messages\" tab for details!", "GATE",
+                                    JOptionPane.ERROR_MESSAGE);
+                            ie.printStackTrace(Err.getPrintWriter());
+                        } finally {
+                            handle.fireProcessFinished();
+                        }
+                    }
+                });
+                thread.setPriority(Thread.MIN_PRIORITY);
+                thread.start();
+            }
         }
-      });
-      thread.setPriority(Thread.MIN_PRIORITY);
-      thread.start();
-    }
-  }
 
-  class DeleteIndexAction extends AbstractAction {
-    private static final long serialVersionUID = 6121632107964572415L;
-
-    private IndexedCorpus target;
-    final private NameBearerHandle handle;
-    
-    DeleteIndexAction(NameBearerHandle handle) {
-      super("Delete Index");
-      this.handle = handle;
-      this.target = (IndexedCorpus)handle.getTarget();
-      putValue(SHORT_DESCRIPTION, "Delete existing index");
+        CreateIndexGUI createIndexGui;
     }
 
-    @Override
-    public boolean isEnabled() {
-      return target.getIndexDefinition() != null;
-    }
+    class OptimizeIndexAction extends AbstractAction {
+        private static final long serialVersionUID = 261845730081082766L;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      int answer = JOptionPane.showOptionDialog(handle.getLargeView() != null
-              ? handle.getLargeView()
-              : handle.getSmallView(), "Do you want to delete index?", "Gate",
-              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-              null, null);
-      if(answer == JOptionPane.YES_OPTION) {
-        try {
-          IndexedCorpus ic = target;
-          if(ic.getIndexManager() != null) {
-            ic.getIndexManager().deleteIndex();
-            ic.getFeatures().remove(
-                    GateConstants.CORPUS_INDEX_DEFINITION_FEATURE_KEY);
-          }
-          else {
-            JOptionPane.showMessageDialog(handle.getLargeView() != null
-                    ? handle.getLargeView()
-                    : handle.getSmallView(), "There is no index to delete!", "GATE",
-                    JOptionPane.PLAIN_MESSAGE);
-          }
+        private IndexedCorpus target;
+        final private NameBearerHandle handle;
+
+        OptimizeIndexAction(NameBearerHandle handle) {
+            super("Optimize Index");
+            this.handle = handle;
+            this.target = (IndexedCorpus) handle.getTarget();
+            putValue(SHORT_DESCRIPTION, "Optimize existing index");
         }
-        catch(gate.creole.ir.IndexException ie) {
-          ie.printStackTrace();
+
+        @Override
+        public boolean isEnabled() {
+            return target.getIndexDefinition() != null;
         }
-      }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        handle.fireProgressChanged(1);
+                        handle.fireStatusChanged("Optimising index...");
+                        long start = System.currentTimeMillis();
+                        target.getIndexManager().optimizeIndex();
+                        handle.fireStatusChanged("Index optimised in "
+                                + NumberFormat
+                                .getInstance()
+                                .format(
+                                        (double) (System.currentTimeMillis() - start) / 1000)
+                                + " seconds");
+                        handle.fireProcessFinished();
+                    } catch (IndexException ie) {
+                        JOptionPane.showMessageDialog(handle.getLargeView() != null
+                                        ? handle.getLargeView()
+                                        : handle.getSmallView(), "Errors during optimisation!", "GATE",
+                                JOptionPane.PLAIN_MESSAGE);
+                        ie.printStackTrace(Err.getPrintWriter());
+                    } finally {
+                        handle.fireProcessFinished();
+                    }
+                }
+            });
+            thread.setPriority(Thread.MIN_PRIORITY);
+            thread.start();
+        }
     }
-  }
+
+    class DeleteIndexAction extends AbstractAction {
+        private static final long serialVersionUID = 6121632107964572415L;
+
+        private IndexedCorpus target;
+        final private NameBearerHandle handle;
+
+        DeleteIndexAction(NameBearerHandle handle) {
+            super("Delete Index");
+            this.handle = handle;
+            this.target = (IndexedCorpus) handle.getTarget();
+            putValue(SHORT_DESCRIPTION, "Delete existing index");
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return target.getIndexDefinition() != null;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int answer = JOptionPane.showOptionDialog(handle.getLargeView() != null
+                            ? handle.getLargeView()
+                            : handle.getSmallView(), "Do you want to delete index?", "Gate",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                    null, null);
+            if (answer == JOptionPane.YES_OPTION) {
+                try {
+                    IndexedCorpus ic = target;
+                    if (ic.getIndexManager() != null) {
+                        ic.getIndexManager().deleteIndex();
+                        ic.getFeatures().remove(
+                                GateConstants.CORPUS_INDEX_DEFINITION_FEATURE_KEY);
+                    } else {
+                        JOptionPane.showMessageDialog(handle.getLargeView() != null
+                                        ? handle.getLargeView()
+                                        : handle.getSmallView(), "There is no index to delete!", "GATE",
+                                JOptionPane.PLAIN_MESSAGE);
+                    }
+                } catch (gate.creole.ir.IndexException ie) {
+                    ie.printStackTrace();
+                }
+            }
+        }
+    }
 
 }

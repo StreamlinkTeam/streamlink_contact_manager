@@ -13,17 +13,21 @@ public interface ActionRepository extends JpaRepository<Action, Long> {
 
     Optional<Action> findOneByReference(String reference);
 
-    Optional<Action> findOneByReferenceAndDeveloperReference(String reference,String developerReference);
+    Optional<Action> findOneByReferenceAndDeveloperReference(String reference, String developerReference);
 
     List<Action> findByDeveloperReference(String developerReference);
 
-    Optional<Action> findOneByReferenceAndSocietyContactReference(String reference,String societyContactReference);
+    Optional<Action> findOneByReferenceAndProjectReference(String reference, String projectReference);
 
-    Optional<Action> findOneByReferenceAndSocietyContactSocietyReference(String reference,String societyReference);
+    List<Action> findByProjectReference(String projectReference);
 
-    List<Action> findBySocietyContactReference(String societyContactReference);
+    Optional<Action> findOneByReferenceAndSocietyContactReferenceAndProjectIsNull(String reference, String societyContactReference);
 
-    List<Action> findBySocietyContactSocietyReference(String societyReference);
+    Optional<Action> findOneByReferenceAndSocietyContactSocietyReferenceAndProjectIsNull(String reference, String societyReference);
+
+    List<Action> findBySocietyContactReferenceAndProjectIsNull(String societyContactReference);
+
+    List<Action> findBySocietyContactSocietyReferenceAndProjectIsNull(String societyReference);
 
 
 }

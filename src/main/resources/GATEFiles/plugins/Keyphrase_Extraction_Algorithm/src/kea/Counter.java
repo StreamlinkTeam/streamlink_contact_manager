@@ -29,48 +29,51 @@ import java.io.*;
  */
 @SuppressWarnings("serial")
 public class Counter implements Serializable {
-  
-  /** Integer value stored */
+
+    /**
+     * Integer value stored
+     */
     private int m_val = 1;
-  
-  /**
-   * Initializes the counter to 1
-   */
-  public Counter() {
-    
-    m_val = 1;
-  }
-  
-  /**
-   * Initializes the counter to the given value
-   */
-  public Counter(int val) {
-    
-    m_val = val;
-  }
-  
-  /**
-   * Increments the counter.
-   */
-  public void increment() {
-    
-    m_val++;
-  }
-  
-  /**
-   * Gets the value.
-   * @return the value
-   */
-  public int value() {
-    
-    return m_val;
-  }
-  
-  /**
-   * Returns string containing value.
-   */
-  public String toString() {
-    
-    return String.valueOf(m_val);
-  }
+
+    /**
+     * Initializes the counter to 1
+     */
+    public Counter() {
+
+        m_val = 1;
+    }
+
+    /**
+     * Initializes the counter to the given value
+     */
+    public Counter(int val) {
+
+        m_val = val;
+    }
+
+    /**
+     * Increments the counter.
+     */
+    public void increment() {
+
+        m_val++;
+    }
+
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
+    public int value() {
+
+        return m_val;
+    }
+
+    /**
+     * Returns string containing value.
+     */
+    public String toString() {
+
+        return String.valueOf(m_val);
+    }
 }

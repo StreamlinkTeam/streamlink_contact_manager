@@ -40,36 +40,36 @@ import org.apache.commons.lang.StringEscapeUtils as SEU
 
 // gather up all the groups of co-extensive Lookup annotations
 inputAS["Lookup"].groupBy { [it.start(), it.end()] }.each { offsets, anns ->
-  // example of filtering - if each Lookup has a "count" feature then we can
-  // pick the top 8 (or fewer) sorted in descending order of count
-  def top8anns = anns.sort {
-    -1 * (it.features.count?.toInteger() ?: 0)
-  }.take(8)
-  
-  // randomize the order to avoid conditioning humans to always pick the
-  // first one
-  Collections.shuffle(top8anns)
+    // example of filtering - if each Lookup has a "count" feature then we can
+    // pick the top 8 (or fewer) sorted in descending order of count
+    def top8anns = anns.sort {
+        -1 * (it.features.count?.toInteger() ?: 0)
+    }.take(8)
 
-  def mentionFeatures = Factory.newFeatureMap()
-  def options = new LinkedHashMap()
-  top8anns.each { ann ->
-    // option is URI -> abstract if there is one
-    if(ann.features.connections) {
-      options[ann.features.inst] = ann.features.connections
-    } else {
-      // or URI -> URI-with-a-clickable-link if not
-      def htmlInst = SEU.escapeHtml(ann.features.inst)
-      options[ann.features.inst] = (htmlInst +
-        ' <a target="_blank" href="' + htmlInst + '">(details)</a>')
+    // randomize the order to avoid conditioning humans to always pick the
+    // first one
+    Collections.shuffle(top8anns)
+
+    def mentionFeatures = Factory.newFeatureMap()
+    def options = new LinkedHashMap()
+    top8anns.each { ann ->
+        // option is URI -> abstract if there is one
+        if (ann.features.connections) {
+            options[ann.features.inst] = ann.features.connections
+        } else {
+            // or URI -> URI-with-a-clickable-link if not
+            def htmlInst = SEU.escapeHtml(ann.features.inst)
+            options[ann.features.inst] = (htmlInst +
+                    ' <a target="_blank" href="' + htmlInst + '">(details)</a>')
+        }
     }
-  }
-  mentionFeatures.options = options
+    mentionFeatures.options = options
 
-  // If this is gold, pull the right answer out of the key set
-  def keyMentions = doc.getAnnotations('Key').getContainedAnnotations(anns[0], "Mention")
-  if(keyMentions) {
-    mentionFeatures.correct = keyMentions.onlyAnn.features.inst
-  }
+    // If this is gold, pull the right answer out of the key set
+    def keyMentions = doc.getAnnotations('Key').getContainedAnnotations(anns[0], "Mention")
+    if (keyMentions) {
+        mentionFeatures.correct = keyMentions.onlyAnn.features.inst
+    }
 
-  outputAS.add(offsets[0] as Long, offsets[1] as Long, "Mention", mentionFeatures)
+    outputAS.add(offsets[0] as Long, offsets[1] as Long, "Mention", mentionFeatures)
 }

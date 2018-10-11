@@ -36,18 +36,18 @@ public class SocietyContactController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<SocietyContactResponseDTO> searchSocietyContacts(Pageable pageable, @RequestParam boolean fromAngular,
-                                                         @RequestParam(value = "societyReference") String societyReference,
-                                                         @RequestParam(required = false) String value,
-                                                         @RequestParam(required = false) SocietyStage stage,
-                                                         @RequestParam(required = false) Sort.Direction dir) {
+                                                                 @RequestParam(value = "societyReference") String societyReference,
+                                                                 @RequestParam(required = false) String value,
+                                                                 @RequestParam(required = false) SocietyStage stage,
+                                                                 @RequestParam(required = false) Sort.Direction dir) {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir,false);
         }
 
 
-        return societyContactService.searchSocietyContacts(value, stage,societyReference, pageable);
+        return societyContactService.searchSocietyContacts(value, stage, societyReference, pageable);
 
     }
 

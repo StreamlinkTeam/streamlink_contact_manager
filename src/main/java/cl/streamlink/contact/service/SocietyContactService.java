@@ -102,7 +102,7 @@ public class SocietyContactService {
 
     public JSONObject deleteSocietyContacts(String societyReference) throws ContactApiException {
 
-        projectService.deleteBySociety(societyReference,null);
+        projectService.deleteBySociety(societyReference, null);
         societyContactRepository.deleteBySocietyReference(societyReference);
 
         return MiscUtils.createSuccessfullyResult();
@@ -113,7 +113,7 @@ public class SocietyContactService {
         SocietyContact societyContact = societyContactRepository.findOneByReferenceAndSocietyReference(societyContactReference, societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("SocietyContact", societyContactReference));
 
-        projectService.deleteBySociety(null,societyContactReference);
+        projectService.deleteBySociety(null, societyContactReference);
 
         societyContactRepository.delete(societyContact);
 

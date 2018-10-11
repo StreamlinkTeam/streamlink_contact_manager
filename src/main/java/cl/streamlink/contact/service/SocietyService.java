@@ -72,6 +72,18 @@ public class SocietyService {
             return societyRepository.findAll().stream().map(mapper::fromBeanToDTOResponse).collect(Collectors.toList());
     }
 
+    public List<SocietyResponseDTO> searchSocieties(String term) {
+
+        if (MiscUtils.isEmpty(term) || term.length() < 3)
+            return Collections.EMPTY_LIST;
+
+        else return societyRepository.
+                findByLabelContaining(term).stream()
+                .map(society -> mapper.fromBeanToDTOResponse(society))
+                .collect(Collectors.toList());
+
+    }
+
     public Page<SocietyResponseDTO> searchSocieties(String value, SocietyStage stage,
                                                     ActivityArea activityArea, Pageable pageable) {
 

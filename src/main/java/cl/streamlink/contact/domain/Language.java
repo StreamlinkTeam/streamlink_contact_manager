@@ -58,8 +58,7 @@ public class Language implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         return Optional.ofNullable(object).filter(obj -> obj instanceof Developer).map(obj -> (Developer) obj).
                 filter(ag -> getId() == null || MiscUtils.equals(ag.getReference(), this.reference)).
                 filter(ag -> getId() != null || MiscUtils.equals(ag, this)).
@@ -67,8 +66,7 @@ public class Language implements Serializable {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         if (this.getReference() != null)
             return this.getReference().hashCode();
         else if (this.getId() != null)
