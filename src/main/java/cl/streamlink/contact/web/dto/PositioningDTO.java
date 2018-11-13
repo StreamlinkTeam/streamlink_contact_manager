@@ -16,9 +16,16 @@ public class PositioningDTO {
     @NotEmpty
     private String resourceReference;
 
+    @NotEmpty
     private String projectReference;
 
     private String responsibleReference;
+
+    private String client;
+
+    private String projectTitle;
+
+    private String resourceFullName;
 
     private PositioningStage stage;
 
@@ -70,6 +77,30 @@ public class PositioningDTO {
 
     public void setResponsibleReference(String responsibleReference) {
         this.responsibleReference = responsibleReference;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
+    }
+
+    public String getProjectTitle() {
+        return projectTitle;
+    }
+
+    public void setProjectTitle(String projectTitle) {
+        this.projectTitle = projectTitle;
+    }
+
+    public String getResourceFullName() {
+        return resourceFullName;
+    }
+
+    public void setResourceFullName(String resourceFullName) {
+        this.resourceFullName = resourceFullName;
     }
 
     public PositioningStage getStage() {

@@ -35,69 +35,65 @@ public class PositioningService {
     @Inject
     private ProjectRepository projectRepository;
 
-//    @Inject
-//    private ProjectService projectService;
-
     @Inject
     private ResourceRepository resourceRepository;
 
     @Inject
     private PositioningRepository positioningRepository;
 
+    @Inject
+    private UserService userService;
+
 
     @Inject
     private ApiMapper mapper;
 
-    public PositioningDTO createPositioning(PositioningDTO positioningDTO, String projectReference) {
+    public PositioningDTO createPositioning(PositioningDTO positioningDTO) {
 
-        Project project = projectRepository.findOneByReference(projectReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
+        projectRepository.findOneByReference(positioningDTO.getProjectReference())
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", positioningDTO.getProjectReference()));
 
-        Resource resource = resourceRepository.findOneByReference(positioningDTO.getResourceReference())
+        resourceRepository.findOneByReference(positioningDTO.getResourceReference())
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", positioningDTO.getResourceReference()));
 
+        positioningDTO.setResponsibleReference(userService.getCurrentUser().getReference());
 
-        positioningDTO.setProjectReference(projectReference);
+
         Positioning positioning = mapper.fromDTOToBean(positioningDTO);
 
         positioning.setReference(MiscUtils.generateReference());
+
         return mapper.fromBeanToDTO(positioningRepository.save(positioning));
     }
 
-    public PositioningDTO updatePositioning(PositioningDTO positioningDTO, String positioningReference, String projectReference) throws ContactApiException {
+    public PositioningDTO updatePositioning(PositioningDTO positioningDTO, String positioningReference) throws ContactApiException {
 
 
-        Project project = projectRepository.findOneByReference(projectReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
+        projectRepository.findOneByReference(positioningDTO.getProjectReference())
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", positioningDTO.getProjectReference()));
 
-        Resource resource = resourceRepository.findOneByReference(positioningDTO.getResourceReference())
+        resourceRepository.findOneByReference(positioningDTO.getResourceReference())
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", positioningDTO.getResourceReference()));
 
-        Positioning positioning = positioningRepository.findOneByReferenceAndProjectReference(positioningReference, projectReference)
+        Positioning positioning = positioningRepository.findOneByReference(positioningReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference));
 
         mapper.updateBeanFromDto(positioningDTO, positioning);
         return mapper.fromBeanToDTO(positioningRepository.save(positioning));
     }
 
-    public PositioningDTO getPositioning(String positioningReference, String projectReference) throws ContactApiException {
+    public PositioningDTO getPositioning(String positioningReference) throws ContactApiException {
 
-        Project project = projectRepository.findOneByReference(projectReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
 
-        return mapper.fromBeanToDTO(positioningRepository.findOneByReferenceAndProjectReference(positioningReference, projectReference)
+        return mapper.fromBeanToDTO(positioningRepository.findOneByReference(positioningReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference)));
     }
 
 
-    public List<PositioningDTO> getPositionings(String positioningReference) throws ContactApiException {
+    public List<PositioningDTO> getPositionings(String projectReference) throws ContactApiException {
 
-        if (MiscUtils.isNotEmpty(positioningReference))
-            return Collections.singletonList(mapper.fromBeanToDTO(positioningRepository.findOneByReference(positioningReference)
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference))));
 
-        else
-            return positioningRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+        return positioningRepository.findByProjectReference(projectReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
     public Page<PositioningDTO> searchPositionings(String value, ProjectStage projectStage, ProjectType projectType,
@@ -137,12 +133,10 @@ public class PositioningService {
                 .map(positioning -> mapper.fromBeanToDTO(positioning));
     }
 
-    public JSONObject deletePositioning(String positioningReference, String projectReference) throws ContactApiException {
+    public JSONObject deletePositioning(String positioningReference) throws ContactApiException {
 
-        Project project = projectRepository.findOneByReference(projectReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
 
-        Positioning positioning = positioningRepository.findOneByReferenceAndProjectReference(positioningReference, projectReference)
+        Positioning positioning = positioningRepository.findOneByReference(positioningReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference));
 
         positioningRepository.delete(positioning);

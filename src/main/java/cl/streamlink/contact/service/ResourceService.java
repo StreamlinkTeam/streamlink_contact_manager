@@ -101,7 +101,7 @@ public class ResourceService {
 
     public List<ResourceResponseDTO> getResources(String resourceReference) throws ContactApiException {
 
-        if (resourceReference != null)
+        if (MiscUtils.isNotEmpty(resourceReference))
             return Collections.singletonList(mapper.fromBeanToDTOResponse(resourceRepository.findOneByReference(resourceReference)
                     .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference))));
 

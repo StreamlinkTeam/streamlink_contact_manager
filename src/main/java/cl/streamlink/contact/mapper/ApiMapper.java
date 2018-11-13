@@ -62,7 +62,13 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(source = "resource.reference", target = "resourceReference"),
             @Mapping(source = "project.reference", target = "projectReference"),
-            @Mapping(source = "responsible.reference", target = "responsibleReference")
+            @Mapping(source = "responsible.reference", target = "responsibleReference"),
+            @Mapping(target = "client",
+                    expression = "java(bean.getProject().getSocietyContact().getSociety().getLabel().concat(\" - \")" +
+                            ".concat(bean.getProject().getSocietyContact().getFirstname()).concat(\" \")" +
+                            ".concat(bean.getProject().getSocietyContact().getLastname()))"),
+            @Mapping(source = "project.title", target = "projectTitle"),
+            @Mapping(target = "resourceFullName", expression = "java(bean.getResource().getFirstname()+\" \"+bean.getResource().getLastname())")
     })
     public abstract PositioningDTO fromBeanToDTO(Positioning bean);
 
@@ -438,7 +444,7 @@ public abstract class ApiMapper {
             @Mapping(target = "modifiedDate", ignore = true),
             @Mapping(target = "societyContact",
                     expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
-            @Mapping(target = "project",ignore = true),
+            @Mapping(target = "project", ignore = true),
             @Mapping(target = "developer", ignore = true),
             @Mapping(target = "responsible", ignore = true)
     })
