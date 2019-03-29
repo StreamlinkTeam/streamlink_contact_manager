@@ -1,11 +1,11 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Society;
-import cl.streamlink.contact.utils.enums.ActivityArea;
-import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.SocietyService;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.ActivityArea;
+import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.web.dto.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -79,7 +79,7 @@ public class SocietyController {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir,false);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir, false);
 
         }
 

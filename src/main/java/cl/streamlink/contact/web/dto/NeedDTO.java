@@ -1,13 +1,13 @@
 package cl.streamlink.contact.web.dto;
 
-
-import cl.streamlink.contact.utils.enums.ProjectStage;
-import cl.streamlink.contact.utils.enums.ProjectType;
-
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
-public class ProjectDTO {
+import javax.validation.constraints.NotEmpty;
+
+import cl.streamlink.contact.utils.enums.NeedStage;
+import cl.streamlink.contact.utils.enums.NeedType;
+
+public class NeedDTO {
 
     private String reference;
 
@@ -20,9 +20,9 @@ public class ProjectDTO {
 
     private String societyReference;
 
-    private ProjectType type;
+    private NeedType type;
 
-    private ProjectStage stage;
+    private NeedStage stage;
 
     private String rhReference;
 
@@ -72,19 +72,19 @@ public class ProjectDTO {
         this.societyReference = societyReference;
     }
 
-    public ProjectType getType() {
+    public NeedType getType() {
         return type;
     }
 
-    public void setType(ProjectType type) {
+    public void setType(NeedType type) {
         this.type = type;
     }
 
-    public ProjectStage getStage() {
+    public NeedStage getStage() {
         return stage;
     }
 
-    public void setStage(ProjectStage stage) {
+    public void setStage(NeedStage stage) {
         this.stage = stage;
     }
 

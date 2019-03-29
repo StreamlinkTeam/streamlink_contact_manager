@@ -1,8 +1,9 @@
 package cl.streamlink.contact.domain;
 
 import cl.streamlink.contact.utils.MiscUtils;
-import cl.streamlink.contact.utils.enums.ProjectStage;
-import cl.streamlink.contact.utils.enums.ProjectType;
+import cl.streamlink.contact.utils.enums.ActivityArea;
+import cl.streamlink.contact.utils.enums.NeedStage;
+import cl.streamlink.contact.utils.enums.NeedType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,10 +13,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Entity
-@Table(indexes = {@Index(name = "index_project_reference", columnList = "reference", unique = true)})
+@Table(indexes = {@Index(name = "index_need_reference", columnList = "reference", unique = true)})
 @EntityListeners(AuditingEntityListener.class)
-//ext pos
-public class Project {
+public class Need {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,30 +26,26 @@ public class Project {
 
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    private ProjectType type;
+    @ManyToOne
+    private User manager;
 
     @Enumerated(EnumType.STRING)
-    private ProjectStage stage;
+    private NeedType type;
+
+    @Enumerated(EnumType.STRING)
+    private NeedStage stage;
 
     @ManyToOne(optional = false)
     private SocietyContact societyContact;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "resource_id", nullable = true)
-    private Resource resource;
-
     @ManyToOne
     private User rh;
-
-    @ManyToOne
-    private User manager;
 
     @Lob
     private String note;
 
     @Embedded
-    private ProjectInformation projectInformation = new ProjectInformation();
+    private NeedInformation needInformation = new NeedInformation(ActivityArea.Media);
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
@@ -90,28 +87,20 @@ public class Project {
         this.manager = manager;
     }
 
-    public ProjectType getType() {
+    public NeedType getType() {
         return type;
     }
 
-    public void setType(ProjectType type) {
+    public void setType(NeedType type) {
         this.type = type;
     }
 
-    public ProjectStage getStage() {
+    public NeedStage getStage() {
         return stage;
     }
 
-    public void setStage(ProjectStage stage) {
+    public void setStage(NeedStage stage) {
         this.stage = stage;
-    }
-
-    public User getRh() {
-        return rh;
-    }
-
-    public void setRh(User rh) {
-        this.rh = rh;
     }
 
     public SocietyContact getSocietyContact() {
@@ -122,6 +111,14 @@ public class Project {
         this.societyContact = societyContact;
     }
 
+    public User getRh() {
+        return rh;
+    }
+
+    public void setRh(User rh) {
+        this.rh = rh;
+    }
+
     public String getNote() {
         return note;
     }
@@ -130,15 +127,12 @@ public class Project {
         this.note = note;
     }
 
-    public ProjectInformation getProjectInformation() {
-
-        if (projectInformation == null)
-            projectInformation = new ProjectInformation();
-        return projectInformation;
+    public NeedInformation getNeedInformation() {
+        return needInformation;
     }
 
-    public void setProjectInformation(ProjectInformation projectInformation) {
-        this.projectInformation = projectInformation;
+    public void setNeedInformation(NeedInformation needInformation) {
+        this.needInformation = needInformation;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -159,7 +153,7 @@ public class Project {
 
     @Override
     public boolean equals(Object object) {
-        return Optional.ofNullable(object).filter(obj -> obj instanceof Project).map(obj -> (Project) obj)
+        return Optional.ofNullable(object).filter(obj -> obj instanceof Need).map(obj -> (Need) obj)
                 .filter(ag -> getId() == null || MiscUtils.equals(ag.getReference(), this.getReference()))
                 .filter(ag -> getId() != null || MiscUtils.equals(ag, this)).isPresent();
     }
@@ -172,14 +166,6 @@ public class Project {
             return this.getId().hashCode();
         else
             return super.hashCode();
-    }
-
-    public Resource getResource() {
-        return resource;
-    }
-
-    public void setResource(Resource resource) {
-        this.resource = resource;
     }
 
 }

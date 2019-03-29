@@ -1,9 +1,11 @@
 package cl.streamlink.contact;
 
-import cl.streamlink.contact.utils.enums.Role;
 import cl.streamlink.contact.exception.ContactApiException;
+import cl.streamlink.contact.service.ProjectService;
+import cl.streamlink.contact.service.ResourceService;
 import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.utils.FakerService;
+import cl.streamlink.contact.utils.enums.Role;
 import cl.streamlink.contact.web.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+@EnableEurekaClient
 @SpringBootApplication(scanBasePackages = "cl.streamlink.contact")
 public class StreamlinkContactApplication implements CommandLineRunner {
 
@@ -26,6 +30,12 @@ public class StreamlinkContactApplication implements CommandLineRunner {
     @Autowired
     FakerService fakerService;
 
+    @Autowired
+    ResourceService rs;
+
+    @Autowired
+    ProjectService ps;
+
     public static void main(String[] args) {
         SpringApplication.run(StreamlinkContactApplication.class, args);
     }
@@ -33,6 +43,9 @@ public class StreamlinkContactApplication implements CommandLineRunner {
     @Override
     public void run(String... params) {
 
+        // ps.createProjectFromNeed("yAJvuOEXO4OWtuC");
+
+        // rs.createResourceFromDeveloper("lqg9DkPG2hSDObb");
         try {
             UserDTO admin = new UserDTO();
             admin.setLastname("admin");
@@ -59,9 +72,9 @@ public class StreamlinkContactApplication implements CommandLineRunner {
             logger.warn(e.getMessage());
         }
 
-        /*fakerService.deleteAll();
-        fakerService.generateFakerDeveloperData(10);
-        fakerService.generateFakerResourceDate(10);
-        fakerService.generateFakerSocietyData(20, 10);*/
+//        fakerService.deleteAll();
+//        fakerService.generateFakerDeveloperData(10);
+//        fakerService.generateFakerResourceDate(10);
+//        fakerService.generateFakerSocietyData(20,10);
     }
 }

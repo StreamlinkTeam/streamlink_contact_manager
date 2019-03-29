@@ -3,12 +3,12 @@ package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Society;
 import cl.streamlink.contact.domain.SocietyContact;
-import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.SocietyContactRepository;
 import cl.streamlink.contact.repository.SocietyRepository;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.web.dto.ContactDTO;
 import cl.streamlink.contact.web.dto.SocietyContactDTO;
 import cl.streamlink.contact.web.dto.SocietyContactResponseDTO;

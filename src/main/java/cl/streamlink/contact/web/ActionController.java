@@ -204,4 +204,11 @@ public class ActionController {
 
         return actionService.deleteProjectAction(reference, projectReference);
     }
+
+
+    @GetMapping
+    public List<Action> getActions() {
+        return actionService.getActions();
+    }
+
 }

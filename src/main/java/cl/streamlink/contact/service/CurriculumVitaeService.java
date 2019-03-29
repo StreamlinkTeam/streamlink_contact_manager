@@ -31,16 +31,12 @@ import java.util.stream.Collectors;
 public class CurriculumVitaeService {
 
     private final Logger logger = LoggerFactory.getLogger(CurriculumVitaeService.class);
-
-    @Inject
-    private ApiMapper mapper;
-
     @Value("${contact.cv.url}")
     String baseUrl;
-
     @Value("${contact.cv.path}")
     String basePath;
-
+    @Inject
+    private ApiMapper mapper;
     @Inject
     private UserRepository userRepository;
 

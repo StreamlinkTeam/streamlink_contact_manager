@@ -32,6 +32,9 @@ public class FakerService {
     private ProjectService projectService;
 
     @Inject
+    private NeedService needService;
+
+    @Inject
     private ResourceService resourceService;
 
     @Inject
@@ -44,6 +47,38 @@ public class FakerService {
     private UserService userService;
 
     private Faker faker = new Faker(new Locale("fr", "fr"));
+
+
+    private void generateNeed(String societyContactReference) {
+
+        List<UserDTO> users = userService.getAllUsers();
+        NeedDTO need = new NeedDTO();
+
+        need.setSocietyContactReference(societyContactReference);
+
+        need.setTitle(faker.name().title());
+        need.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+        need.setRhReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+        need.setNote(faker.lorem().paragraph());
+        need.setStage(NeedStage.values()[faker.number().numberBetween(1, ProjectStage.values().length - 1) - 1]);
+        need.setType(NeedType.values()[faker.number().numberBetween(1, ProjectType.values().length - 1) - 1]);
+
+        need = needService.createNeed(need);
+
+        NeedInformationDTO needInformation = new NeedInformationDTO();
+        needInformation.setBudget(BigDecimal.valueOf(faker.number().randomNumber(4, true)));
+        needInformation.setActivityArea(ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
+        needInformation.setClosingDate(LocalDate.now().plusMonths(faker.number().numberBetween(10, 20)));
+        needInformation.setResponseDate(LocalDate.now().plusMonths(faker.number().numberBetween(0, 6)));
+        needInformation.setStartingDate(LocalDate.now().plusMonths(faker.number().numberBetween(5, 8)));
+        needInformation.setDurationByMonth(faker.number().numberBetween(5, 15));
+        needInformation.setCurrency(Currency.values()[faker.number().numberBetween(0, Currency.values().length)]);
+        needInformation.setPlace(faker.address().country());
+
+        needService.updateNeedInformation(needInformation, need.getReference());
+        generatePositioning(need.getReference());
+
+    }
 
     public void generateFakerSocietyData(Integer societySize, Integer societyContactSize) {
 
@@ -147,30 +182,30 @@ public class FakerService {
 
     }
 
-    private void generatePositioning(String projectReference)
-    {
+    private void generatePositioning(String projectReference) {
 
         List<ResourceResponseDTO> resources = resourceService.getResources(null);
         List<UserDTO> users = userService.getAllUsers();
 
         PositioningDTO positioning = new PositioningDTO();
 
-        positioning.setProjectReference(projectReference);
+        // positioning.setProjectReference(projectReference);
+        positioning.setNeedReference(projectReference);
+
         positioning.setResourceReference(resources.get(faker.number().numberBetween(0, resources.size())).getReference());
         positioning.setResponsibleReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
         positioning.setStartDate(LocalDate.now().plusMonths(faker.number().numberBetween(5, 8)));
         positioning.setCjm(BigDecimal.valueOf(faker.number().randomNumber(3, true)));
         positioning.setTjm(BigDecimal.valueOf(faker.number().randomNumber(3, true)));
 
-        positioning.setFreeDays(faker.number().numberBetween(14,20));
-        positioning.setInvoicedDays(faker.number().numberBetween(20,40));
+        positioning.setFreeDays(faker.number().numberBetween(14, 20));
+        positioning.setInvoicedDays(faker.number().numberBetween(20, 40));
 
         positioning.setNote(faker.lorem().paragraph());
         positioning.setStage(PositioningStage.values()[faker.number().numberBetween(1, PositioningStage.values().length - 1) - 1]);
 
         positioningService.createPositioning(positioning);
     }
-
 
 
     public void deleteAll() {

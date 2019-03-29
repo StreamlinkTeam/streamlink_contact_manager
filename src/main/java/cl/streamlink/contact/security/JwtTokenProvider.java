@@ -1,7 +1,7 @@
 package cl.streamlink.contact.security;
 
-import cl.streamlink.contact.utils.enums.Role;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.Role;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

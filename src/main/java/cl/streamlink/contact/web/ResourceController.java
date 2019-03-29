@@ -6,7 +6,10 @@ import cl.streamlink.contact.service.CurriculumVitaeService;
 import cl.streamlink.contact.service.DeveloperService;
 import cl.streamlink.contact.service.ResourceService;
 import cl.streamlink.contact.utils.MiscUtils;
-import cl.streamlink.contact.utils.enums.*;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
+import cl.streamlink.contact.utils.enums.ResourceStage;
+import cl.streamlink.contact.utils.enums.ResourceType;
 import cl.streamlink.contact.web.dto.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -104,7 +107,7 @@ public class ResourceController {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir,false);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir, false);
         }
         return resourceService.searchResources(value, stage, experience, formation, type, pageable);
 
@@ -267,4 +270,12 @@ public class ResourceController {
     public List<CurriculumVitaeDTO> findResourceCVs(@RequestParam(value = "resourceReference") String resourceReference) throws ContactApiException {
         return curriculumVitaeService.findDeveloperCVs(resourceReference);
     }
+
+    @RequestMapping(value = "/auto-complete", method = RequestMethod.GET)
+    public List<ResourceResponseDTO> getResources(@RequestParam(required = false) String term) {
+        return resourceService.searchResources(term);
+
+    }
+
+
 }

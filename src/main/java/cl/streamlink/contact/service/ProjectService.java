@@ -4,6 +4,8 @@ package cl.streamlink.contact.service;
 import cl.streamlink.contact.domain.Project;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
+import cl.streamlink.contact.repository.NeedRepository;
+import cl.streamlink.contact.repository.PositioningRepository;
 import cl.streamlink.contact.repository.ProjectRepository;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.ActivityArea;
@@ -31,6 +33,12 @@ public class ProjectService {
 
     @Inject
     private ProjectRepository projectRepository;
+
+    @Inject
+    private NeedRepository needRepository;
+
+    @Inject
+    private PositioningRepository positioningRepository;
 
 
     @Inject
@@ -101,6 +109,18 @@ public class ProjectService {
                 .map(project -> mapper.fromBeanToDTOResponse(project));
     }
 
+
+    public List<ProjectResponseDTO> searchProjects(String term) {
+
+        if (MiscUtils.isEmpty(term) || term.length() < 3)
+            return Collections.EMPTY_LIST;
+
+        else return projectRepository.findByTitleContaining(term).stream()
+                .map(project -> mapper.fromBeanToDTOResponse(project))
+                .collect(Collectors.toList());
+
+    }
+
     public JSONObject deleteProject(String projectReference) throws ContactApiException {
 
         Project project = projectRepository.findOneByReference(projectReference)
@@ -140,4 +160,28 @@ public class ProjectService {
         projectInformation.setProjectReference(projectReference);
         return projectInformation;
     }
+
+//    public ProjectDTO createProjectFromNeed(String needReference) {
+//
+//        if (!projectRepository.existsByReference(needReference)) {
+//            Need need = needRepository.findOneByReference(needReference)
+//                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", needReference));
+//
+//            Project project = mapper.fromNeedToProject(need);
+//            return mapper.fromBeanToDTO(projectRepository.save(project));
+//        } else
+//            throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
+//    }
+//    
+//    public ProjectDTO createProjectFromPositioning(String positioningReference) {
+//
+//        if (!projectRepository.existsByReference(positioningReference)) {
+//        	Positioning positioning = positioningRepository.findOneByReference(positioningReference)
+//                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference));
+//
+//            Project project = mapper.fromPositioningToProject(positioning);
+//            return mapper.fromBeanToDTO(projectRepository.save(project));
+//        } else
+//            throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
+//    }
 }

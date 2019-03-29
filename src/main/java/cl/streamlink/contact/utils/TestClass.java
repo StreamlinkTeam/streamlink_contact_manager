@@ -1,11 +1,7 @@
-
 package cl.streamlink.contact.utils;
 
 
-import org.springframework.web.client.RestTemplate;
-
 import java.io.IOException;
-import java.util.Date;
 
 public class TestClass {
 
@@ -97,15 +93,15 @@ public class TestClass {
     public static void main(String[] args) throws IOException {
 
 
-        System.err.println(new Date(1536255949));
-        System.err.println(new Date().getTime());
+        //System.err.println(new Date(1536255949));
+        // System.err.println(new Date().getTime());
 //        MultiValueMap<String, Object> parts =
 //                new LinkedMultiValueMap<>();
 //        parts.add("document", new File("C:\\ldk\\cv","CHEMAKH_Lazher_Ingénieur Informatique __FR.docx"));
 //        parts.add("product_code", "e11adbba5cffb9a8b529097145a2a86f");
 //
 //
-        RestTemplate restTemplate = new RestTemplate();
+        //       RestTemplate restTemplate = new RestTemplate();
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 //

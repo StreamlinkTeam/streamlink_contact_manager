@@ -2,7 +2,6 @@ package cl.streamlink.contact.utils;
 
 import java.time.Instant;
 import java.time.temporal.ChronoField;
-import java.util.function.Predicate;
 
 public class TestClassImpl {
 

@@ -1,37 +1,56 @@
-spring:
-  #  h2:
-  #    console:
-  #      enabled: true
-  #      path: /h2
-  #  datasource:
-  #    url: jdbc:h2:file:~/developer
-  #    username: test
-  #    password:
-  #    driver-class-name: org.h2.Driver
-  datasource:
-    url: jdbc:mysql://localhost:3306/contact?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
-    name: contact
-    username: root
-    password: root
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      connection-timeout: 60000
-      maximum-pool-size: 50
-      pool-name: contact_pool
-      data-source-properties:
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        useServerPrepStmts: true
-
-contact:
-  security:
-    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJhdXRoIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE1MzMxMzg3MzIsImV4cCI6MTUzNjczODczMn0.AiXci7rjitucF9gyd8Rel-eV9p3hrIOVd54j0Z8OW8Q
-  cv:
-    path: C:\ldk\cv\
-    url: http://localhost:8000/
-  gate:
-    home: C:\ldk\workspace\streamlink_condidats_manager\src\main\resources\GATEFiles
-    plugins: C:\ldk\workspace\streamlink_condidats_manager\src\main\resources\GATEFiles\plugins
-  hireability:
-    path: C:\ldk\cv\hireability
+#server.port: 9090
+#
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/contact?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+#    name: contact
+#    username: root
+#    password: root
+#    type: com.zaxxer.hikari.HikariDataSource
+#    hikari:
+#      connection-timeout: 60000
+#      maximum-pool-size: 50
+#      pool-name: contact_pool
+#      data-source-properties:
+#        cachePrepStmts: true
+#        prepStmtCacheSize: 250
+#        prepStmtCacheSqlLimit: 2048
+#        useServerPrepStmts: true        
+#  jpa:
+#    database: MYSQL
+#    show_sql: true
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: false
+#        cache.use_query_cache: false
+#        generate_statistics: false
+#        dialect: org.hibernate.dialect.MySQL5Dialect
+#  data:
+#    rest.base-path: api        
+#        
+#security:
+#  jwt:
+#    token:
+#      secret-key: secret-key
+#      expire-length: 5 #in Hours
+#     
+#  servlet:
+#    multipart:
+#      max-file-size: 7MB
+#      max-request-size: 10MB
+#                  
+#contact:
+#  security:
+#    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJhdXRoIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE1MzMxMzg3MzIsImV4cCI6MTUzNjczODczMn0.AiXci7rjitucF9gyd8Rel-eV9p3hrIOVd54j0Z8OW8Q
+#  cv:
+#    path: C:\ldk\cv\
+#    url: http://localhost:8000/
+#  gate:
+#    home: C:\Users\Utilisateur\Documents\workspace-sts-3.9.7.RELEASE\streamlink_condidats_manager\src\main\resources\GATEFiles
+#    plugins: C:\Users\Utilisateur\Documents\workspace-sts-3.9.7.RELEASE\streamlink_condidats_manager\src\main\resources\GATEFiles\plugins
+#  hireability:
+#    path: C:\ldk\cv\hireability
+#    url: http://processing.resumeparser.com/requestprocessing.html
+#    product_code: e11adbba5cffb9a8b529097145a2a86f    

@@ -1,18 +1,15 @@
-package cl.streamlink.contact.domain;
+package cl.streamlink.contact.web.dto;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.Currency;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+public class NeedInformationDTO {
 
-@Embeddable
-public class ProjectInformation {
+    private String needReference;
 
-    @Enumerated(EnumType.STRING)
     private ActivityArea activityArea;
 
     private String place;
@@ -25,10 +22,17 @@ public class ProjectInformation {
 
     private LocalDate closingDate;
 
-    @Enumerated(EnumType.STRING)
     private Currency currency;
 
     private BigDecimal budget;
+
+    public String getNeedReference() {
+        return needReference;
+    }
+
+    public void setNeedReference(String needReference) {
+        this.needReference = needReference;
+    }
 
     public ActivityArea getActivityArea() {
         return activityArea;

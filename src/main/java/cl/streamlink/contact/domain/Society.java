@@ -23,6 +23,7 @@ public class Society extends AbstractProfile {
 
     private String SupplierNumber;
 
+
     @Enumerated(EnumType.STRING)
     private SocietyStage stage;
 
@@ -35,6 +36,7 @@ public class Society extends AbstractProfile {
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> services = new ArrayList<String>();
+
 
     public String getLabel() {
         return label;

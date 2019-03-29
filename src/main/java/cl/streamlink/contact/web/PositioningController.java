@@ -5,9 +5,9 @@ import cl.streamlink.contact.domain.Positioning;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.PositioningService;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.NeedStage;
+import cl.streamlink.contact.utils.enums.NeedType;
 import cl.streamlink.contact.utils.enums.PositioningStage;
-import cl.streamlink.contact.utils.enums.ProjectStage;
-import cl.streamlink.contact.utils.enums.ProjectType;
 import cl.streamlink.contact.utils.enums.ResourceType;
 import cl.streamlink.contact.web.dto.PositioningDTO;
 import io.swagger.annotations.ApiOperation;
@@ -70,15 +70,19 @@ public class PositioningController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Positioning.class),
             @ApiResponse(code = 404, message = "Positioning with Ref not Found")
     })
-    public List<PositioningDTO> getPositionings(@RequestParam String projectReference) {
-        return positioningService.getPositionings(projectReference);
+//    public List<PositioningDTO> getPositionings(@RequestParam String projectReference) {
+//        return positioningService.getPositionings(projectReference);
+    public List<PositioningDTO> getPositionings() {
+        return positioningService.getPositionings();
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<PositioningDTO> getPositionings(Pageable pageable, @RequestParam boolean fromAngular,
                                                 @RequestParam(required = false) String value,
-                                                @RequestParam(required = false) ProjectStage projectStage,
-                                                @RequestParam(required = false) ProjectType projectType,
+//                                                @RequestParam(required = false) ProjectStage projectStage,
+//                                                @RequestParam(required = false) ProjectType projectType,
+                                                @RequestParam(required = false) NeedStage needStage,
+                                                @RequestParam(required = false) NeedType needType,
                                                 @RequestParam(required = false) ResourceType type,
                                                 @RequestParam(required = false) PositioningStage stage,
                                                 @RequestParam(required = false) Sort.Direction dir) {
@@ -89,7 +93,7 @@ public class PositioningController {
 
         }
 
-        return positioningService.searchPositionings(value, projectStage, projectType, type, stage, pageable);
+        return positioningService.searchPositionings(value, needStage, needType, type, stage, pageable);
 
     }
 

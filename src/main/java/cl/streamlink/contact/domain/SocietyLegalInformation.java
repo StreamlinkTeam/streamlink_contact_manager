@@ -6,13 +6,9 @@ import javax.persistence.Embeddable;
 public class SocietyLegalInformation {
 
     private String tva;
-
     private String siret;
-
     private String legalStatus;
-
     private String rcs;
-
     private String apeCode;
 
     public String getTva() {
