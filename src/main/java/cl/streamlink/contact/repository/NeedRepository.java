@@ -1,9 +1,9 @@
 package cl.streamlink.contact.repository;
 
-import cl.streamlink.contact.domain.Project;
+import cl.streamlink.contact.domain.Need;
 import cl.streamlink.contact.utils.enums.ActivityArea;
-import cl.streamlink.contact.utils.enums.ProjectStage;
-import cl.streamlink.contact.utils.enums.ProjectType;
+import cl.streamlink.contact.utils.enums.NeedStage;
+import cl.streamlink.contact.utils.enums.NeedType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,17 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProjectRepository extends JpaRepository<Project, Long> {
+public interface NeedRepository extends JpaRepository<Need, Long> {
 
-    boolean existsByReference(String reference);
+    Optional<Need> findOneByReference(String reference);
 
-    Optional<Project> findOneByReference(String reference);
-
-    List<Project> findByTitleContaining(String value);
+    List<Need> findByTitleContaining(String value);
 
 
-    Page<Project> findByTitleContainingAndStageInAndTypeInAndProjectInformationActivityAreaIn
-            (String value, List<ProjectStage> stages, List<ProjectType> types,
+    Page<Need> findByTitleContainingAndStageInAndTypeInAndNeedInformationActivityAreaIn
+            (String value, List<NeedStage> stages, List<NeedType> types,
              List<ActivityArea> activityAreas, Pageable pageable);
 
     @Transactional
@@ -30,5 +28,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Transactional
     long deleteBySocietyContactSocietyReference(String societyReference);
-
 }

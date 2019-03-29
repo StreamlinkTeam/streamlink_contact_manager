@@ -1,7 +1,9 @@
 package cl.streamlink.contact.utils;
 
 import cl.streamlink.contact.config.ApplicationConfig;
-import cl.streamlink.contact.domain.*;
+import cl.streamlink.contact.domain.Contact;
+import cl.streamlink.contact.domain.Developer;
+import cl.streamlink.contact.domain.SkillsInformation;
 import cl.streamlink.contact.utils.enums.Experience;
 import cl.streamlink.contact.utils.enums.Formation;
 import cl.streamlink.contact.utils.enums.Gender;

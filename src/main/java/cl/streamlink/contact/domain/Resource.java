@@ -4,12 +4,16 @@ package cl.streamlink.contact.domain;
 import cl.streamlink.contact.utils.enums.ResourceStage;
 import cl.streamlink.contact.utils.enums.ResourceType;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 
 @Entity
 @DiscriminatorValue("RESOURCE")
 public class Resource extends Developer {
+
 
     private String registrationNumber;
 
@@ -18,6 +22,7 @@ public class Resource extends Developer {
 
     @Enumerated(EnumType.STRING)
     private ResourceStage resourceStage;
+
 
     public String getRegistrationNumber() {
         return registrationNumber;

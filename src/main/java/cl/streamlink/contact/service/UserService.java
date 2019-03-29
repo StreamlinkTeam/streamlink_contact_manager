@@ -1,7 +1,6 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.config.ApplicationConfig;
-import cl.streamlink.contact.utils.enums.Role;
 import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiError;
 import cl.streamlink.contact.exception.ContactApiException;
@@ -11,6 +10,7 @@ import cl.streamlink.contact.repository.UserRepository;
 import cl.streamlink.contact.security.JwtTokenProvider;
 import cl.streamlink.contact.security.SecurityUtils;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.Role;
 import cl.streamlink.contact.web.dto.UserDTO;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

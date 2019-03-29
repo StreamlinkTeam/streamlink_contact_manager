@@ -26,19 +26,18 @@ public class ApplicationConfig implements ApplicationContextAware {
 
     private static ApplicationContext __applicationContext;
 
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-
-        __applicationContext = applicationContext;
-    }
-
     public static <T> T getService(String name, Class<T> clazz) {
         return __applicationContext.getBean(name, clazz);
     }
 
     public static <T> T getService(Class<T> clazz) {
         return __applicationContext.getBean(clazz);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+
+        __applicationContext = applicationContext;
     }
 
     @Bean

@@ -51,6 +51,7 @@ public class ResourceService {
 
         if (!resourceRepository.existsByReference(developerReference)) {
             Developer developer = developerRepository.findOneByReference(developerReference)
+
                     .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
             Resource resource = mapper.fromDeveloperToResource(developer);
@@ -63,6 +64,18 @@ public class ResourceService {
         } else
             throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
     }
+
+
+    public List<ResourceResponseDTO> searchResources(String term) {
+
+        if (MiscUtils.isEmpty(term) || term.length() < 3)
+            return Collections.EMPTY_LIST;
+
+        else return resourceRepository.findByFirstnameContaining(term).stream()
+                .map(resource -> mapper.fromBeanToDTOResponse(resource))
+                .collect(Collectors.toList());
+    }
+
 
     public ResourceDTO createResourceFromDeveloper(String developerReference, DeveloperDTO developerDTO) {
 

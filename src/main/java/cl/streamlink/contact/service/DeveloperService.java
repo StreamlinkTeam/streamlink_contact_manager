@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@CrossOrigin("*")
 public class DeveloperService {
 
     private final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
@@ -52,11 +54,11 @@ public class DeveloperService {
         return mapper.fromBeanToDTO(developerRepository.save(developer));
     }
 
-    public DeveloperDTO updateDeveloper(DeveloperDTO developerDTO, String developerReference) throws ContactApiException {
+    public DeveloperDTO updateDeveloper(DeveloperDTO developerDTO, String developerReference)
+            throws ContactApiException {
 
-
-        Developer developer = developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+        Developer developer = developerRepository.findOneByReference(developerReference).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         if (developerDTO.getStage() == Stage.ConvertedToResource && developer.getStage() != Stage.ConvertedToResource)
             return resourceService.createResourceFromDeveloper(developerReference, developerDTO);
@@ -67,22 +69,24 @@ public class DeveloperService {
 
     public DeveloperDTO getDeveloper(String developerReference) throws ContactApiException {
 
-        return mapper.fromBeanToDTO(developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference)));
+        return mapper.fromBeanToDTO(developerRepository.findOneByReference(developerReference).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference)));
     }
-
 
     public List<DeveloperResponseDTO> getDevelopers(String developerReference) throws ContactApiException {
 
         if (developerReference != null)
-            return Collections.singletonList(mapper.fromBeanToDTOResponse(developerRepository.findOneByReference(developerReference)
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference))));
+            return Collections.singletonList(mapper.fromBeanToDTOResponse(
+                    developerRepository.findOneByReference(developerReference).orElseThrow(() -> ContactApiException
+                            .resourceNotFoundExceptionBuilder("Developer", developerReference))));
 
         else
-            return developerRepository.findAll().stream().map(mapper::fromBeanToDTOResponse).collect(Collectors.toList());
+            return developerRepository.findAll().stream().map(mapper::fromBeanToDTOResponse)
+                    .collect(Collectors.toList());
     }
 
-    public Page<DeveloperResponseDTO> searchDevelopers(String value, Stage stage, Experience experience, Formation formation, Pageable pageable) {
+    public Page<DeveloperResponseDTO> searchDevelopers(String value, Stage stage, Experience experience,
+                                                       Formation formation, Pageable pageable) {
 
         if (MiscUtils.isEmpty(value))
             value = "";
@@ -105,57 +109,68 @@ public class DeveloperService {
         else
             formations = Formation.getAll();
 
-        return developerRepository.
-                findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn
-                        (value, stages, formations, experiences, value, stages, formations, experiences, value, stages, formations, experiences, value, stages, formations, experiences, pageable)
+        return developerRepository
+                .findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn(
+                        value, stages, formations, experiences, value, stages, formations, experiences, value, stages,
+                        formations, experiences, value, stages, formations, experiences, pageable)
                 .map(developer -> mapper.fromBeanToDTOResponse(developer));
     }
 
     public JSONObject deleteDeveloper(String developerReference) throws ContactApiException {
 
-        Developer developer = developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+        Developer developer = developerRepository.findOneByReference(developerReference).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         developerRepository.delete(developer);
 
         return MiscUtils.createSuccessfullyResult();
     }
 
-   /* public DeveloperResponseDTO addLanguage(String developerReference, String languageReference) throws ContactApiException {
-        Developer developer = developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+    /*
+     * public DeveloperResponseDTO addLanguage(String developerReference, String
+     * languageReference) throws ContactApiException { Developer developer =
+     * developerRepository.findOneByReference(developerReference) .orElseThrow(() ->
+     * ContactApiException.resourceNotFoundExceptionBuilder("Developer",
+     * developerReference));
+     *
+     * Language language = languageRepository.findOneByReference(languageReference)
+     * .orElseThrow(() ->
+     * ContactApiException.resourceNotFoundExceptionBuilder("Language",
+     * languageReference));
+     *
+     *
+     * if (developer.getSkillsInformation().getLanguages().add(language)) { return
+     * mapper.fromBeanToDTOResponse(developerRepository.save(developer));
+     *
+     * } else { throw
+     * ContactApiException.unprocessableEntityExceptionBuilder("relation.exist", new
+     * String[]{developerReference, languageReference}); } }
+     */
 
-        Language language = languageRepository.findOneByReference(languageReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Language", languageReference));
-
-
-        if (developer.getSkillsInformation().getLanguages().add(language)) {
-            return mapper.fromBeanToDTOResponse(developerRepository.save(developer));
-
-        } else {
-            throw ContactApiException.unprocessableEntityExceptionBuilder("relation.exist", new String[]{developerReference, languageReference});
-        }
-    }*/
-
-   /* public DeveloperResponseDTO removeLanguage(String developerReference, String languageReference) throws ContactApiException {
-        Developer developer = developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
-
-        Language language = languageRepository.findOneByReference(languageReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Language", languageReference));
-
-
-        if (developer.getSkillsInformation().getLanguages().remove(language)) {
-            return mapper.fromBeanToDTOResponse(developerRepository.save(developer));
-
-        } else {
-            throw ContactApiException.unprocessableEntityExceptionBuilder("relation.not.exist", new String[]{developerReference, languageReference});
-        }
-    }*/
+    /*
+     * public DeveloperResponseDTO removeLanguage(String developerReference, String
+     * languageReference) throws ContactApiException { Developer developer =
+     * developerRepository.findOneByReference(developerReference) .orElseThrow(() ->
+     * ContactApiException.resourceNotFoundExceptionBuilder("Developer",
+     * developerReference));
+     *
+     * Language language = languageRepository.findOneByReference(languageReference)
+     * .orElseThrow(() ->
+     * ContactApiException.resourceNotFoundExceptionBuilder("Language",
+     * languageReference));
+     *
+     *
+     * if (developer.getSkillsInformation().getLanguages().remove(language)) {
+     * return mapper.fromBeanToDTOResponse(developerRepository.save(developer));
+     *
+     * } else { throw
+     * ContactApiException.unprocessableEntityExceptionBuilder("relation.not.exist",
+     * new String[]{developerReference, languageReference}); } }
+     */
 
     public ContactDTO updateDeveloperContact(ContactDTO contact, String developerReference) {
-        Developer developer = developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+        Developer developer = developerRepository.findOneByReference(developerReference).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
         mapper.updateBeanFromDto(contact, developer.getContact());
 
         developer = developerRepository.save(developer);
@@ -171,13 +186,14 @@ public class DeveloperService {
         return contact;
     }
 
-    public SkillsInformationDTO updateDeveloperSkills(SkillsInformationDTO skillsInformation, String developerReference) {
+    public SkillsInformationDTO updateDeveloperSkills(SkillsInformationDTO skillsInformation,
+                                                      String developerReference) {
 
 //        skillsInformation.getLanguages().stream().filter(lan -> MiscUtils.isEmpty(lan.getReference())).
 //                forEach(languageService::createLanguage);
 
-        Developer developer = developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+        Developer developer = developerRepository.findOneByReference(developerReference).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
         mapper.updateBeanFromDto(skillsInformation, developer.getSkillsInformation());
 
         developer = developerRepository.save(developer);
@@ -193,10 +209,11 @@ public class DeveloperService {
         return skillsInformation;
     }
 
-    public PersonalInformationDTO updateDeveloperPersonalInformation(PersonalInformationDTO personalInformation, String developerReference) {
+    public PersonalInformationDTO updateDeveloperPersonalInformation(PersonalInformationDTO personalInformation,
+                                                                     String developerReference) {
 
-        Developer developer = developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+        Developer developer = developerRepository.findOneByReference(developerReference).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
         mapper.updateBeanFromDto(personalInformation, developer.getPersonalInformation());
 
         developer = developerRepository.save(developer);

@@ -1,33 +1,33 @@
-server.port: 9090
-
-security:
-  jwt:
-    token:
-      secret-key: secret-key
-      expire-length: 5 #in Hours
-
-spring:
-  jpa:
-    database: MYSQL
-    show_sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: false
-        cache.use_query_cache: false
-        generate_statistics: false
-        dialect: org.hibernate.dialect.MySQL5Dialect
-  data:
-    rest.base-path: api
-  #    web.pageable.one-indexed-parameters: true
-
-  servlet:
-    multipart:
-      max-file-size: 7MB
-      max-request-size: 10MB
-
-contact:
-  hireability:
-    url: http://processing.resumeparser.com/requestprocessing.html
-    product_code: e11adbba5cffb9a8b529097145a2a86f
+#server.port: 9090
+#
+#security:
+#  jwt:
+#    token:
+#      secret-key: secret-key
+#      expire-length: 5 #in Hours
+#
+#spring:
+#  jpa:
+#    database: MYSQL
+#    show_sql: true
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: false
+#        cache.use_query_cache: false
+#        generate_statistics: false
+#        dialect: org.hibernate.dialect.MySQL5Dialect
+#  data:
+#    rest.base-path: api
+#  #    web.pageable.one-indexed-parameters: true
+#
+#  servlet:
+#    multipart:
+#      max-file-size: 7MB
+#      max-request-size: 10MB
+#
+#contact:
+#  hireability:
+#    url: http://processing.resumeparser.com/requestprocessing.html
+#    product_code: e11adbba5cffb9a8b529097145a2a86f

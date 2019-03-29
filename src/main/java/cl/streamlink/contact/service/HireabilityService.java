@@ -1,6 +1,9 @@
 package cl.streamlink.contact.service;
 
-import cl.streamlink.contact.domain.*;
+import cl.streamlink.contact.domain.Contact;
+import cl.streamlink.contact.domain.Developer;
+import cl.streamlink.contact.domain.PersonalInformation;
+import cl.streamlink.contact.domain.SkillsInformation;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.utils.enums.*;
 import cl.streamlink.contact.web.dto.hireability.*;

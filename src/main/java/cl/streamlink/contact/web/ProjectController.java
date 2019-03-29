@@ -4,10 +4,13 @@ import cl.streamlink.contact.domain.Project;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.ProjectService;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.ProjectStage;
 import cl.streamlink.contact.utils.enums.ProjectType;
-import cl.streamlink.contact.utils.enums.ActivityArea;
-import cl.streamlink.contact.web.dto.*;
+import cl.streamlink.contact.web.dto.ProjectDTO;
+import cl.streamlink.contact.web.dto.ProjectInformationDTO;
+import cl.streamlink.contact.web.dto.ProjectResponseDTO;
+import cl.streamlink.contact.web.dto.SkillsInformationDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -29,6 +32,36 @@ public class ProjectController {
 
     @Inject
     private ProjectService projectService;
+
+
+//    @RequestMapping(value = "from-positioning",
+//            method = RequestMethod.POST,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation(value = "Create Project Service")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Project.class),
+//            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+//    })
+//    public ProjectDTO createResourceFromDeveloper(@RequestParam(value = "positioningReference") String positioningReference) {
+//
+//        return projectService.createProjectFromPositioning(positioningReference);
+//    }
+
+//    @RequestMapping(value = "from-need",
+//            method = RequestMethod.POST,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation(value = "Create Project Service")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Project.class),
+//            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+//    })
+//    public ProjectDTO createResourceFromDeveloper(@RequestParam(value = "needReference") String needReference) {
+//
+//        return projectService.createProjectFromNeed(needReference);
+//    }
+
 
     @RequestMapping(value = "",
             method = RequestMethod.POST,
@@ -81,7 +114,7 @@ public class ProjectController {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir,true);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir, true);
 
         }
 
@@ -145,4 +178,12 @@ public class ProjectController {
     public ProjectInformationDTO getProjectInformation(@RequestParam(value = "projectReference") String projectReference) throws ContactApiException {
         return projectService.getProjectInformation(projectReference);
     }
+
+    @RequestMapping(value = "/auto-complete", method = RequestMethod.GET)
+    public List<ProjectResponseDTO> getProjects(@RequestParam(required = false) String term) {
+        return projectService.searchProjects(term);
+
+    }
+
+
 }

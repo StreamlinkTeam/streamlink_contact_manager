@@ -3,7 +3,6 @@ package cl.streamlink.contact.domain;
 
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.PositioningStage;
-import cl.streamlink.contact.utils.enums.ProjectStage;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,7 +29,11 @@ public class Positioning {
     private Resource resource;
 
     @ManyToOne(optional = false)
-    private Project project;
+    private Need need;
+
+//    @ManyToOne
+//    @JoinColumn(nullable = true)
+//    private Project project;
 
     @ManyToOne(optional = false)
     private User responsible;
@@ -87,12 +90,21 @@ public class Positioning {
         this.resource = resource;
     }
 
-    public Project getProject() {
-        return project;
+//    public Project getProject() {
+//        return project;
+//    }
+//
+//    public void setProject(Project project) {
+//        this.project = project;
+//    }
+
+
+    public Need getNeed() {
+        return need;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setNeed(Need need) {
+        this.need = need;
     }
 
     public User getResponsible() {

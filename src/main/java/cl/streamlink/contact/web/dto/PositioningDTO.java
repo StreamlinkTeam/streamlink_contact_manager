@@ -3,6 +3,7 @@ package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.utils.enums.PositioningStage;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,13 +18,17 @@ public class PositioningDTO {
     private String resourceReference;
 
     @NotEmpty
-    private String projectReference;
+    private String needReference;
+
+//    private String projectReference;
 
     private String responsibleReference;
 
     private String client;
 
-    private String projectTitle;
+    private String needTitle;
+
+    // private String projectTitle;
 
     private String resourceFullName;
 
@@ -63,14 +68,6 @@ public class PositioningDTO {
         this.resourceReference = resourceReference;
     }
 
-    public String getProjectReference() {
-        return projectReference;
-    }
-
-    public void setProjectReference(String projectReference) {
-        this.projectReference = projectReference;
-    }
-
     public String getResponsibleReference() {
         return responsibleReference;
     }
@@ -87,13 +84,13 @@ public class PositioningDTO {
         this.client = client;
     }
 
-    public String getProjectTitle() {
-        return projectTitle;
-    }
-
-    public void setProjectTitle(String projectTitle) {
-        this.projectTitle = projectTitle;
-    }
+//    public String getProjectTitle() {
+//        return projectTitle;
+//    }
+//
+//    public void setProjectTitle(String projectTitle) {
+//        this.projectTitle = projectTitle;
+//    }
 
     public String getResourceFullName() {
         return resourceFullName;
@@ -202,4 +199,30 @@ public class PositioningDTO {
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
+
+    public String getNeedReference() {
+        return needReference;
+    }
+
+    public void setNeedReference(String needReference) {
+        this.needReference = needReference;
+    }
+
+    public String getNeedTitle() {
+        return needTitle;
+    }
+
+    public void setNeedTitle(String needTitle) {
+        this.needTitle = needTitle;
+    }
+
+//	public String getProjectReference() {
+//		return projectReference;
+//	}
+//
+//	public void setProjectReference(String projectReference) {
+//		this.projectReference = projectReference;
+//	}
+
+
 }

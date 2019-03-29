@@ -87,12 +87,12 @@ public class EvaluationDTO {
         return createdDate;
     }
 
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
-    }
-
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
     }
 
     public void setModifiedDate(LocalDateTime modifiedDate) {

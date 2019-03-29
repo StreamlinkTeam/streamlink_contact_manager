@@ -11,28 +11,21 @@ import java.util.List;
 @Table(indexes = {@Index(name = "index_user_reference", columnList = "reference", unique = true)})
 public class User {
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Role> roles;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(unique = true)
     private String reference;
-
     @NotNull
     private String firstname;
-
     @NotNull
     private String lastname;
-
-
     @Column(unique = true, nullable = false)
     private String email;
-
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    List<Role> roles;
 
     public Long getId() {
         return id;

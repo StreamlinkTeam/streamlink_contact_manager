@@ -24,4 +24,7 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
              String value2, List<ResourceStage> stages2, List<Formation> formations2, List<Experience> experiences2, List<ResourceType> types2,
              String value3, List<ResourceStage> stages3, List<Formation> formations3, List<Experience> experiences3, List<ResourceType> types3,
              Pageable pageable);
+
+    List<Resource> findByFirstnameContaining(String value);
+
 }

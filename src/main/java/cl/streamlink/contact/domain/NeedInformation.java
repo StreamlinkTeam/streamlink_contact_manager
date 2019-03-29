@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Embeddable
-public class ProjectInformation {
+public class NeedInformation {
 
     @Enumerated(EnumType.STRING)
     private ActivityArea activityArea;
@@ -29,6 +29,16 @@ public class ProjectInformation {
     private Currency currency;
 
     private BigDecimal budget;
+
+    public NeedInformation(ActivityArea activityArea) {
+        super();
+        this.activityArea = activityArea;
+    }
+
+    public NeedInformation() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
     public ActivityArea getActivityArea() {
         return activityArea;
@@ -93,4 +103,5 @@ public class ProjectInformation {
     public void setBudget(BigDecimal budget) {
         this.budget = budget;
     }
+
 }

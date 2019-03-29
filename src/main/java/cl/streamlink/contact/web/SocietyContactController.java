@@ -1,10 +1,10 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.SocietyContact;
-import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.SocietyContactService;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.SocietyStage;
 import cl.streamlink.contact.web.dto.ContactDTO;
 import cl.streamlink.contact.web.dto.SocietyContactDTO;
 import cl.streamlink.contact.web.dto.SocietyContactResponseDTO;
@@ -43,7 +43,7 @@ public class SocietyContactController {
 
         if (fromAngular) {
 
-            pageable = MiscUtils.convertFromAngularPage(pageable, dir,false);
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir, false);
         }
 
 

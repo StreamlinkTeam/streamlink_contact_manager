@@ -1,13 +1,13 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Developer;
-import cl.streamlink.contact.utils.enums.Experience;
-import cl.streamlink.contact.utils.enums.Formation;
-import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.CurriculumVitaeService;
 import cl.streamlink.contact.service.DeveloperService;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
+import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.web.dto.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,6 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ws/developers")
+@CrossOrigin("*")
 public class DeveloperController {
 
     @Inject
