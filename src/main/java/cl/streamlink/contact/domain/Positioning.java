@@ -5,7 +5,6 @@ import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.PositioningStage;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -15,7 +14,9 @@ import java.util.Optional;
 
 @Entity
 @Table(indexes = {@Index(name = "index_project_reference", columnList = "reference", unique = true)})
-@EntityListeners(AuditingEntityListener.class)
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "TYPE")
+@DiscriminatorValue("POSITIONING")
 public class Positioning {
 
     @Id
@@ -30,10 +31,6 @@ public class Positioning {
 
     @ManyToOne(optional = false)
     private Need need;
-
-//    @ManyToOne
-//    @JoinColumn(nullable = true)
-//    private Project project;
 
     @ManyToOne(optional = false)
     private User responsible;
@@ -56,7 +53,6 @@ public class Positioning {
     @Lob
     private String note;
 
-
     @Column(name = "created_date", updatable = false)
     @CreatedDate
     private LocalDateTime createdDate;
@@ -64,7 +60,6 @@ public class Positioning {
     @Column(name = "modified_date")
     @LastModifiedDate
     private LocalDateTime modifiedDate;
-
 
     public Long getId() {
         return id;
@@ -89,15 +84,6 @@ public class Positioning {
     public void setResource(Resource resource) {
         this.resource = resource;
     }
-
-//    public Project getProject() {
-//        return project;
-//    }
-//
-//    public void setProject(Project project) {
-//        this.project = project;
-//    }
-
 
     public Need getNeed() {
         return need;

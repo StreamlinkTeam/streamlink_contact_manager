@@ -1,11 +1,10 @@
 package cl.streamlink.contact.web.dto;
 
-import java.time.LocalDateTime;
-
-import javax.validation.constraints.NotEmpty;
-
 import cl.streamlink.contact.utils.enums.NeedStage;
 import cl.streamlink.contact.utils.enums.NeedType;
+
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 
 public class NeedDTO {
 

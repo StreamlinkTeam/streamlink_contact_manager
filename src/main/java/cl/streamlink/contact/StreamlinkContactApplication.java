@@ -1,7 +1,6 @@
 package cl.streamlink.contact;
 
 import cl.streamlink.contact.exception.ContactApiException;
-import cl.streamlink.contact.service.ProjectService;
 import cl.streamlink.contact.service.ResourceService;
 import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.utils.FakerService;
@@ -33,8 +32,8 @@ public class StreamlinkContactApplication implements CommandLineRunner {
     @Autowired
     ResourceService rs;
 
-    @Autowired
-    ProjectService ps;
+//    @Autowired
+//    ProjectService ps;
 
     public static void main(String[] args) {
         SpringApplication.run(StreamlinkContactApplication.class, args);
