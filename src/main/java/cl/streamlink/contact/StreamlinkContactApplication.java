@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 @EnableEurekaClient
+@EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = "cl.streamlink.contact")
 public class StreamlinkContactApplication implements CommandLineRunner {
 
@@ -43,9 +45,6 @@ public class StreamlinkContactApplication implements CommandLineRunner {
     @Override
     public void run(String... params) {
 
-        // ps.createProjectFromNeed("yAJvuOEXO4OWtuC");
-
-        // rs.createResourceFromDeveloper("lqg9DkPG2hSDObb");
         try {
             UserDTO admin = new UserDTO();
             admin.setLastname("admin");
@@ -75,6 +74,6 @@ public class StreamlinkContactApplication implements CommandLineRunner {
 //        fakerService.deleteAll();
 //        fakerService.generateFakerDeveloperData(10);
 //        fakerService.generateFakerResourceDate(10);
-//        fakerService.generateFakerSocietyData(20,10);
+//       // fakerService.generateFakerSocietyData(20,10);
     }
 }

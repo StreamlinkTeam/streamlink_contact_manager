@@ -1,11 +1,10 @@
 package cl.streamlink.contact.utils.enums;
 
-import java.util.Arrays;
-import java.util.List;
-
+import cl.streamlink.contact.utils.MiscUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import cl.streamlink.contact.utils.MiscUtils;
+import java.util.Arrays;
+import java.util.List;
 
 public enum NeedType {
 

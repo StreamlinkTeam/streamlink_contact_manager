@@ -1,10 +1,10 @@
 package cl.streamlink.contact.web.dto;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.Currency;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class NeedInformationDTO {
 

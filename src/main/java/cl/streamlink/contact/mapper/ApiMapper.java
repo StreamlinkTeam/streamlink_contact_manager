@@ -37,20 +37,45 @@ public abstract class ApiMapper {
     @Inject
     SocietyContactRepository societyContactRepository;
 
+    @Inject
+    LigneTempsRepository ligneTempsRepository;
+
+
     @Value("${contact.cv.url}")
     String baseUrl;
+
+    @Inject
+    ListeTempsRepository listeTempsRepository;
+     
+
+    @Mappings(
+            {
+                    @Mapping(source = "resource.reference", target = "resourceReference"),
+                    @Mapping(source = "society.reference", target = "societyReference")})
+    public abstract ListeTempsDTO fromBeanToDTO(ListeTemps bean);
+
+    @Mappings(
+            {
+                    @Mapping(target = "society", expression = "java(societyRepository.findOneByReference(dto.getSocietyReference()).orElse(null))"),
+                    @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
+    public abstract ListeTemps fromDTOToBean(ListeTempsDTO dto);
+
+    @Mappings(
+            {@Mapping(source = "listTemps.reference", target = "listeTempsReference"),
+                    @Mapping(target = "missionProjectReference", ignore = true)})
+
+    public abstract LigneTempsDTO fromBeanToDTO(TempsLine bean);
+
+    @Mappings(
+            {@Mapping(target = "listTemps", expression = "java(listeTempsRepository.findOneByReference(dto.getListeTempsReference()).orElse(null))"),
+                    @Mapping(target = "missionProject", ignore = true)})
+    public abstract TempsLine fromDTOToBean(LigneTempsDTO dto);
+
 
     public abstract Resource fromDeveloperToResource(Developer bean);
 
     public abstract ResourceDTO fromDeveloperToResource(DeveloperDTO bean);
 
-//	public abstract Project fromPositioningToProject(Positioning bean);
-
-//	public abstract Project fromPositioningToProject(PositioningDTO bean);
-
-//	public abstract Project fromNeedToProject(Need bean);
-
-//	public abstract Project fromNeedToProject(NeedDTO bean);
 
     // ****************************************************** Contract *******************************************************************
     @Mappings({@Mapping(source = "developer.reference", target = "developerReference"),
