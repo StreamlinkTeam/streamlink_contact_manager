@@ -1,7 +1,7 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.Currency;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
