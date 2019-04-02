@@ -9,7 +9,7 @@ spring:
   #    password:
   #    driver-class-name: org.h2.Driver
   datasource:
-    url: jdbc:mysql://localhost:3306/contact?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     name: contact
     username: root
     password: root
