@@ -172,7 +172,7 @@ public class ProjectService {
 //        } else
 //            throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
 //    }
-//    
+//
 //    public ProjectDTO createProjectFromPositioning(String positioningReference) {
 //
 //        if (!projectRepository.existsByReference(positioningReference)) {
