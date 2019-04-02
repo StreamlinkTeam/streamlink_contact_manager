@@ -3,7 +3,6 @@ package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.utils.enums.PositioningStage;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.LocalDate;

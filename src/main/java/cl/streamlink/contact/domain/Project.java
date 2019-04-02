@@ -14,7 +14,7 @@ import java.util.Optional;
 @Entity
 @Table(indexes = {@Index(name = "index_project_reference", columnList = "reference", unique = true)})
 @EntityListeners(AuditingEntityListener.class)
-//ext pos
+
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

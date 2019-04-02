@@ -72,6 +72,7 @@ public class ProjectController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Project.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
+
     public ProjectDTO createProject(@RequestBody @Valid ProjectDTO project) {
 
         return projectService.createProject(project);

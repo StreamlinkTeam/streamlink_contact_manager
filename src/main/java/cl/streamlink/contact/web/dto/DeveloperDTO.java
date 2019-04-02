@@ -1,7 +1,7 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.Stage;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
