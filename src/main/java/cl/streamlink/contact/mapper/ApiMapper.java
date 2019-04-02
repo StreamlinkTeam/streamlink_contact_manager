@@ -38,47 +38,35 @@ public abstract class ApiMapper {
     SocietyContactRepository societyContactRepository;
 
     @Inject
-    LigneTempsRepository ligneTempsRepository;
+    TimeLineRepository timeLineRepository;
 
 
     @Value("${contact.cv.url}")
     String baseUrl;
 
     @Inject
-    ListeTempsRepository listeTempsRepository;
-     
-
-    @Mappings(
-            {
-                    @Mapping(source = "resource.reference", target = "resourceReference"),
-                    @Mapping(source = "society.reference", target = "societyReference")})
-    public abstract ListeTempsDTO fromBeanToDTO(ListeTemps bean);
-
-    @Mappings(
-            {
-                    @Mapping(target = "society", expression = "java(societyRepository.findOneByReference(dto.getSocietyReference()).orElse(null))"),
-                    @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
-    public abstract ListeTemps fromDTOToBean(ListeTempsDTO dto);
-
-    @Mappings(
-            {@Mapping(source = "listTemps.reference", target = "listeTempsReference"),
-                    @Mapping(target = "missionProjectReference", ignore = true)})
-
-    public abstract LigneTempsDTO fromBeanToDTO(TempsLine bean);
-
-    @Mappings(
-            {@Mapping(target = "listTemps", expression = "java(listeTempsRepository.findOneByReference(dto.getListeTempsReference()).orElse(null))"),
-                    @Mapping(target = "missionProject", ignore = true)})
-    public abstract TempsLine fromDTOToBean(LigneTempsDTO dto);
+    TimeListRepository timeListRepository;
 
 
-    /*@Mappings({@Mapping(target = "reference", ignore = true), @Mapping(target = "createdDate", ignore = true),
-            @Mapping(target = "mobility", expression = "java(String.join(\" , \", dto.getMobility()))"),
-            @Mapping(target = "modifiedDate", ignore = true),
-            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
-            @Mapping(target = "rh", expression = "java(userRepository.findOneByReference(dto.getRhReference()).orElse(null))")})*/
-    public abstract void updateBeanFromDto(LigneTempsDTO dto, @MappingTarget TempsLine  bean);
+    @Mappings({@Mapping(source = "resource.reference", target = "resourceReference")})
+    public abstract TimeListDTO fromBeanToDTO(TimeList bean);
 
+    @Mappings({@Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
+    public abstract TimeList fromDTOToBean(TimeListDTO dto);
+
+    @Mappings({@Mapping(source = "reference", target = "timeListReference"),
+            @Mapping(target = "projectReference", ignore = true)})
+
+    public abstract TimeLineDTO fromBeanToDTO(TimeLine bean);
+
+    @Mappings({
+            @Mapping(target = "project", expression = "java(projectRepository.findOneByReference(dto.getProjectReference()).orElse(null))")})
+    public abstract TimeLine fromDTOToBean(TimeLineDTO dto);
+
+
+    @Mappings({@Mapping(target = "reference", ignore = true),
+            @Mapping(target = "project", expression = "java(projectRepository.findOneByReference(dto.getProjectReference()).orElse(null))")})
+    public abstract void updateBeanFromDto(TimeLineDTO dto, @MappingTarget TimeLine bean);
 
 
     public abstract Resource fromDeveloperToResource(Developer bean);

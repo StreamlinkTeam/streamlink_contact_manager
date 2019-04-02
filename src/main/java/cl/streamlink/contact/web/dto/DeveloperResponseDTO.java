@@ -1,8 +1,8 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.utils.enums.Gender;
 import cl.streamlink.contact.utils.enums.Stage;
+import cl.streamlink.contact.domain.User;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.time.LocalDate;
