@@ -75,4 +75,19 @@ public class LigneTempsController {
         return ligneTempsService.createLigneTemps(ligneTemps);
     }
 
+   /* @RequestMapping(value = "",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Create ligne temps Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response =  TempsLine.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+    })
+    public LigneTempsDTO updateProject(@Valid @RequestBody LigneTempsDTO ligneTemps, @RequestParam(value = "ligneTempsReference") String ligneTempsReference) throws ContactApiException {
+
+        return LigneTempsService.updateLigneTemps(ligneTemps,ligneTempsReference);
+
+    }*/
+
 }

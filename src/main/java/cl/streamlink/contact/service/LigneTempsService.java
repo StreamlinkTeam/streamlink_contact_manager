@@ -56,21 +56,17 @@ public class LigneTempsService {
     }
 
 
+    /*public LigneTempsDTO updateLigneTemps(LigneTempsDTO ligneTempsDTO, String
+            ligneTempsReference) throws ContactApiException {
 
+        TempsLine ligneTemps =
+                ligneTempsRepository.findOneByReference(ligneTempsReference).orElseThrow(()
+                        -> ContactApiException.resourceNotFoundExceptionBuilder("TempsLine",
+                        ligneTempsReference));
 
-
-
-    /*
-     * public LigneTempsDTO updateLigneTemps(LigneTempsDTO ligneTempsDTO, String
-     * ligneTempsReference) throws ContactApiException {
-     *
-     * TempsLine ligneTemps =
-     * ligneTempsRepository.findOneByReference(ligneTempsReference).orElseThrow(()
-     * -> ContactApiException.resourceNotFoundExceptionBuilder("TempsLine",
-     * ligneTempsReference));
-     *
-     * mapper.updateBeanFromDto(ligneTempsDTO, ligneTemps); return
-     * mapper.fromBeanToDTO(ligneTempsRepository.save(ligneTemps)); }
-     */
+        mapper.updateBeanFromDto(ligneTempsDTO, ligneTemps);
+        return
+                mapper.fromBeanToDTO(ligneTempsRepository.save(ligneTemps));
+    }*/
 
 }

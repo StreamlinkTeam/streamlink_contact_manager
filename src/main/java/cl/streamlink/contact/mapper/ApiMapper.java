@@ -72,6 +72,15 @@ public abstract class ApiMapper {
     public abstract TempsLine fromDTOToBean(LigneTempsDTO dto);
 
 
+    /*@Mappings({@Mapping(target = "reference", ignore = true), @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "mobility", expression = "java(String.join(\" , \", dto.getMobility()))"),
+            @Mapping(target = "modifiedDate", ignore = true),
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
+            @Mapping(target = "rh", expression = "java(userRepository.findOneByReference(dto.getRhReference()).orElse(null))")})*/
+    public abstract void updateBeanFromDto(LigneTempsDTO dto, @MappingTarget TempsLine  bean);
+
+
+
     public abstract Resource fromDeveloperToResource(Developer bean);
 
     public abstract ResourceDTO fromDeveloperToResource(DeveloperDTO bean);
