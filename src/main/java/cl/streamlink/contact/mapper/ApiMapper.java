@@ -347,13 +347,13 @@ public abstract class ApiMapper {
             @Mapping(target = "modifiedDate", ignore = true)})
     public abstract void updateBeanFromDto(ContractDTO dto, @MappingTarget Contract bean);
 
-    @Mappings({
-            @Mapping(target = "reference", ignore = true),
-            @Mapping(target = "resource", ignore = true),
-            @Mapping(target = "responsible", ignore = true),
-            @Mapping(target = "need", ignore = true),
-            @Mapping(target = "createdDate", ignore = true),
-            @Mapping(target = "modifiedDate", ignore = true)})
+//    @Mappings({
+//            @Mapping(target = "reference", ignore = true),
+//            @Mapping(target = "resource", ignore = true),
+//            @Mapping(target = "responsible", ignore = true),
+//            @Mapping(target = "need", ignore = true),
+//            @Mapping(target = "createdDate", ignore = true),
+//            @Mapping(target = "modifiedDate", ignore = true)})
     public abstract void updateBeanFromDto(PositioningDTO dto, @MappingTarget Positioning bean);
 
     public abstract void updateBeanFromDto(ContactDTO dto, @MappingTarget Contact bean);
@@ -365,10 +365,12 @@ public abstract class ApiMapper {
     public abstract void updateBeanFromDto(NeedInformationDTO dto, @MappingTarget NeedInformation bean);
 
     @Mappings({
-            @Mapping(target = "place"),
-            @Mapping(target = "comment"),
+            @Mapping(target = "country"),
+            @Mapping(target = "city"),
+            @Mapping(target = "postal"),
+            @Mapping(target = "address"),
             @Mapping(target = "currency"),
-            @Mapping(target = "presentationDate", ignore = true),
+            @Mapping(target = "presentationDate"),
             @Mapping(target = "need", expression = "java(needRepository.findOneByReference(dto.getNeedReference()).orElse(null))"),
             @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
             @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})

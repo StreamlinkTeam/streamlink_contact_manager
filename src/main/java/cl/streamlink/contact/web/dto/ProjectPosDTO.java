@@ -8,8 +8,10 @@ import java.time.LocalDate;
 
 public class ProjectPosDTO extends PositioningDTO {
 
-    private String place;
-    private String comment;
+    private String country;
+    private String address;
+    private String city;
+    private String postal;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
@@ -17,20 +19,36 @@ public class ProjectPosDTO extends PositioningDTO {
     private LocalDate presentationDate;
 
 
-    public String getPlace() {
-        return place;
+    public String getCountry() {
+        return country;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getComment() {
-        return comment;
+    public String getAddress() {
+        return address;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostal() {
+        return postal;
+    }
+
+    public void setPostal(String postal) {
+        this.postal = postal;
     }
 
     public Currency getCurrency() {

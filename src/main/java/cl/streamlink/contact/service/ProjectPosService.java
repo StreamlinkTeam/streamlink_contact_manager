@@ -7,8 +7,14 @@ import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.PositioningRepository;
 import cl.streamlink.contact.repository.ProjectPosRepository;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.PositioningStage;
+import cl.streamlink.contact.utils.enums.ProjectStage;
+import cl.streamlink.contact.utils.enums.ProjectType;
 import cl.streamlink.contact.web.dto.ProjectPosDTO;
+import cl.streamlink.contact.web.dto.ProjectResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -55,5 +61,49 @@ public class ProjectPosService {
             return projectPosRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
+    public ProjectPosDTO getProject(String projectReference) throws ContactApiException {
 
+        return mapper.fromBeanToDTO(projectPosRepository.findOneByReference(projectReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("ProjectPos", projectReference)));
+    }
+
+    public ProjectPosDTO updateProject(ProjectPosDTO projectPosDTO, String projectReference) throws ContactApiException {
+
+        ProjectPos projectPos = projectPosRepository.findOneByReference(projectReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("ProjectPos", projectReference));
+
+        mapper.updateBeanFromDto(projectPosDTO, projectPos);
+        return mapper.fromBeanToDTO(projectPosRepository.save(projectPos));
+    }
+
+    public Page<ProjectPosDTO> searchProjects(String value, ProjectStage stage, ProjectType type,
+                                                   ActivityArea activityArea, Pageable pageable) {
+
+
+        if (MiscUtils.isEmpty(value))
+            value = "";
+
+        List<ProjectStage> stages;
+        if (stage != null)
+            stages = Collections.singletonList(stage);
+        else
+            stages = ProjectStage.getAll();
+
+        List<ActivityArea> activityAreas;
+        if (activityArea != null)
+            activityAreas = Collections.singletonList(activityArea);
+        else
+            activityAreas = ActivityArea.getAll();
+
+        List<ProjectType> types;
+        if (type != null)
+            types = Collections.singletonList(type);
+        else
+            types = ProjectType.getAll();
+
+        return projectPosRepository.
+                findByNeedContainingAndStageIn
+                        (value,  stages,  types, activityAreas,  pageable)
+                .map(projectPos -> mapper.fromBeanToDTO(projectPos));
+    }
 }

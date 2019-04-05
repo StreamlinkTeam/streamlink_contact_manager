@@ -51,6 +51,8 @@ public class PositioningDTO {
 
     private LocalDateTime modifiedDate;
 
+    private boolean project;
+
     public String getReference() {
         return reference;
     }
@@ -222,6 +224,12 @@ public class PositioningDTO {
 //	public void setProjectReference(String projectReference) {
 //		this.projectReference = projectReference;
 //	}
+public boolean isProject() {
+    return project;
+}
 
+    public void setProject(boolean project) {
+        this.project = project;
+    }
 
 }

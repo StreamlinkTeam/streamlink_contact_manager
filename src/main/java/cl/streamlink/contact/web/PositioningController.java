@@ -124,5 +124,4 @@ public class PositioningController {
         return positioningService.deletePositioning(positioningReference);
     }
 
-
 }
