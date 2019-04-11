@@ -288,7 +288,7 @@ public abstract class ApiMapper {
             @Mapping(source = "responsible.reference", target = "responsibleReference"),
             @Mapping(source = "need.title", target = "needTitle"),
             @Mapping(source = "need.societyContact.society.label", target = "client"),
-            @Mapping(target = "resourceFullName", expression = "java(bean.getResource().getFirstname()+\" \"+bean.getResource().getLastname())")
+            @Mapping(target = "resourceFullName", expression = "java(bean.getResource().getFirstname()+\" \"+bean.getResource().getLastname())"),
     })
     public abstract ProjectPosDTO fromBeanToDTO(ProjectPos bean);
 
@@ -347,13 +347,14 @@ public abstract class ApiMapper {
             @Mapping(target = "modifiedDate", ignore = true)})
     public abstract void updateBeanFromDto(ContractDTO dto, @MappingTarget Contract bean);
 
-//    @Mappings({
+    @Mappings({
 //            @Mapping(target = "reference", ignore = true),
 //            @Mapping(target = "resource", ignore = true),
 //            @Mapping(target = "responsible", ignore = true),
 //            @Mapping(target = "need", ignore = true),
-//            @Mapping(target = "createdDate", ignore = true),
-//            @Mapping(target = "modifiedDate", ignore = true)})
+            @Mapping(target = "createdDate", ignore = true),
+//            @Mapping(target = "modifiedDate", ignore = true)
+            })
     public abstract void updateBeanFromDto(PositioningDTO dto, @MappingTarget Positioning bean);
 
     public abstract void updateBeanFromDto(ContactDTO dto, @MappingTarget Contact bean);

@@ -111,8 +111,11 @@ public class DeveloperService {
 
         return developerRepository
                 .findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn(
-                        value, stages, formations, experiences, value, stages, formations, experiences, value, stages,
-                        formations, experiences, value, stages, formations, experiences, pageable)
+                        value, stages, formations, experiences,
+                        value, stages, formations, experiences,
+                        value, stages, formations, experiences,
+                        value, stages, formations, experiences,
+                        pageable)
                 .map(developer -> mapper.fromBeanToDTOResponse(developer));
     }
 

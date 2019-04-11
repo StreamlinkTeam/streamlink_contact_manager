@@ -20,10 +20,11 @@ public interface ProjectPosRepository extends JpaRepository<ProjectPos, Long> {
 
     List<ProjectPos> findByNeedContaining(String value);
 
+//    Page<Need> findByTitleContainingAndStageInAndTypeInAndNeedInformationActivityAreaIn
+//            (String value, List<NeedStage> stages, List<NeedType> types,
+//             List<ActivityArea> activityAreas, Pageable pageable);
 
-    Page<ProjectPos> findByNeedContainingAndStageIn
-            (String value, List<ProjectStage> stages, List<ProjectType> types,
-             List<ActivityArea> activityAreas, Pageable pageable);
+    Page<ProjectPos> findByNeedTitleContaining(String value, Pageable pageable);
 
 
 

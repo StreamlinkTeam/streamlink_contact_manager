@@ -49,6 +49,7 @@ public class FakerService {
     private Faker faker = new Faker(new Locale("fr", "fr"));
 
 
+
     public void generateNeed(String societyContactReference) {
 
         List<UserDTO> users = userService.getAllUsers();
