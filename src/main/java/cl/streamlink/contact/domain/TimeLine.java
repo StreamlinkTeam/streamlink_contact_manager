@@ -1,5 +1,6 @@
 package cl.streamlink.contact.domain;
 
+import cl.streamlink.contact.utils.enums.TimeLineType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -15,14 +16,15 @@ public class TimeLine {
     @Column(unique = true)
     private String reference;
 
-    @Column(unique = true)
+
+    @Enumerated(EnumType.STRING)
     private TimeLineType type;
 
     @ManyToOne
     private TimeList listTemps;
 
     @ManyToOne
-    private Project project;
+    private Positioning positioning;
 
     public Long getId() {
         return id;
@@ -48,12 +50,12 @@ public class TimeLine {
         this.type = type;
     }
 
-    public Project getProject() {
-        return project;
+    public Positioning getPositioning() {
+        return positioning;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setPositioning(Positioning positioning) {
+        this.positioning = positioning;
     }
 
     public TimeList getListTemps() {

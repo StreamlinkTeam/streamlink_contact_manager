@@ -39,7 +39,7 @@ public class TimeListController {
             @ApiResponse(code = 404, message = "listeTemps with Ref not Found")})
     public TimeListDTO getListeTemps(@RequestParam(value = "listeTempsReference") String listeTempsReference) throws ContactApiException {
 
-        return timeListService.getListeTemps(listeTempsReference);
+        return timeListService.getListTemps(listeTempsReference);
 
 
     }
@@ -56,7 +56,7 @@ public class TimeListController {
     })
     public JSONObject deleteLigneTemps(@RequestParam("listeTempsReference") String listeTempsReference) throws ContactApiException {
 
-        return timeListService.deleteListeTemps(listeTempsReference);
+        return timeListService.deleteListTemps(listeTempsReference);
     }
 
 
@@ -74,10 +74,22 @@ public class TimeListController {
 
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")})
 
-    public TimeListDTO createListeTemps(@RequestBody @Valid TimeListDTO listeTemps) {
+    public TimeListDTO createListTemps(@RequestBody @Valid TimeListDTO listTemps) {
 
-        return timeListService.createListeTemps(listeTemps);
+        return timeListService.createListTemps(listTemps);
     }
 
+    @RequestMapping(value = "",
+           method = RequestMethod.PUT,
+           produces = MediaType.APPLICATION_JSON_VALUE)
+   @ResponseStatus(HttpStatus.OK)
+   @ApiOperation(value = "Create TimeList Service")
+   @ApiResponses(value = {
+           @ApiResponse(code = 200, message = "Operation Executed Successfully", response = TimeList.class),
+           @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+  })
+   public TimeListDTO  updateProject(@Valid @RequestBody TimeListDTO  timeListDTO, @RequestParam(value = "projectReference") String projectReference) throws ContactApiException {
 
+       return timeListService.updateTimeList(timeListDTO, projectReference);
+    }
 }

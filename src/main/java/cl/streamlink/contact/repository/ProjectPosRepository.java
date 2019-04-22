@@ -3,7 +3,9 @@ package cl.streamlink.contact.repository;
 import cl.streamlink.contact.domain.Project;
 import cl.streamlink.contact.domain.ProjectPos;
 import cl.streamlink.contact.domain.Resource;
+import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.utils.enums.*;
+import cl.streamlink.contact.web.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +22,7 @@ public interface ProjectPosRepository extends JpaRepository<ProjectPos, Long> {
 
     List<ProjectPos> findByNeedContaining(String value);
 
+    List<ProjectPos> findByResource(String currentUser);
 
     Page<ProjectPos> findByNeedContainingAndResourceIn
             (String value, String res, Pageable pageable);

@@ -21,6 +21,9 @@ public abstract class ApiMapper {
 
     @Inject
     NeedRepository needRepository;
+    @Inject
+    PositioningRepository positioningRepository;
+
 
     @Inject
     UserRepository userRepository;
@@ -54,18 +57,24 @@ public abstract class ApiMapper {
     @Mappings({@Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
     public abstract TimeList fromDTOToBean(TimeListDTO dto);
 
+
+    @Mappings({@Mapping(target = "reference", ignore = true),
+            @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
+    public abstract void updateBeanFromDto(TimeListDTO dto, @MappingTarget TimeList bean);
+
+
     @Mappings({@Mapping(source = "reference", target = "timeListReference"),
-            @Mapping(target = "projectReference", ignore = true)})
+            @Mapping(source="positioning.reference",target = "positioningReference")})
 
     public abstract TimeLineDTO fromBeanToDTO(TimeLine bean);
 
     @Mappings({
-            @Mapping(target = "project", expression = "java(projectRepository.findOneByReference(dto.getProjectReference()).orElse(null))")})
+            @Mapping(target = "positioning", expression = "java(positioningRepository.findOneByReference(dto.getPositioningReference()).orElse(null))")})
     public abstract TimeLine fromDTOToBean(TimeLineDTO dto);
 
 
     @Mappings({@Mapping(target = "reference", ignore = true),
-            @Mapping(target = "project", expression = "java(projectRepository.findOneByReference(dto.getProjectReference()).orElse(null))")})
+            @Mapping(target = "positioning", expression = "java(positioningRepository.findOneByReference(dto.getPositioningReference()).orElse(null))")})
     public abstract void updateBeanFromDto(TimeLineDTO dto, @MappingTarget TimeLine bean);
 
 

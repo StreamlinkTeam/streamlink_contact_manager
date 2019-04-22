@@ -6,6 +6,7 @@ import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.service.ProjectPosService;
 import cl.streamlink.contact.web.dto.ProjectPosDTO;
 import cl.streamlink.contact.web.dto.ResourceDTO;
+import cl.streamlink.contact.web.dto.UserDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -43,5 +44,12 @@ public class ProjectPosController {
     })
     public List<ProjectPosDTO> getProjects() {
         return projectPosService.getProjects(null);
+    }
+
+
+
+   @GetMapping("aa")
+    public List<ProjectPos> getProjectByMe() {
+        return projectPosService.getProjectByCurrentUser();
     }
 }

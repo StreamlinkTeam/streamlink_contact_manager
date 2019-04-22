@@ -27,30 +27,41 @@ public class TimeListService {
     private ApiMapper mapper;
 
 
-    public TimeListDTO getListeTemps(String listeTempsReference) throws ContactApiException {
+    public TimeListDTO getListTemps(String listTempsReference) throws ContactApiException {
 
         return mapper.fromBeanToDTO(timeListRepository.findOneByReference(
-                listeTempsReference).orElseThrow(() ->
-                ContactApiException.resourceNotFoundExceptionBuilder("TimeList", listeTempsReference)));
+                listTempsReference).orElseThrow(() ->
+                ContactApiException.resourceNotFoundExceptionBuilder("TimeList", listTempsReference)));
     }
 
 
-    public JSONObject deleteListeTemps(String listeTempsReference) throws ContactApiException {
+    public JSONObject deleteListTemps(String listTempsReference) throws ContactApiException {
 
-        // projectService.deleteBySociety(societyReference, null);
-        timeListRepository.deleteByReference(listeTempsReference);
+
+        timeListRepository.deleteByReference(listTempsReference);
 
         return MiscUtils.createSuccessfullyResult();
     }
 
 
-    public TimeListDTO createListeTemps(TimeListDTO listeTempsDTO) {
+    public TimeListDTO createListTemps(TimeListDTO listTempsDTO) {
 
-        TimeList timeList = mapper.fromDTOToBean(listeTempsDTO);
+        TimeList timeList = mapper.fromDTOToBean(listTempsDTO);
 
         timeList.setReference(MiscUtils.generateReference());
         return
                 mapper.fromBeanToDTO(timeListRepository.save(timeList));
+    }
+
+
+    public TimeListDTO updateTimeList(TimeListDTO timeListDTO, String timeListReference) throws ContactApiException {
+
+
+        TimeList timeList = timeListRepository.findOneByReference(timeListReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", timeListReference));
+
+        mapper.updateBeanFromDto(timeListDTO,timeList);
+        return mapper.fromBeanToDTO(timeListRepository.save(timeList));
     }
 
 }

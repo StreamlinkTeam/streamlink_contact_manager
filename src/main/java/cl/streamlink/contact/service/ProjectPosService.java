@@ -6,12 +6,15 @@ import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.PositioningRepository;
 import cl.streamlink.contact.repository.ProjectPosRepository;
+import cl.streamlink.contact.security.SecurityUtils;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.PositioningStage;
 import cl.streamlink.contact.web.dto.ProjectPosDTO;
+import cl.streamlink.contact.web.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +28,8 @@ public class ProjectPosService {
     @Inject
     PositioningRepository positioningRepository;
 
+    @Inject
+    UserService userService;
     @Inject
     private ApiMapper mapper;
 
@@ -55,5 +60,8 @@ public class ProjectPosService {
             return projectPosRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
-
+    public List<ProjectPos> getProjectByCurrentUser() {
+        String a = SecurityUtils.getCurrentUserLogin();
+        return projectPosRepository.findByResource(a);
+    }
 }

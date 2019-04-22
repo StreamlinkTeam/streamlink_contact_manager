@@ -28,12 +28,12 @@ public class TimeLineService {
     private ApiMapper mapper;
 
 
-    public TimeLineDTO getLigne(String ligneTempsReference) throws ContactApiException {
+    public TimeLineDTO getLine(String lineTempsReference) throws ContactApiException {
 
         return mapper.fromBeanToDTO(timeLineRepository.findOneByReference(
-                ligneTempsReference).orElseThrow(() ->
+                lineTempsReference).orElseThrow(() ->
                 ContactApiException.resourceNotFoundExceptionBuilder("TimeLine"
-                        , ligneTempsReference)));
+                        , lineTempsReference)));
     }
 
 
@@ -41,18 +41,18 @@ public class TimeLineService {
 
 
 
-    public JSONObject deleteLigneTemps(String ligneTempsReference) throws ContactApiException {
+    public JSONObject deleteLineTemps(String lineTempsReference) throws ContactApiException {
 
 
-        timeLineRepository.deleteByReference(ligneTempsReference);
+        timeLineRepository.deleteByReference(lineTempsReference);
 
         return MiscUtils.createSuccessfullyResult();
     }
 
 
-    public TimeLineDTO createLigneTemps(TimeLineDTO ligneTempsDTO) {
+    public TimeLineDTO createLineTemps(TimeLineDTO lineTempsDTO) {
 
-        TimeLine timeLine = mapper.fromDTOToBean(ligneTempsDTO);
+        TimeLine timeLine = mapper.fromDTOToBean(lineTempsDTO);
 
         timeLine.setReference(MiscUtils.generateReference());
         return
@@ -60,14 +60,14 @@ public class TimeLineService {
     }
 
 
-    public TimeLineDTO updateLigneTemps(TimeLineDTO ligneTempsDTO, String ligneTempsReference) throws ContactApiException {
+    public TimeLineDTO updateLineTemps(TimeLineDTO lineTempsDTO, String lineTempsReference) throws ContactApiException {
 
         TimeLine ligneTemps =
-                timeLineRepository.findOneByReference(ligneTempsReference).orElseThrow(()
+                timeLineRepository.findOneByReference(lineTempsReference).orElseThrow(()
                         -> ContactApiException.resourceNotFoundExceptionBuilder("TimeLine",
-                        ligneTempsReference));
+                        lineTempsReference));
 
-        mapper.updateBeanFromDto(ligneTempsDTO, ligneTemps);
+        mapper.updateBeanFromDto(lineTempsDTO, ligneTemps);
         return
                 mapper.fromBeanToDTO(timeLineRepository.save(ligneTemps));
     }
