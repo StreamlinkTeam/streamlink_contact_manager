@@ -1,5 +1,7 @@
 package cl.streamlink.contact.web.dto;
 
+import cl.streamlink.contact.utils.enums.TimeLineType;
+
 import javax.validation.constraints.NotEmpty;
 
 public class TimeLineDTO {
@@ -8,7 +10,9 @@ public class TimeLineDTO {
     @NotEmpty
     private String timeListReference;
     @NotEmpty
-    private String projectReference;
+    private String positioningReference;
+
+    private TimeLineType Type;
 
     public String getReference() {
         return reference;
@@ -26,18 +30,29 @@ public class TimeLineDTO {
         this.timeListReference = timeListReference;
     }
 
-    public String getProjectReference() {
-        return projectReference;
+    public String getPositioningReference() {
+        return positioningReference;
     }
 
-    public void setProjectReference(String projectReference) {
-        this.projectReference = projectReference;
+    public void setPositioningReference(String positioningReference) {
+        this.positioningReference = positioningReference;
+    }
+
+    public TimeLineType getType() {
+        return Type;
+    }
+
+    public void setType(TimeLineType type) {
+        Type = type;
     }
 
     @Override
     public String toString() {
-        return "TimeLineDTO [reference=" + reference + ", timeListReference=" + timeListReference
-                + ", projectReference=" + projectReference + "]";
+        return "TimeLineDTO{" +
+                "reference='" + reference + '\'' +
+                ", timeListReference='" + timeListReference + '\'' +
+                ", positioningReference='" + positioningReference + '\'' +
+                ", Type='" + Type + '\'' +
+                '}';
     }
-
 }

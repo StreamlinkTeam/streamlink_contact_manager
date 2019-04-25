@@ -6,9 +6,6 @@ import cl.streamlink.contact.domain.ProjectPos;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.ProjectPosService;
 import cl.streamlink.contact.utils.MiscUtils;
-import cl.streamlink.contact.utils.enums.ActivityArea;
-import cl.streamlink.contact.utils.enums.ProjectStage;
-import cl.streamlink.contact.utils.enums.ProjectType;
 import cl.streamlink.contact.web.dto.ProjectPosDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -78,11 +75,8 @@ public class ProjectPosController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<ProjectPosDTO> getProjects(Pageable pageable, @RequestParam boolean fromAngular,
-                                                @RequestParam(required = false) String value,
-                                                @RequestParam(required = false) ActivityArea activityArea,
-                                                @RequestParam(required = false) ProjectType type,
-                                                @RequestParam(required = false) ProjectStage stage,
-                                                @RequestParam(required = false) Sort.Direction dir) {
+                                           @RequestParam(required = false) String value,
+                                           @RequestParam(required = false) Sort.Direction dir) {
 
         if (fromAngular) {
 
@@ -90,7 +84,7 @@ public class ProjectPosController {
 
         }
 
-        return projectPosService.searchProjects(value, stage, type, activityArea, pageable);
+        return projectPosService.searchProjects(value, pageable);
 
     }
 }

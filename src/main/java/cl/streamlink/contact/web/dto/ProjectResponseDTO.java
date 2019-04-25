@@ -7,7 +7,6 @@ import cl.streamlink.contact.utils.enums.ProjectType;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.time.LocalDateTime;
-
 public class ProjectResponseDTO {
 
     private String reference;

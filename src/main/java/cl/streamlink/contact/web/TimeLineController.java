@@ -27,16 +27,16 @@ public class TimeLineController {
 
     @ResponseStatus(HttpStatus.OK)
 
-    @ApiOperation(value = "Get ligneTemps Details Service")
+    @ApiOperation(value = "Get lineTemps Details Service")
 
     @ApiResponses(value = {
 
             // @ApiResponse(code = 200, message = "Operation Executed Successfully", response = TimeLine.class),
 
-            @ApiResponse(code = 404, message = "ligneTemps with Ref not Found")})
+            @ApiResponse(code = 404, message = "lineTemps with Ref not Found")})
 
-    public TimeLineDTO getLigneTemps(@RequestParam(value = "ligneTempsReference") String ligneTempsReference) throws ContactApiException {
-        return timeLineService.getLigne(ligneTempsReference);
+    public TimeLineDTO getLineTemps(@RequestParam(value = "ligneTempsReference") String lineTempsReference) throws ContactApiException {
+        return timeLineService.getLine(lineTempsReference);
     }
 
 
@@ -56,7 +56,7 @@ public class TimeLineController {
     public JSONObject deleteLigneTemps(@RequestParam("ligneTempsReference") String
                                                ligneTempsReference) throws ContactApiException {
 
-        return timeLineService.deleteLigneTemps(ligneTempsReference);
+        return timeLineService.deleteLineTemps(ligneTempsReference);
     }
 
 
@@ -70,9 +70,9 @@ public class TimeLineController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
 
-    public TimeLineDTO createLigneTemps(@RequestBody @Valid TimeLineDTO ligneTemps) {
+    public TimeLineDTO createLineTemps(@RequestBody @Valid TimeLineDTO lineTemps) {
 
-        return timeLineService.createLigneTemps(ligneTemps);
+        return timeLineService.createLineTemps(lineTemps);
     }
 
    @RequestMapping(value = "",
@@ -84,9 +84,9 @@ public class TimeLineController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response =  TimeLine.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public TimeLineDTO updateProject(@Valid @RequestBody TimeLineDTO ligneTemps, @RequestParam(value = "ligneTempsReference") String ligneTempsReference) throws ContactApiException {
+    public TimeLineDTO updateProject(@Valid @RequestBody TimeLineDTO lineTemps, @RequestParam(value = "ligneTempsReference") String lineTempsReference) throws ContactApiException {
 
-        return timeLineService.updateLigneTemps(ligneTemps,ligneTempsReference);
+        return timeLineService.updateLineTemps(lineTemps,lineTempsReference);
 
     }
 

@@ -1,13 +1,23 @@
-package cl.streamlink.contact.domain;
+package cl.streamlink.contact.utils.enums;
 
 import cl.streamlink.contact.utils.MiscUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
+import java.util.List;
 
 public enum TimeLineType {
 
     Absence, Intern, Project;
+
+
+   /* @JsonCreator
+    public static TimeLineType fromString(final String value) {
+        return value != null ?
+                Arrays.stream(values()).filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
+                        .findFirst().orElse(Absence)
+                : Absence;
+    }*/
 
 
     @JsonCreator
@@ -16,5 +26,9 @@ public enum TimeLineType {
                 Arrays.stream(values()).filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
                         .findFirst().orElse(Absence)
                 : Absence;
+    }
+
+    public static List< TimeLineType> getAll() {
+        return Arrays.asList(values());
     }
 }

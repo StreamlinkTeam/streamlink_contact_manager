@@ -9,8 +9,11 @@ import java.time.LocalDate;
 public class ProjectPosDTO extends PositioningDTO {
 
     private String country;
+
     private String address;
+
     private String city;
+
     private String postal;
 
     @Enumerated(EnumType.STRING)

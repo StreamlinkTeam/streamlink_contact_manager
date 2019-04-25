@@ -5,6 +5,7 @@ import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.PositioningStage;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(indexes = {@Index(name = "index_project_reference", columnList = "reference", unique = true)})
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE")

@@ -69,6 +69,19 @@ public class StreamlinkContactApplication implements CommandLineRunner {
         } catch (ContactApiException e) {
             logger.warn(e.getMessage());
         }
+        try {
+            UserDTO resource = new UserDTO();
+            resource.setLastname("resource");
+            resource.setFirstname("resource");
+
+            resource.setPassword("resource");
+            resource.setEmail("resource@email.com");
+            resource.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_RESOURCE)));
+
+            userService.signup(resource);
+        } catch (ContactApiException e) {
+            logger.warn(e.getMessage());
+        }
 
 //        fakerService.deleteAll();
 //        fakerService.generateFakerDeveloperData(10);

@@ -120,6 +120,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public UserDTO whoami(HttpServletRequest req) {
+
         return userService.whoami(req);
     }
 

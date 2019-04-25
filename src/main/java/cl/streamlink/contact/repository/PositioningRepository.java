@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface PositioningRepository extends JpaRepository<Positioning, Long> {
 
-    Optional<Positioning> findOneByReference(String reference);
+     Optional<Positioning> findOneByReference(String reference);
 
 //    List<Positioning> findByProjectReference(String projectReference);
 
