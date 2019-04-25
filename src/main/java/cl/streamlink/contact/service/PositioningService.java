@@ -86,9 +86,10 @@ public class PositioningService {
 
     public PositioningDTO updatePositioning(PositioningDTO positioningDTO, String positioningReference)
             throws ContactApiException {
-
-        projectRepository.findOneByReference(positioningDTO.getNeedReference()).orElseThrow(
-                () -> ContactApiException.resourceNotFoundExceptionBuilder("Need", positioningDTO.getNeedReference()));
+        needRepository.findOneByReference(positioningDTO.getNeedReference()).orElseThrow(
+               () -> ContactApiException.resourceNotFoundExceptionBuilder("Need", positioningDTO.getNeedReference()));
+//        projectRepository.findOneByReference(positioningDTO.getNeedReference()).orElseThrow(
+//                () -> ContactApiException.resourceNotFoundExceptionBuilder("Need", positioningDTO.getNeedReference()));
 
         resourceRepository.findOneByReference(positioningDTO.getResourceReference())
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource",
