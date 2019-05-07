@@ -3,7 +3,9 @@ package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Positioning;
 import cl.streamlink.contact.exception.ContactApiException;
+import cl.streamlink.contact.service.DeveloperService;
 import cl.streamlink.contact.service.PositioningService;
+import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.NeedStage;
 import cl.streamlink.contact.utils.enums.NeedType;
@@ -31,6 +33,10 @@ public class PositioningController {
 
     @Inject
     private PositioningService positioningService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private DeveloperService developerService;
 
     @RequestMapping(value = "",
             method = RequestMethod.POST,
@@ -123,6 +129,23 @@ public class PositioningController {
 
         return positioningService.deletePositioning(positioningReference);
     }
+
+
+    @GetMapping(value = "posRes")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Positioning Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = PositioningDTO.class),
+            @ApiResponse(code = 404, message = "Positioning with Ref not Found")
+    })
+    public List<PositioningDTO> getNeedUser() {
+        String email = userService.getCurrentUser().getEmail();
+        String resourceReference = developerService.getDeveloperEmail(email).getReference();
+        return positioningService.getPositioningResource(resourceReference);
+    }
+
+
+
 
 
 }

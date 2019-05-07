@@ -162,4 +162,10 @@ public class PositioningService {
         return MiscUtils.createSuccessfullyResult();
     }
 
+    public List<PositioningDTO> getPositioningResource( String resourceReference){
+
+        return positioningRepository.findByResourceReference(resourceReference)
+                .stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+    }
+
 }
