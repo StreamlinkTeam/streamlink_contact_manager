@@ -34,9 +34,6 @@ public class StreamlinkContactApplication implements CommandLineRunner {
     @Autowired
     ResourceService rs;
 
-//    @Autowired
-//    ProjectService ps;
-
     public static void main(String[] args) {
         SpringApplication.run(StreamlinkContactApplication.class, args);
     }

@@ -34,6 +34,9 @@ public class Action {
     @ManyToOne
     private Project project;
 
+    @ManyToOne
+    private Need need;
+
 
     @ManyToOne(optional = false)
     private User responsible;
@@ -140,5 +143,13 @@ public class Action {
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public Need getNeed() {
+        return need;
+    }
+
+    public void setNeed(Need need) {
+        this.need = need;
     }
 }

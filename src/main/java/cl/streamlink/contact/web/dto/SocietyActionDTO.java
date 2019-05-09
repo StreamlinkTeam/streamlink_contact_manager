@@ -12,6 +12,8 @@ public class SocietyActionDTO {
 
     private String projectReference;
 
+    private String needReference;
+
     private String responsibleReference;
 
     private String responsibleFullName;
@@ -114,5 +116,13 @@ public class SocietyActionDTO {
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public String getNeedReference() {
+        return needReference;
+    }
+
+    public void setNeedReference(String needReference) {
+        this.needReference = needReference;
     }
 }

@@ -64,7 +64,7 @@ public class UserService {
 
         checkIfEmailIsUsed(userDTO.getEmail(), null);
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        userDTO.setReference(MiscUtils.generateReference());
+        userDTO.setReference("usr" + MiscUtils.generateReference());
         if (MiscUtils.isEmpty(userDTO.getRoles()))
             userDTO.setRoles(Collections.singletonList(Role.ROLE_CLIENT));
         return mapper.fromBeanToDTO(userRepository.save(mapper.fromDTOToBean(userDTO)));

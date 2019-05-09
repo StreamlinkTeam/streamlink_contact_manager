@@ -28,6 +28,8 @@ public class PositioningDTO {
 
     private String needTitle;
 
+    private String email;
+
     // private String projectTitle;
 
     private String resourceFullName;
@@ -233,4 +235,12 @@ public boolean isProject() {
         this.project = project;
     }
 
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

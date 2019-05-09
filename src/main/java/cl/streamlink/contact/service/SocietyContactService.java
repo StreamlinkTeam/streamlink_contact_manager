@@ -48,7 +48,7 @@ public class SocietyContactService {
 
         SocietyContact societyContact = mapper.fromDTOToBean(societyContactDTO);
 
-        societyContact.setReference(MiscUtils.generateReference());
+        societyContact.setReference("ste" + MiscUtils.generateReference());
         societyContact.setSociety(society);
         return mapper.fromBeanToDTO(societyContactRepository.save(societyContact));
     }

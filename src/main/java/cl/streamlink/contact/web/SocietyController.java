@@ -43,9 +43,7 @@ public class SocietyController {
         return societyService.createSociety(society);
     }
 
-    @RequestMapping(value = "",
-            method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Create Society Service")
     @ApiResponses(value = {
@@ -53,7 +51,6 @@ public class SocietyController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public SocietyDTO updateSociety(@Valid @RequestBody SocietyDTO society, @RequestParam(value = "societyReference") String societyReference) throws ContactApiException {
-
         return societyService.updateSociety(society, societyReference);
     }
 
