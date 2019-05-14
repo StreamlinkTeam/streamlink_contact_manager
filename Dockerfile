@@ -14,13 +14,14 @@ RUN ls /usr/src
 RUN mvn package -DskipTests
 
 ################### RUN STP
+
 FROM java:8-jre-alpine
 
 #Create destination folder
 RUN mkdir /destination
 
 #Copy package
-COPY --from=builder /usr/src/target/spring-boot-docker-0.1.0.jar /destination/app.jar
+COPY --from=builder /usr/src/target/contact-0.0.1-SNAPSHOT.jar /destination/app.jar
 
 RUN ls /destination/app.jar
 

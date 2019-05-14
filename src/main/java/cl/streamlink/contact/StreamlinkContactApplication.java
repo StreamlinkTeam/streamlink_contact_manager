@@ -80,9 +80,9 @@ public class StreamlinkContactApplication implements CommandLineRunner {
             logger.warn(e.getMessage());
         }
 
-//        fakerService.deleteAll();
-//        fakerService.generateFakerDeveloperData(10);
-//        fakerService.generateFakerResourceDate(10);
-//       // fakerService.generateFakerSocietyData(20,10);
+        //fakerService.deleteAll();
+        // fakerService.generateFakerDeveloperData(10);
+        //  fakerService.generateFakerResourceDate(10);
+        // fakerService.generateFakerSocietyData(20,10);
     }
 }
