@@ -86,9 +86,7 @@ public abstract class ApiMapper {
 
     public abstract ProjectPosDTO fromPositioningToProject(PositioningDTO bean);
 
-//	public abstract Project fromNeedToProject(Need bean);
 
-//	public abstract Project fromNeedToProject(NeedDTO bean);
 
     // ****************************************************** Contract *******************************************************************
     @Mappings({@Mapping(source = "developer.reference", target = "developerReference"),
@@ -98,7 +96,10 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(target = "developer", expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
             @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
-            @Mapping(target = "createdDate", ignore = true), @Mapping(target = "modifiedDate", ignore = true)})
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true),
+            @Mapping(target = "contractCategory", ignore = true),
+            @Mapping(target = "contractClassification", ignore = true)})
     public abstract Contract fromDTOToBean(ContractDTO dto);
 
     // ****************************************************** Positioning

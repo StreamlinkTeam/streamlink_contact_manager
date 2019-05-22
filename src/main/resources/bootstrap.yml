@@ -6,7 +6,9 @@ spring:
     name: streamlink
   cloud:
     config:
-      uri: http://projectconfig.northeurope.azurecontainer.io:1212
+#      uri: http://configcontainer.westeurope.azurecontainer.io:1212
+      uri: http://localhost:1212
+
   mail:
     username: haroun.gazzah@gmail.com
     password: 99979089@@99979089
@@ -20,4 +22,5 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eurekaserver.westeurope.azurecontainer.io:8761/eureka
+#      defaultZone: http://eurekaserver.westeurope.azurecontainer.io:8761/eureka/
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}

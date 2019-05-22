@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-/**
- * Created by chemakh on 12/07/2018.
- */
+
 @RestController
 @RequestMapping("/ws/developers/contract")
 public class ContractController {
