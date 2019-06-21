@@ -4,6 +4,7 @@ import cl.streamlink.contact.utils.enums.TimeLineType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(indexes = {@Index(name = "index_time_line_reference", columnList = "reference", unique = true)})
@@ -16,15 +17,20 @@ public class TimeLine {
     @Column(unique = true)
     private String reference;
 
+    private String note;
 
-    @Enumerated(EnumType.STRING)
-    private TimeLineType type;
 
     @ManyToOne
     private TimeList listTemps;
 
+    private float timeWork;
+
+    private String project;
+
+    private LocalDate start;
     @ManyToOne
-    private Positioning positioning;
+    private Resource resource;
+
 
     public Long getId() {
         return id;
@@ -42,20 +48,12 @@ public class TimeLine {
         this.reference = reference;
     }
 
-    public TimeLineType getType() {
-        return type;
+    public String getNote() {
+        return note;
     }
 
-    public void setType(TimeLineType type) {
-        this.type = type;
-    }
-
-    public Positioning getPositioning() {
-        return positioning;
-    }
-
-    public void setPositioning(Positioning positioning) {
-        this.positioning = positioning;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public TimeList getListTemps() {
@@ -64,5 +62,37 @@ public class TimeLine {
 
     public void setListTemps(TimeList listTemps) {
         this.listTemps = listTemps;
+    }
+
+    public float getTimeWork() {
+        return timeWork;
+    }
+
+    public void setTimeWork(float timeWork) {
+        this.timeWork = timeWork;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public LocalDate getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDate start) {
+        this.start = start;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
     }
 }

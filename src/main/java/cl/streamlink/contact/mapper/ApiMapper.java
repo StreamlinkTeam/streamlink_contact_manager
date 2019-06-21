@@ -63,18 +63,16 @@ public abstract class ApiMapper {
     public abstract void updateBeanFromDto(TimeListDTO dto, @MappingTarget TimeList bean);
 
 
-    @Mappings({@Mapping(source = "reference", target = "timeListReference"),
-            @Mapping(source="positioning.reference",target = "positioningReference")})
 
+    @Mappings({@Mapping(source = "resource.reference", target = "resourceReference"),@Mapping(source = "reference", target = "timeListReference")})
     public abstract TimeLineDTO fromBeanToDTO(TimeLine bean);
-
-    @Mappings({
-            @Mapping(target = "positioning", expression = "java(positioningRepository.findOneByReference(dto.getPositioningReference()).orElse(null))")})
+    @Mappings({@Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
     public abstract TimeLine fromDTOToBean(TimeLineDTO dto);
 
 
+
     @Mappings({@Mapping(target = "reference", ignore = true),
-            @Mapping(target = "positioning", expression = "java(positioningRepository.findOneByReference(dto.getPositioningReference()).orElse(null))")})
+            @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
     public abstract void updateBeanFromDto(TimeLineDTO dto, @MappingTarget TimeLine bean);
 
 
@@ -193,6 +191,7 @@ public abstract class ApiMapper {
 
     @Mappings({@Mapping(target = "mobility", expression = "java(Arrays.asList(bean.getMobility().split(\",\")))"),})
     public abstract ResourceResponseDTO fromBeanToDTOResponse(Resource bean);
+
 
     public abstract SocietyContactResponseDTO fromBeanToDTOResponse(SocietyContact bean);
 

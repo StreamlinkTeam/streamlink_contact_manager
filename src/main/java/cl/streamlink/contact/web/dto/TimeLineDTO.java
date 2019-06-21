@@ -3,16 +3,23 @@ package cl.streamlink.contact.web.dto;
 import cl.streamlink.contact.utils.enums.TimeLineType;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 
 public class TimeLineDTO {
 
     private String reference;
-    @NotEmpty
-    private String timeListReference;
-    @NotEmpty
-    private String positioningReference;
 
-    private TimeLineType Type;
+    private String timeListReference;
+
+    private String project;
+
+    private String note;
+
+    private float timeWork;
+
+    private LocalDate start;
+
+    private String resourceReference;
 
     public String getReference() {
         return reference;
@@ -30,20 +37,46 @@ public class TimeLineDTO {
         this.timeListReference = timeListReference;
     }
 
-    public String getPositioningReference() {
-        return positioningReference;
+    public String getProject() {
+        return project;
     }
 
-    public void setPositioningReference(String positioningReference) {
-        this.positioningReference = positioningReference;
+    public void setProject(String project) {
+        this.project = project;
     }
 
-    public TimeLineType getType() {
-        return Type;
+    public String getNote() {
+        return note;
     }
 
-    public void setType(TimeLineType type) {
-        Type = type;
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public float getTimeWork() {
+        return timeWork;
+    }
+
+    public void setTimeWork(float timeWork) {
+        this.timeWork = timeWork;
+    }
+
+
+    public LocalDate getStart() {
+
+        return start;
+    }
+
+    public void setStart(LocalDate start) {
+        this.start = start;
+    }
+
+    public String getResourceReference() {
+        return resourceReference;
+    }
+
+    public void setResourceReference(String resourceReference) {
+        this.resourceReference = resourceReference;
     }
 
     @Override
@@ -51,8 +84,11 @@ public class TimeLineDTO {
         return "TimeLineDTO{" +
                 "reference='" + reference + '\'' +
                 ", timeListReference='" + timeListReference + '\'' +
-                ", positioningReference='" + positioningReference + '\'' +
-                ", Type='" + Type + '\'' +
+                ", project='" + project + '\'' +
+                ", note='" + note + '\'' +
+                ", timeWork=" + timeWork +
+                ", start=" + start +
+                ", resourceReference='" + resourceReference + '\'' +
                 '}';
     }
 }

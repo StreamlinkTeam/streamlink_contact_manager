@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+
 public interface TimeLineRepository extends JpaRepository<TimeLine, Long> {
 
     Optional<TimeLine> findOneByReference(String reference);
@@ -13,5 +14,6 @@ public interface TimeLineRepository extends JpaRepository<TimeLine, Long> {
 
     @Transactional
     long deleteByReference(String timeLineReference);
+
 
 }

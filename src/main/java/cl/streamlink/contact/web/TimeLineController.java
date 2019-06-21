@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/ws/time_line")
@@ -88,6 +89,20 @@ public class TimeLineController {
 
         return timeLineService.updateLineTemps(lineTemps,lineTempsReference);
 
+    }
+
+
+    @RequestMapping(value = "all",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get timeLines Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response =TimeLine.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public List<TimeLineDTO> getDevelopers() {
+        return timeLineService.getDeTimeLines(null);
     }
 
 }
