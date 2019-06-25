@@ -20,6 +20,8 @@ public interface PositioningRepository extends JpaRepository<Positioning, Long> 
 
     List<Positioning> findByNeedReference(String needReference);
 
+    List<Positioning> findByResourceReference(String ressourceReference);
+
 //    Page<Positioning> findByProjectTitleContainingAndProjectStageInAndProjectTypeInAndResourceResourceTypeInAndStageIn
 //            (String value, 
 //            List<ProjectStage> projectStages, 

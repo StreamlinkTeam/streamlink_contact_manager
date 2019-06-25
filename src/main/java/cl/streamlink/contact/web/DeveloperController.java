@@ -4,6 +4,7 @@ import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.CurriculumVitaeService;
 import cl.streamlink.contact.service.DeveloperService;
+import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.Experience;
 import cl.streamlink.contact.utils.enums.Formation;
@@ -36,6 +37,9 @@ public class DeveloperController {
 
     @Inject
     private CurriculumVitaeService curriculumVitaeService;
+    @Inject
+    private UserService userservice;
+
 
     @RequestMapping(value = "",
             method = RequestMethod.POST,
@@ -295,5 +299,22 @@ public class DeveloperController {
     })
     public List<CurriculumVitaeDTO> findDeveloperCVs(@RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
         return curriculumVitaeService.findDeveloperCVs(developerReference);
+    }
+
+
+
+
+    @RequestMapping(value = "mail",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Developer Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = DeveloperDTO.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public DeveloperDTO getCurrentDeveloperByEmail( String developerEmail) throws ContactApiException {
+      // String developerEmailj = userservice.getCurrentUser().getEmail();
+        return developerService.getDeveloperEmail(userservice.getCurrentUser().getEmail());
     }
 }

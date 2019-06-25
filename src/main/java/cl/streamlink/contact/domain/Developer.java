@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 
+
 @Entity
 @Table(indexes = {@Index(name = "index_developer_reference", columnList = "reference", unique = true)})
 @Inheritance(strategy = InheritanceType.JOINED)

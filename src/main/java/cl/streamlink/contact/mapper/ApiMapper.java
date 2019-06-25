@@ -142,8 +142,9 @@ public abstract class ApiMapper {
     // ****************************************************** Contact
     // *******************************************************************
 
-    @Mappings({@Mapping(source = "ownerReference", target = "ownerReference")})
-    public abstract ContactDTO fromBeanToDTO(Contact bean, String ownerReference);
+    @Mappings({@Mapping(source = "ownerReference", target = "ownerReference")
+            })
+    public abstract ContactDTO fromBeanToDTO(Contact bean, String ownerReference );
 
     public abstract Contact fromDTOToBean(ContactDTO dto);
 

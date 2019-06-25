@@ -23,6 +23,7 @@ public class DeveloperDTO extends AbstractProfileDTO {
 
     private String rhReference;
 
+
     private LocalDate availability;
 
     private boolean resource;

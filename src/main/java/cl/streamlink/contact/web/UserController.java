@@ -120,7 +120,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public UserDTO whoami(HttpServletRequest req) {
-
+   //System.out.println("ssssss"+userService.whoami(req).getEmail());
         return userService.whoami(req);
     }
 
@@ -136,5 +136,7 @@ public class UserController {
     public JSONObject changePassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
         return userService.changeCurrentUserPassword(oldPassword, newPassword);
     }
+
+
 
 }

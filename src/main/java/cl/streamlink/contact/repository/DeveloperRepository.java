@@ -1,6 +1,8 @@
 package cl.streamlink.contact.repository;
 
+import cl.streamlink.contact.domain.Contact;
 import cl.streamlink.contact.domain.Developer;
+import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.utils.enums.Experience;
 import cl.streamlink.contact.utils.enums.Formation;
 import cl.streamlink.contact.utils.enums.Stage;
@@ -14,6 +16,8 @@ import java.util.Optional;
 public interface DeveloperRepository extends JpaRepository<Developer, Long> {
 
     Optional<Developer> findOneByReference(String reference);
+    Optional<Developer> findByContact_Email1 (String email);
+
 
     Page<Developer> findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn
             (String value, List<Stage> stages, List<Formation> formations, List<Experience> experiences,

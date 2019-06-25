@@ -127,7 +127,7 @@ public class UserService {
         return MiscUtils.createSuccessfullyResult();
     }
 
-    User getCurrentUser() {
+    public User getCurrentUser() {
         String currentUserName = SecurityUtils.getCurrentUserLogin();
 
         if (!SecurityUtils.checkIfThereIsUserLogged())
