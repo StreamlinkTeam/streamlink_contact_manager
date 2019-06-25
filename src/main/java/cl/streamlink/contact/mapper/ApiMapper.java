@@ -3,6 +3,7 @@ package cl.streamlink.contact.mapper;
 import cl.streamlink.contact.domain.*;
 import cl.streamlink.contact.repository.*;
 import cl.streamlink.contact.web.dto.*;
+import cl.streamlink.contact.web.dto.hireability.AttachedFileDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -18,6 +19,8 @@ public abstract class ApiMapper {
 
     @Inject
     ProjectRepository projectRepository;
+    @Inject
+    AttachedFileRepository attachedFileRepository;
 
     @Inject
     NeedRepository needRepository;
@@ -44,11 +47,33 @@ public abstract class ApiMapper {
     TimeLineRepository timeLineRepository;
 
 
+
     @Value("${contact.cv.url}")
     String baseUrl;
 
+    @Value("${contact.attachedFile.url}")
+    String fileUrl;
+
     @Inject
     TimeListRepository timeListRepository;
+
+
+    @Mappings({@Mapping(source = "resource.reference", target = "resourceReference"),
+            @Mapping(source = "timeList.reference", target = "timeListReference"),
+            @Mapping(target = "url", expression = "java(fileUrl.concat(bean.getName()))")} )
+    public abstract AttachedFileDTO fromBeanToDTO(AttachedFile bean);
+
+    @Mappings({@Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))"),
+            @Mapping(target = "timeList", expression = "java(timeListRepository.findOneByReference(dto.getTimeListReference()).orElse(null))")})
+    public abstract AttachedFile fromDTOToBean(AttachedFileDTO dto);
+
+
+
+
+    @Mappings({@Mapping(target = "reference", ignore = true),
+            @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))"),
+            @Mapping(target = "timeList", expression = "java(timeListRepository.findOneByReference(dto.getTimeListReference()).orElse(null))") })
+    public abstract void updateBeanFromDto(AttachedFileDTO dto, @MappingTarget  AttachedFile bean);
 
 
     @Mappings({@Mapping(source = "resource.reference", target = "resourceReference")})
