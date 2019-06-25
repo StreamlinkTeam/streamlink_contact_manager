@@ -28,8 +28,11 @@ import java.util.stream.Collectors;
 public class DeveloperService {
 
     private final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
+
+
     @Inject
     private DeveloperRepository developerRepository;
+
 
     @Inject
     private ResourceService resourceService;

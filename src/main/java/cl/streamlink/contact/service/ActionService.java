@@ -1,6 +1,7 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Action;
+import cl.streamlink.contact.domain.Need;
 import cl.streamlink.contact.domain.Project;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
@@ -37,6 +38,9 @@ public class ActionService {
     private ProjectRepository projectRepository;
 
     @Inject
+    private NeedRepository needRepository;
+
+    @Inject
     private SocietyContactRepository societyContactRepository;
 
     @Inject
@@ -60,7 +64,7 @@ public class ActionService {
         developerRepository.findOneByReference(developerReference).orElseThrow(
                 () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
-        developerActionDTO.setReference(MiscUtils.generateReference());
+        developerActionDTO.setReference("act" + MiscUtils.generateReference());
         developerActionDTO.setDeveloperReference(developerReference);
         developerActionDTO.setResponsibleReference(userService.getCurrentUser().getReference());
 
@@ -269,6 +273,67 @@ public class ActionService {
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
 
         Action action = actionRepository.findOneByReferenceAndProjectReference(reference, projectReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Action", reference));
+
+        actionRepository.delete(action);
+        return MiscUtils.createSuccessfullyResult();
+    }
+
+
+    public SocietyActionDTO createNeedAction(SocietyActionDTO societyActionDTO, String needReference) {
+
+        Need need = needRepository.findOneByReference(needReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
+
+        societyActionDTO.setReference(MiscUtils.generateReference());
+        societyActionDTO.setNeedReference(needReference);
+        societyActionDTO.setSocietyContactReference(need.getSocietyContact().getReference());
+        societyActionDTO.setNeedReference(needReference);
+        societyActionDTO.setResponsibleReference(userService.getCurrentUser().getReference());
+
+        Action action = mapper.fromDTOToBean(societyActionDTO);
+
+        return mapper.fromBeanToSocietyActionDTO(actionRepository.save(action));
+    }
+
+    public SocietyActionDTO updateNeedAction(SocietyActionDTO societyActionDTO, String reference,
+                                             String needReference) {
+
+        Need need = needRepository.findOneByReference(needReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
+
+        Action action = actionRepository.findOneByReferenceAndNeedReference(reference, needReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Action", reference));
+
+        mapper.updateBeanFromDto(societyActionDTO, action);
+
+        action = actionRepository.save(action);
+
+        return mapper.fromBeanToSocietyActionDTO(action);
+    }
+
+    public List<SocietyActionDTO> getNeedAction(String reference, String needReference) {
+
+        needRepository.findOneByReference(needReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
+
+        if (MiscUtils.isEmpty(reference))
+            return actionRepository.findByNeedReference(needReference).stream()
+                    .map(mapper::fromBeanToSocietyActionDTO).collect(Collectors.toList());
+        else {
+            Action action = actionRepository.findOneByReferenceAndNeedReference(reference, needReference)
+                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Action", reference));
+
+            return Collections.singletonList(mapper.fromBeanToSocietyActionDTO(action));
+        }
+    }
+
+    public JSONObject deleteNeedAction(String reference, String needReference) {
+
+        needRepository.findOneByReference(needReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
+
+        Action action = actionRepository.findOneByReferenceAndNeedReference(reference, needReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Action", reference));
 
         actionRepository.delete(action);

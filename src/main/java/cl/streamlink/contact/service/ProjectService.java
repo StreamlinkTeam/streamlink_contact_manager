@@ -48,7 +48,7 @@ public class ProjectService {
 
         Project project = mapper.fromDTOToBean(projectDTO);
 
-        project.setReference(MiscUtils.generateReference());
+        project.setReference("prj" + MiscUtils.generateReference());
         return mapper.fromBeanToDTO(projectRepository.save(project));
     }
 

@@ -48,7 +48,7 @@ public class ContractService {
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         Contract contract = mapper.fromDTOToBean(contractDTO);
-        contract.setReference(MiscUtils.generateReference());
+        contract.setReference("con" + MiscUtils.generateReference());
         contract.setResponsible(userService.getCurrentUser());
         contract.setDeveloper(developer);
 
