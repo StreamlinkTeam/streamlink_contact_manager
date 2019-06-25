@@ -15,8 +15,7 @@ import java.util.Optional;
 @Entity
 @Table(indexes = {@Index(name = "index_need_reference", columnList = "reference", unique = true)})
 @EntityListeners(AuditingEntityListener.class)
-public class
-Need {
+public class Need {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

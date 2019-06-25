@@ -157,7 +157,7 @@ public class PositioningDTO {
     public void setFreeDays(Integer freeDays) {
         this.freeDays = freeDays;
     }
-
+/*
     public BigDecimal getPeriodCost() {
         return cjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
     }
@@ -176,7 +176,7 @@ public class PositioningDTO {
             return BigDecimal.ZERO;
 
         return this.getPeriodMargin().divide(getPeriodCA()).multiply(BigDecimal.valueOf(100));
-    }
+    }*/
 
     public String getNote() {
         return note;

@@ -9,6 +9,10 @@ import java.util.List;
 public enum TimeLineType {
 
     Absence, Intern, Project;
+//    Janvier, Février,avril	,Mars,Mai ,Juin, Juillet, Août ,Septembre ,Octobre, Novembre,Décembre;
+
+
+
 
 
    /* @JsonCreator

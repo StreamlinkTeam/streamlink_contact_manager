@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -35,10 +38,6 @@ public class TimeLineService {
                 ContactApiException.resourceNotFoundExceptionBuilder("TimeLine"
                         , lineTempsReference)));
     }
-
-
-
-
 
 
     public JSONObject deleteLineTemps(String lineTempsReference) throws ContactApiException {
@@ -70,6 +69,19 @@ public class TimeLineService {
         mapper.updateBeanFromDto(lineTempsDTO, ligneTemps);
         return
                 mapper.fromBeanToDTO(timeLineRepository.save(ligneTemps));
+    }
+
+
+    public List<TimeLineDTO> getDeTimeLines(String lineTempsReference) throws ContactApiException {
+
+        if (lineTempsReference != null)
+            return Collections.singletonList(mapper.fromBeanToDTO(
+                    timeLineRepository.findOneByReference(lineTempsReference).orElseThrow(() -> ContactApiException
+                            .resourceNotFoundExceptionBuilder("TimeLine", lineTempsReference))));
+
+        else
+            return timeLineRepository.findAll().stream().map(mapper::fromBeanToDTO)
+                    .collect(Collectors.toList());
     }
 
 }
