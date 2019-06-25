@@ -1,6 +1,7 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Positioning;
+import cl.streamlink.contact.domain.Project;
 import cl.streamlink.contact.domain.ProjectPos;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
@@ -9,6 +10,7 @@ import cl.streamlink.contact.repository.ProjectPosRepository;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.PositioningStage;
 import cl.streamlink.contact.web.dto.ProjectPosDTO;
+import net.minidev.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -80,5 +82,15 @@ public class ProjectPosService {
 
         return projectPosRepository.findByNeedTitleContaining
                 (value, pageable).map(project -> mapper.fromBeanToDTO(project));
+    }
+
+    public JSONObject deleteProject(String projectReference) throws ContactApiException {
+
+        ProjectPos projectPos = projectPosRepository.findOneByReference(projectReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
+
+        projectPosRepository.delete(projectPos);
+
+        return MiscUtils.createSuccessfullyResult();
     }
 }

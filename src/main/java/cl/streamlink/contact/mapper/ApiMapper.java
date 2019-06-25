@@ -463,8 +463,12 @@ public abstract class ApiMapper {
             @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
             @Mapping(target = "rh", expression = "java(userRepository.findOneByReference(dto.getRhReference()).orElse(null))"),
             @Mapping(target = "societyContact", expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
-            @Mapping(target = "createdDate", ignore = true), @Mapping(target = "modifiedDate", ignore = true)})
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "modifiedDate", ignore = true),
+            @Mapping(target = "stage", ignore = true),
+            @Mapping(target = "type", ignore = true)})
     public abstract Need fromDTOToBean(NeedDTO dto);
+
 
     @Mappings({@Mapping(source = "needReference", target = "needReference")})
     public abstract NeedInformationDTO fromBeanToDTO(NeedInformation bean, String needReference);
