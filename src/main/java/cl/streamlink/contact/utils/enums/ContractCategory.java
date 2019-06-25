@@ -5,18 +5,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
 
-
-public enum ContractType {
+public enum ContractCategory {
 
     NOT_DEFINED,
-    CDI,
-    CDD,
-    SUBCONTRACTOR,
-    FREELANCE,
-    TRAINEESHIP;
+    ENGINEER_EXECUTIVE,
+    ETAM;
 
     @JsonCreator
-    public static ContractType fromString(final String value) {
+    public static ContractCategory fromString(final String value) {
         return value != null ?
                 Arrays.stream(values()).filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
                         .findFirst().orElse(NOT_DEFINED)

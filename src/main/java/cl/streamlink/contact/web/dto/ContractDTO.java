@@ -1,16 +1,12 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.utils.enums.ContractType;
-import cl.streamlink.contact.utils.enums.Currency;
-import cl.streamlink.contact.utils.enums.WorkTime;
+import cl.streamlink.contact.utils.enums.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Created by Chemakh on 11/07/2018.
- */
+
 public class ContractDTO {
 
     private String developerReference;
@@ -38,6 +34,16 @@ public class ContractDTO {
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
+
+    private BigDecimal cjm;
+
+    private BigDecimal coefficient;
+
+    private BigDecimal businessDays;
+
+    private ContractCategory contractCategory;
+
+    private ContractClassification contractClassification;
 
     public String getDeveloperReference() {
         return developerReference;
@@ -141,5 +147,45 @@ public class ContractDTO {
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public BigDecimal getCjm() {
+        return cjm;
+    }
+
+    public void setCjm(BigDecimal cjm) {
+        this.cjm = cjm;
+    }
+
+    public BigDecimal getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(BigDecimal coefficient) {
+        this.coefficient = coefficient;
+    }
+
+    public BigDecimal getBusinessDays() {
+        return businessDays;
+    }
+
+    public void setBusinessDays(BigDecimal businessDays) {
+        this.businessDays = businessDays;
+    }
+
+    public ContractCategory getContractCategory() {
+        return contractCategory;
+    }
+
+    public void setContractCategory(ContractCategory contractCategory) {
+        this.contractCategory = contractCategory;
+    }
+
+    public ContractClassification getContractClassification() {
+        return contractClassification;
+    }
+
+    public void setContractClassification(ContractClassification contractClassification) {
+        this.contractClassification = contractClassification;
     }
 }
