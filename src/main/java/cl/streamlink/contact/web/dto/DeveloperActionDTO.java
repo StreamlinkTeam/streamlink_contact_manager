@@ -4,9 +4,7 @@ import cl.streamlink.contact.utils.enums.ActionType;
 
 import java.time.LocalDateTime;
 
-/**
- * Created by chemakh on 13/07/2018.
- */
+
 public class DeveloperActionDTO {
 
     private String reference;

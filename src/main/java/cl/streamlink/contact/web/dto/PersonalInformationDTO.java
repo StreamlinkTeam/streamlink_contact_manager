@@ -1,13 +1,11 @@
 package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.utils.enums.FamilySituation;
+import cl.streamlink.contact.utils.enums.OriginCv;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * Created by Chemakh on 11/07/2018.
- */
 public class PersonalInformationDTO {
 
     private String developerReference;
@@ -21,6 +19,8 @@ public class PersonalInformationDTO {
     private String socialSecurityNumber;
 
     private FamilySituation familySituation;
+
+    private String originCv;
 
     private BigDecimal tjm;
 
@@ -88,5 +88,13 @@ public class PersonalInformationDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getOriginCv() {
+        return originCv;
+    }
+
+    public void setOriginCv(String originCv) {
+        this.originCv = originCv;
     }
 }

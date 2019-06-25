@@ -1,8 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
-/**
- * Created by Utilisateur on 27/07/2018.
- */
+
 public class CurriculumVitaeDTO {
 
 

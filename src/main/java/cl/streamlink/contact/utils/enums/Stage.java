@@ -6,13 +6,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Chemakh on 10/07/2018.
- */
+
 public enum Stage {
 
     ToTreat,
     InTheProcessOfQualifying,
+    WaitingQualifiedManager,
     Vivier,
     VivierPlus,
     StopContacting,

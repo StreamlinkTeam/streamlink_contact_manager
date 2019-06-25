@@ -10,6 +10,7 @@ import cl.streamlink.contact.web.dto.ProjectPosDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import net.minidev.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -86,5 +87,17 @@ public class ProjectPosController {
 
         return projectPosService.searchProjects(value, pageable);
 
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Delete Project Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = ProjectPos.class),
+            @ApiResponse(code = 404, message = "Project with Ref not Found")
+    })
+    public JSONObject deleteProject(@RequestParam("projectReference") String projectReference) throws ContactApiException {
+
+        return projectPosService.deleteProject(projectReference);
     }
 }

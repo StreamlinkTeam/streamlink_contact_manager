@@ -161,23 +161,27 @@ public class PositioningDTO {
     }
 
     public BigDecimal getPeriodCost() {
-        return cjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+       // return cjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+        return null;
     }
 
     public BigDecimal getPeriodCA() {
-        return tjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+       // return tjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+        return null;
     }
 
     public BigDecimal getPeriodMargin() {
-        return this.getPeriodCA().min(this.getPeriodCost());
+        // return this.getPeriodCA().min(this.getPeriodCost());
+        return null;
     }
 
     public BigDecimal getPeriodProfitability() {
 
-        if (getPeriodCA().equals(BigDecimal.ZERO))
-            return BigDecimal.ZERO;
-
-        return this.getPeriodMargin().divide(getPeriodCA()).multiply(BigDecimal.valueOf(100));
+//        if (getPeriodCA().equals(BigDecimal.ZERO))
+//            return BigDecimal.ZERO;
+//
+//        return this.getPeriodMargin().divide(getPeriodCA()).multiply(BigDecimal.valueOf(100));
+        return null;
     }
 
     public String getNote() {
