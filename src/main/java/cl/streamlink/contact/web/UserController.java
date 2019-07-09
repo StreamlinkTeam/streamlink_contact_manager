@@ -1,7 +1,9 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.exception.ContactApiException;
+import cl.streamlink.contact.service.PhotoService;
 import cl.streamlink.contact.service.UserService;
+import cl.streamlink.contact.web.dto.PhotoDTO;
 import cl.streamlink.contact.web.dto.UserDTO;
 import io.swagger.annotations.*;
 import net.minidev.json.JSONObject;
@@ -10,9 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Inject
+    private PhotoService photoService;
 
     @GetMapping("/login")
     @ApiResponses(value = {//
@@ -120,7 +128,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public UserDTO whoami(HttpServletRequest req) {
-   //System.out.println("ssssss"+userService.whoami(req).getEmail());
+        //System.out.println("ssssss"+userService.whoami(req).getEmail());
         return userService.whoami(req);
     }
 
@@ -138,5 +146,76 @@ public class UserController {
     }
 
 
+    @PutMapping(value = "avatar",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Add user avatar")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = PhotoDTO.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict"),
+            @ApiResponse(code = 404, message = "Object with Ref not Found"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden")
+
+    })
+    public PhotoDTO addDeveloperAvatar(@RequestParam String userReference, @RequestPart(value = "avatar") MultipartFile avatar) throws IOException {
+
+        return photoService.addUserAvatar(avatar, userReference);
+    }
+
+    @DeleteMapping(value = "avatar",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "remove user avatar")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = PhotoDTO.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict"),
+            @ApiResponse(code = 404, message = "Object with Ref not Found"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden")
+
+    })
+    public JSONObject removeUserAvatar(@RequestParam String reference, @RequestParam String userReference) {
+
+        return photoService.removeUserAvatar(reference, userReference);
+    }
+
+    @GetMapping(value = "avatar",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Users avatars")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = UserDTO.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public List<PhotoDTO> findUserAvatars(@RequestParam(value = "userReference") String userReference) throws ContactApiException {
+        return photoService.findUserPhotos(userReference);
+    }
+
+
+    @GetMapping(value = "userAvatar",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get User avatar")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = UserDTO.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public PhotoDTO getUserAvatar(@RequestParam(value = "reference") String reference,
+                                  @RequestParam(value = "UserReference") String userReference) throws ContactApiException {
+        return photoService.getPhotoByUser(reference, userReference);
+    }
+
+    @GetMapping(value = "userAvatarByUser",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get User avatar")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = UserDTO.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public PhotoDTO getPhotoByUserReference(@RequestParam(value = "userReference") String userReference) throws ContactApiException {
+        return photoService.getPhotoByUserReference(userReference);
+    }
 
 }
