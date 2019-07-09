@@ -51,6 +51,9 @@ public abstract class ApiMapper {
     @Value("${contact.cv.url}")
     String baseUrl;
 
+    @Value("${contact.photo.url}")
+    String basePhotoUrl;
+
     @Value("${contact.attachedFile.url}")
     String fileUrl;
 
@@ -89,17 +92,17 @@ public abstract class ApiMapper {
 
 
     @Mappings({@Mapping(source = "reference", target = "timeListReference"),
-            @Mapping(source="positioning.reference",target = "positioningReference")})
+            @Mapping(source="resource.reference",target = "resourceReference")})
 
     public abstract TimeLineDTO fromBeanToDTO(TimeLine bean);
 
     @Mappings({
-            @Mapping(target = "positioning", expression = "java(positioningRepository.findOneByReference(dto.getPositioningReference()).orElse(null))")})
+            @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
     public abstract TimeLine fromDTOToBean(TimeLineDTO dto);
 
 
     @Mappings({@Mapping(target = "reference", ignore = true),
-            @Mapping(target = "positioning", expression = "java(positioningRepository.findOneByReference(dto.getPositioningReference()).orElse(null))")})
+            @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
     public abstract void updateBeanFromDto(TimeLineDTO dto, @MappingTarget TimeLine bean);
 
 
@@ -121,11 +124,11 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(target = "developer", expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
             @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
-            @Mapping(target = "createdDate", ignore = true),
-            @Mapping(target = "modifiedDate", ignore = true),
-            @Mapping(target = "contractCategory", ignore = true),
-            @Mapping(target = "contractClassification", ignore = true)})
-    public abstract Contract fromDTOToBean(ContractDTO dto);
+    @Mapping(target = "createdDate", ignore = true),
+    @Mapping(target = "modifiedDate", ignore = true),
+    @Mapping(target = "contractCategory", ignore = true),
+    @Mapping(target = "contractClassification", ignore = true)})
+public abstract Contract fromDTOToBean(ContractDTO dto);
 
     // ****************************************************** Positioning
     // *******************************************************************
@@ -302,6 +305,16 @@ public abstract class ApiMapper {
     @Mappings({
             @Mapping(target = "developer", expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))")})
     public abstract CurriculumVitae fromDTOToBean(CurriculumVitaeDTO dto);
+
+
+    @Mappings({@Mapping(target = "userReference", source = "user.reference"),
+            @Mapping(target = "url", expression = "java(basePhotoUrl.concat(bean.getName()))")})
+    public abstract PhotoDTO fromBeanToDTO(Photo bean);
+
+    @Mappings({
+            @Mapping(target = "user", expression = "java(userRepository.findOneByReference(dto.getUserReference()).orElse(null))")})
+    public abstract Photo fromDTOToBean(PhotoDTO dto);
+
 
     @Mappings({@Mapping(source = "manager.reference", target = "managerReference"),
             @Mapping(source = "society.reference", target = "societyReference"),})
