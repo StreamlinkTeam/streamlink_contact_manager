@@ -3,6 +3,7 @@ package cl.streamlink.contact.mapper;
 import cl.streamlink.contact.domain.*;
 import cl.streamlink.contact.repository.*;
 import cl.streamlink.contact.web.dto.*;
+import cl.streamlink.contact.web.dto.hireability.AbsenceDTO;
 import cl.streamlink.contact.web.dto.hireability.AttachedFileDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -59,6 +60,24 @@ public abstract class ApiMapper {
 
     @Inject
     TimeListRepository timeListRepository;
+    @Inject
+    AbsenceRepository absenceRepository;
+
+    @Inject
+    AbsenceListRepository absenceListRepository;
+
+
+    @Mapping(source = "resource.reference", target = "resourceReference")
+    public abstract AbsenceListDTO fromBeanToDTO(AbsenceList bean);
+    @Mappings({@Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))"),
+            @Mapping(target = "absenceListDate", ignore = true)})
+    public abstract AbsenceList fromDTOToBean(AbsenceListDTO dto);
+
+    @Mapping(source = "absenceList.reference", target = "absenceListReference")
+    public abstract AbsenceDTO fromBeanToDTO(Absence bean);
+    @Mappings({@Mapping(target = "absenceList", expression = "java(absenceListRepository.findOneByReference(dto.getAbsenceListReference()).orElse(null))")
+            ,@Mapping(target = "dateAbsence", ignore = true)})
+    public abstract Absence fromDTOToBean(AbsenceDTO dto);
 
 
     @Mappings({@Mapping(source = "resource.reference", target = "resourceReference"),
@@ -94,6 +113,8 @@ public abstract class ApiMapper {
     @Mappings({@Mapping(source = "reference", target = "timeListReference"),
             @Mapping(source="resource.reference",target = "resourceReference")})
 
+    @Mappings({@Mapping(source = "resource.reference", target = "resourceReference"),
+            @Mapping(source = "reference", target = "timeListReference")})
     public abstract TimeLineDTO fromBeanToDTO(TimeLine bean);
 
     @Mappings({
@@ -157,7 +178,7 @@ public abstract Contract fromDTOToBean(ContractDTO dto);
     // *******************************************************************
 
     @Mappings({@Mapping(source = "ownerReference", target = "ownerReference")
-            })
+    })
     public abstract ContactDTO fromBeanToDTO(Contact bean, String ownerReference );
 
     public abstract Contact fromDTOToBean(ContactDTO dto);
