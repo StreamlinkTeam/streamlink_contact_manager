@@ -84,4 +84,13 @@ public class TimeLineService {
                     .collect(Collectors.toList());
     }
 
+    public TimeLine save(TimeLine timeLine) {
+        timeLine.setReference(MiscUtils.generateReference());
+        return timeLineRepository.save(timeLine);
+    }
+
+    public List<TimeLine> getAllTimeLines() {
+        return timeLineRepository.findAll();
+    }
+
 }

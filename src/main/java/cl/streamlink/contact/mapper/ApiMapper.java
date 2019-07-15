@@ -113,8 +113,6 @@ public abstract class ApiMapper {
     @Mappings({@Mapping(source = "reference", target = "timeListReference"),
             @Mapping(source="resource.reference",target = "resourceReference")})
 
-    @Mappings({@Mapping(source = "resource.reference", target = "resourceReference"),
-            @Mapping(source = "reference", target = "timeListReference")})
     public abstract TimeLineDTO fromBeanToDTO(TimeLine bean);
 
     @Mappings({
@@ -452,12 +450,10 @@ public abstract Contract fromDTOToBean(ContractDTO dto);
     public abstract void updateBeanFromDto(NeedInformationDTO dto, @MappingTarget NeedInformation bean);
 
     @Mappings({
-            @Mapping(target = "country"),
-            @Mapping(target = "city"),
-            @Mapping(target = "postal"),
-            @Mapping(target = "address"),
+            @Mapping(target = "place"),
+            @Mapping(target = "comment"),
             @Mapping(target = "currency"),
-            @Mapping(target = "presentationDate"),
+            @Mapping(target = "presentationDate", ignore = true),
             @Mapping(target = "need", expression = "java(needRepository.findOneByReference(dto.getNeedReference()).orElse(null))"),
             @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
             @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})

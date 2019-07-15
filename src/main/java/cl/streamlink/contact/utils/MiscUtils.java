@@ -71,7 +71,7 @@ public class MiscUtils {
     }
 
     public static String generateReference() {
-        return RandomStringUtils.randomNumeric(1, 5);
+        return RandomStringUtils.randomAlphanumeric(15);
     }
 
 

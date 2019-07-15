@@ -105,4 +105,14 @@ public class TimeLineController {
         return timeLineService.getDeTimeLines(null);
     }
 
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public TimeLine saveTimeLine(@RequestBody TimeLine timeLine) {
+        System.out.println(timeLine);
+        return timeLineService.save(timeLine);
+    }
+
+    @RequestMapping(value = "timelines", method = RequestMethod.GET)
+    public  List<TimeLine> getAllTimeLines() {
+        return timeLineService.getAllTimeLines();
+    }
 }

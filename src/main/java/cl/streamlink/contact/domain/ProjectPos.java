@@ -13,10 +13,8 @@ import java.time.LocalDate;
 @DiscriminatorValue("PROJECT")
 public class ProjectPos extends Positioning {
 
-    private String country;
-    private String address;
-    private String city;
-    private String postal;
+    private String place;
+    private String comment;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
@@ -24,36 +22,20 @@ public class ProjectPos extends Positioning {
     private LocalDate presentationDate;
 
 
-    public String getCountry() {
-        return country;
+    public String getPlace() {
+        return place;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
-    public String getAddress() {
-        return address;
+    public String getComment() {
+        return comment;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostal() {
-        return postal;
-    }
-
-    public void setPostal(String postal) {
-        this.postal = postal;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Currency getCurrency() {
