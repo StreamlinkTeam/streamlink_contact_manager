@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
+import org.apache.naming.StringManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -317,4 +318,18 @@ public class DeveloperController {
       // String developerEmailj = userservice.getCurrentUser().getEmail();
         return developerService.getDeveloperEmail(userservice.getCurrentUser().getEmail());
     }
+
+   @RequestMapping(value = "manager",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Developer Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Developer.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public List<DeveloperDTO> getDevelopersManager(@RequestParam(value = "managerReference") String managerReference) throws ContactApiException {
+       return developerService.getDeveloperByManger(managerReference);
+   }
+
 }

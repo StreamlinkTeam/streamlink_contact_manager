@@ -277,5 +277,18 @@ public class ResourceController {
 
     }
 
+    @RequestMapping(value = "manager",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Developer Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Resource.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public List<ResourceDTO> getResourceManager(@RequestParam(value = "managerReference") String managerReference) throws ContactApiException {
+        return resourceService.getResourceByManger(managerReference);
+    }
+
 
 }

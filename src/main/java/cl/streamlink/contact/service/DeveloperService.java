@@ -235,4 +235,21 @@ public class DeveloperService {
         personalInformation.setDeveloperReference(developerReference);
         return personalInformation;
     }
+
+
+    public List<DeveloperDTO> getDeveloperByManger(String managerReference) throws ContactApiException {
+
+        return developerRepository.findByManagerReference(managerReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+
+
+    }
+
+
+    /*public DeveloperDTO getDeveloperEmail(String developerEmail) throws ContactApiException {
+
+        return mapper.fromBeanToDTO(developerRepository.findByContact_Email1(developerEmail).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerEmail)));
+    }*/
+
+
 }

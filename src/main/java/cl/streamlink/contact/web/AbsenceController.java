@@ -1,8 +1,9 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Absence;
+import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.AbsenceService;
-import cl.streamlink.contact.web.dto.DeveloperActionDTO;
+import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.web.dto.hireability.AbsenceDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.util.List;
+
 @RestController
 @RequestMapping("/ws")
 public class AbsenceController {
 
     @Inject
     private AbsenceService absenceService;
+    @Inject
+    private UserService userService;
 
     @RequestMapping(value = "absence",
             method = RequestMethod.POST,
@@ -32,5 +37,64 @@ public class AbsenceController {
     public AbsenceDTO createAbsence(@RequestBody @Valid AbsenceDTO absence) {
 
         return  absenceService.createAbsence(absence);
+    }
+
+
+  /*  @GetMapping
+
+    @ResponseStatus(HttpStatus.OK)
+
+    @ApiOperation(value = "Get lineTemps Details Service")
+
+    @ApiResponses(value = {
+
+            // @ApiResponse(code = 200, message = "Operation Executed Successfully", response = TimeLine.class),
+
+            @ApiResponse(code = 404, message = "lineTemps with Ref not Found")})
+
+    public AbsenceDTO getLineTemps(@RequestParam(value = "absenceReference") String lineTempsReference) throws ContactApiException {
+        return timeLineService.getLine(lineTempsReference);
+    }*/
+
+    @RequestMapping(value = "all",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get timeLines Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Absence.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public List<AbsenceDTO> getAbsences() {
+        return absenceService.getAbcences(null);
+    }
+
+
+    @RequestMapping(value = "managerResource",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Developer Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Absence.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public List<AbsenceDTO> getResourceManager(@RequestParam(value = "managerReference") String managerReference,
+                                               @RequestParam(value = "resourceReference") String resourceReference) throws ContactApiException {
+        return absenceService.getAbsenceByMangerAndResource(managerReference, resourceReference);
+    }
+
+    @RequestMapping(value = "manager",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Developer Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Absence.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public List<AbsenceDTO> getResourceManager() throws ContactApiException {
+        String refmanager = userService.getCurrentUser().getReference();
+        return absenceService.getAbsenceByManger(refmanager );
     }
 }

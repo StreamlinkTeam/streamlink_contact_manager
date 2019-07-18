@@ -27,7 +27,8 @@ public class Absence {
 
     private float duration ;
     private float sum ;
-   @ManyToOne
+
+   @ManyToOne(optional = false)
    private AbsenceList absenceList;
 
 

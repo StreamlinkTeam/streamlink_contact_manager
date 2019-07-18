@@ -21,6 +21,8 @@ public class AbsenceList {
     private String state;
     @ManyToOne
     private Resource resource;
+    @ManyToOne
+    private User manager;
 
     private Date absenceListDate ;
 
@@ -78,5 +80,13 @@ public class AbsenceList {
 
     public void setAbsenceListDate(Date absenceListDate) {
         this.absenceListDate = absenceListDate;
+    }
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
     }
 }

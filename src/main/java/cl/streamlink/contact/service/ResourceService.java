@@ -167,5 +167,11 @@ public class ResourceService {
         return MiscUtils.createSuccessfullyResult();
     }
 
+    public List<ResourceDTO> getResourceByManger(String managerReference) throws ContactApiException {
+
+        return resourceRepository.findByManagerReference(managerReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+
+
+    }
 
 }

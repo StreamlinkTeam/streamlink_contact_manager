@@ -10,38 +10,40 @@ import cl.streamlink.contact.web.dto.DeveloperActionDTO;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.io.Console;
+import java.util.Date;
+
 @Service
 public class AbsenceListService {
-
+    @Inject
+    private UserService userService;
+    @Inject
+    private DeveloperService developerService;
     @Inject
     private ApiMapper mapper;
 
     @Inject
     private AbsenceListRepository absenceListRepository;
 
-
-
-    /*public AbsenceListDTO createAbsenceList(AbsenceListDTO absenceListDTO, String resourceReference) {
-
-        absenceListRepository.findOneByReference(developerReference).orElseThrow(
-                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", resourceReference));
-
-        absenceListDTO.setReference(MiscUtils.generateReference());
-        absenceListDTO.setResourceReference(resourceReference);
-      //  developerActionDTO.setResponsibleReference(userService.getCurrentUser().getReference());
-
-        AbsenceList absenceList = mapper.fromDTOToBean(absenceListDTO);
-
-        return mapper.fromBeanToDTO()
-                //fromBeanToAbsenceListDTO(absenceListRepository.save(absenceList));
-    }
-*/
-
     public AbsenceListDTO createAbsence(AbsenceListDTO absenceListDTO) {
-
+       String email = userService.getCurrentUser().getEmail();
+       // System.out.println('ssss'+email);
+        String ref = developerService.getDeveloperEmail(email).getReference();
+        String referenceManager = developerService.getDeveloperEmail(email).getManagerReference();
+        absenceListDTO.setResourceReference(ref);
+        absenceListDTO.setManagerReference(referenceManager);
         AbsenceList absenceList = mapper.fromDTOToBean(absenceListDTO);
+       // absenceList.setResource(ref);
 
         absenceList.setReference(MiscUtils.generateReference());
+        absenceList.setAbsenceListDate(new Date());
+        absenceList.setState("Non validé");
+
+       // absenceList.setResource(userService.getCurrentUser().getReference());
+        /*absenceListDTO.setReference(MiscUtils.generateReference());
+        absenceListDTO.setAbsenceListDate(new Date());
+        absenceListDTO.setResourceReference(ref);*/
+
         return
                 mapper.fromBeanToDTO(absenceListRepository.save(absenceList));
     }

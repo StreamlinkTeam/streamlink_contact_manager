@@ -64,16 +64,19 @@ public abstract class ApiMapper {
     AbsenceListRepository absenceListRepository;
 
 
-    @Mapping(source = "resource.reference", target = "resourceReference")
+    @Mappings({ @Mapping(source = "resource.reference", target = "resourceReference"),@Mapping(source = "manager.reference", target = "managerReference")})
     public abstract AbsenceListDTO fromBeanToDTO(AbsenceList bean);
     @Mappings({@Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))"),
-            @Mapping(target = "absenceListDate", ignore = true)})
+            @Mapping(target = "absenceListDate", ignore = true),
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))") })
     public abstract AbsenceList fromDTOToBean(AbsenceListDTO dto);
-
-    @Mapping(source = "absenceList.reference", target = "absenceListReference")
+    @Mappings({@Mapping(source = "absenceList.reference", target = "absenceListReference"),
+            @Mapping(source = "absenceList.state", target = "state"),
+            @Mapping(source = "absenceList.manager.reference", target = "manager") })
     public abstract AbsenceDTO fromBeanToDTO(Absence bean);
     @Mappings({@Mapping(target = "absenceList", expression = "java(absenceListRepository.findOneByReference(dto.getAbsenceListReference()).orElse(null))")
-            ,@Mapping(target = "dateAbsence", ignore = true)})
+
+    })
     public abstract Absence fromDTOToBean(AbsenceDTO dto);
 
 

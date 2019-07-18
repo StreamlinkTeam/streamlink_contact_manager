@@ -17,6 +17,7 @@ public interface DeveloperRepository extends JpaRepository<Developer, Long> {
 
     Optional<Developer> findOneByReference(String reference);
     Optional<Developer> findByContact_Email1 (String email);
+    List<Developer> findByManagerReference(String managerReference);
 
 
     Page<Developer> findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn

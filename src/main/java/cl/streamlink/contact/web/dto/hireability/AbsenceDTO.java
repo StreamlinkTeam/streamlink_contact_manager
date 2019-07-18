@@ -1,6 +1,8 @@
 package cl.streamlink.contact.web.dto.hireability;
 
 
+import cl.streamlink.contact.domain.AbsenceList;
+
 import java.util.Date;
 
 
@@ -19,6 +21,10 @@ public class AbsenceDTO {
 
     private float sum ;
     private String absenceListReference;
+    private String state;
+    private String resourceReference;
+    private  String manager;
+    private Date absenceListDate;
 
     public String getReference() {
         return Reference;
@@ -74,5 +80,37 @@ public class AbsenceDTO {
 
     public void setAbsenceListReference(String absenceListReference) {
         this.absenceListReference = absenceListReference;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getResourceReference() {
+        return resourceReference;
+    }
+
+    public void setResourceReference(String resourceReference) {
+        this.resourceReference = resourceReference;
+    }
+
+    public Date getAbsenceListDate() {
+        return absenceListDate;
+    }
+
+    public void setAbsenceListDate(Date absenceListDate) {
+        this.absenceListDate = absenceListDate;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
     }
 }

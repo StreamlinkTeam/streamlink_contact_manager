@@ -10,6 +10,9 @@ import cl.streamlink.contact.web.dto.hireability.AbsenceDTO;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AbsenceService {
@@ -27,7 +30,34 @@ public class AbsenceService {
         Absence absence = mapper.fromDTOToBean(absenceDTO);
 
         absence.setReference(MiscUtils.generateReference());
+
         return
                 mapper.fromBeanToDTO(absenceRepository.save(absence));
+    }
+
+    public List<AbsenceDTO> getAbcences(String absenceReference) throws ContactApiException {
+
+        if (absenceReference!= null)
+            return Collections.singletonList(mapper.fromBeanToDTO(
+                    absenceRepository.findOneByReference(absenceReference).orElseThrow(() -> ContactApiException
+                            .resourceNotFoundExceptionBuilder("Absence", absenceReference))));
+
+        else
+            return absenceRepository.findAll().stream().map(mapper::fromBeanToDTO)
+                    .collect(Collectors.toList());
+    }
+
+    public List<AbsenceDTO> getAbsenceByMangerAndResource(String managerReference, String resourceReference) throws ContactApiException {
+
+        return absenceRepository.findByAbsenceListManagerReferenceAndAbsenceListResourceReference(managerReference, resourceReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+
+
+    }
+
+    public List<AbsenceDTO> getAbsenceByManger(String managerReference) throws ContactApiException {
+
+        return absenceRepository.findByAbsenceListManagerReference(managerReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+
+
     }
 }

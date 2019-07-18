@@ -27,4 +27,7 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     List<Resource> findByFirstnameContaining(String value);
 
+    List<Resource> findByManagerReference(String managerReference);
+
+
 }

@@ -16,7 +16,7 @@ public class AbsenceListDTO {
     private String resourceReference;
 
     private Date absenceListDate ;
-
+    private String managerReference;
     public String getReference() {
         return reference;
     }
@@ -63,5 +63,13 @@ public class AbsenceListDTO {
 
     public void setAbsenceListDate(Date absenceListDate) {
         this.absenceListDate = absenceListDate;
+    }
+
+    public String getManagerReference() {
+        return managerReference;
+    }
+
+    public void setManagerReference(String managerReference) {
+        this.managerReference = managerReference;
     }
 }
