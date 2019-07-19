@@ -28,6 +28,8 @@ public class PositioningDTO {
 
     private String needTitle;
 
+    private String email;
+
     // private String projectTitle;
 
     private String resourceFullName;
@@ -51,6 +53,8 @@ public class PositioningDTO {
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
+
+    private boolean project;
 
     public String getReference() {
         return reference;
@@ -155,26 +159,30 @@ public class PositioningDTO {
     public void setFreeDays(Integer freeDays) {
         this.freeDays = freeDays;
     }
-/*
+
     public BigDecimal getPeriodCost() {
-        return cjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+       // return cjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+        return null;
     }
 
     public BigDecimal getPeriodCA() {
-        return tjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+       // return tjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+        return null;
     }
 
     public BigDecimal getPeriodMargin() {
-        return this.getPeriodCA().min(this.getPeriodCost());
+        // return this.getPeriodCA().min(this.getPeriodCost());
+        return null;
     }
 
     public BigDecimal getPeriodProfitability() {
 
-        if (getPeriodCA().equals(BigDecimal.ZERO))
-            return BigDecimal.ZERO;
-
-        return this.getPeriodMargin().divide(getPeriodCA()).multiply(BigDecimal.valueOf(100));
-    }*/
+//        if (getPeriodCA().equals(BigDecimal.ZERO))
+//            return BigDecimal.ZERO;
+//
+//        return this.getPeriodMargin().divide(getPeriodCA()).multiply(BigDecimal.valueOf(100));
+        return null;
+    }
 
     public String getNote() {
         return note;
@@ -223,6 +231,20 @@ public class PositioningDTO {
 //	public void setProjectReference(String projectReference) {
 //		this.projectReference = projectReference;
 //	}
+public boolean isProject() {
+    return project;
+}
+
+    public void setProject(boolean project) {
+        this.project = project;
+    }
 
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

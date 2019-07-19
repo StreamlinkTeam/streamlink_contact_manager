@@ -205,6 +205,63 @@ public class ActionController {
         return actionService.deleteProjectAction(reference, projectReference);
     }
 
+    @RequestMapping(value = "needs/actions",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Create Action Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+    })
+    public SocietyActionDTO createNeedAction(@RequestBody @Valid SocietyActionDTO action, @RequestParam String needReference) {
+
+        return actionService.createNeedAction(action, needReference);
+    }
+
+    @RequestMapping(value = "needs/actions",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Create Action Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+    })
+    public SocietyActionDTO updateNeedAction(@Valid @RequestBody SocietyActionDTO action,
+                                             @RequestParam String reference, @RequestParam String needReference) throws ContactApiException {
+
+        return actionService.updateNeedAction(action, reference, needReference);
+    }
+
+    @RequestMapping(value = "needs/actions",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Action Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
+            @ApiResponse(code = 404, message = "Action with Ref not Found")
+    })
+    public List<SocietyActionDTO> getNeedAction(@RequestParam(required = false) String reference, @RequestParam String needReference) throws ContactApiException {
+
+        return actionService.getNeedAction(reference, needReference);
+    }
+
+    @RequestMapping(value = "needs/actions",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Delete Action Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
+            @ApiResponse(code = 404, message = "Action with Ref not Found")
+    })
+    public JSONObject deleteNeedAction(@RequestParam String reference, @RequestParam String needReference) throws ContactApiException {
+
+        return actionService.deleteNeedAction(reference, needReference);
+    }
+
 
     @GetMapping
     public List<Action> getActions() {

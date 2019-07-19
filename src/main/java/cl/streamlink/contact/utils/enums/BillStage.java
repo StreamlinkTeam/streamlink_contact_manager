@@ -5,21 +5,23 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
 
-
-public enum ContractType {
+public enum BillStage {
 
     NOT_DEFINED,
-    CDI,
-    CDD,
-    SUBCONTRACTOR,
-    FREELANCE,
-    TRAINEESHIP;
+    CREATION,
+    TRANSMITTED_TO_CUSTOMER,
+    REVIVAL1,
+    REVIVAL2,
+    EMAIL_TO_CUSTOMER,
+    UNPAID,
+    PAID;
 
     @JsonCreator
-    public static ContractType fromString(final String value) {
+    public static BillStage fromString(final String value) {
         return value != null ?
                 Arrays.stream(values()).filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
                         .findFirst().orElse(NOT_DEFINED)
                 : NOT_DEFINED;
     }
 }
+

@@ -28,8 +28,11 @@ import java.util.stream.Collectors;
 public class DeveloperService {
 
     private final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
+
+
     @Inject
     private DeveloperRepository developerRepository;
+
 
     @Inject
     private ResourceService resourceService;
@@ -120,8 +123,11 @@ public class DeveloperService {
 
         return developerRepository
                 .findByFirstnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrLastnameContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationTitleContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInOrSkillsInformationLanguagesContainingAndStageInAndSkillsInformationFormationInAndSkillsInformationExperienceIn(
-                        value, stages, formations, experiences, value, stages, formations, experiences, value, stages,
-                        formations, experiences, value, stages, formations, experiences, pageable)
+                        value, stages, formations, experiences,
+                        value, stages, formations, experiences,
+                        value, stages, formations, experiences,
+                        value, stages, formations, experiences,
+                        pageable)
                 .map(developer -> mapper.fromBeanToDTOResponse(developer));
     }
 

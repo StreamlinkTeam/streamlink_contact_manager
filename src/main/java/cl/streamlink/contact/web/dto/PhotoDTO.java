@@ -1,8 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
-
-public class CurriculumVitaeDTO {
-
+public class PhotoDTO {
 
     private String reference;
 
@@ -10,7 +8,7 @@ public class CurriculumVitaeDTO {
 
     private String name;
 
-    private String developerReference;
+    private String userReference;
 
     private String url;
 
@@ -38,12 +36,12 @@ public class CurriculumVitaeDTO {
         this.name = name;
     }
 
-    public String getDeveloperReference() {
-        return developerReference;
+    public String getUserReference() {
+        return userReference;
     }
 
-    public void setDeveloperReference(String developerReference) {
-        this.developerReference = developerReference;
+    public void setUserReference(String userReference) {
+        this.userReference = userReference;
     }
 
     public String getUrl() {

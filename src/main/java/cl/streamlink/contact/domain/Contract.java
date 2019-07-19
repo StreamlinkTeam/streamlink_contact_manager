@@ -1,8 +1,6 @@
 package cl.streamlink.contact.domain;
 
-import cl.streamlink.contact.utils.enums.ContractType;
-import cl.streamlink.contact.utils.enums.Currency;
-import cl.streamlink.contact.utils.enums.WorkTime;
+import cl.streamlink.contact.utils.enums.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,9 +10,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Created by Chemakh on 11/07/2018.
- */
 
 @Entity
 @Table(indexes = {@Index(name = "index_contract_reference", columnList = "reference", unique = true)})
@@ -59,6 +54,16 @@ public class Contract {
     @Column(name = "modified_date")
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
+    private BigDecimal coefficient;
+
+    private BigDecimal businessDays;
+
+    @Enumerated(EnumType.STRING)
+    private ContractCategory contractCategory;
+
+    @Enumerated(EnumType.STRING)
+    private ContractClassification contractClassification;
 
     public Long getId() {
         return id;
@@ -170,5 +175,37 @@ public class Contract {
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public BigDecimal getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(BigDecimal coefficient) {
+        this.coefficient = coefficient;
+    }
+
+    public BigDecimal getBusinessDays() {
+        return businessDays;
+    }
+
+    public void setBusinessDays(BigDecimal businessDays) {
+        this.businessDays = businessDays;
+    }
+
+    public ContractCategory getContractCategory() {
+        return contractCategory;
+    }
+
+    public void setContractCategory(ContractCategory contractCategory) {
+        this.contractCategory = contractCategory;
+    }
+
+    public ContractClassification getContractClassification() {
+        return contractClassification;
+    }
+
+    public void setContractClassification(ContractClassification contractClassification) {
+        this.contractClassification = contractClassification;
     }
 }

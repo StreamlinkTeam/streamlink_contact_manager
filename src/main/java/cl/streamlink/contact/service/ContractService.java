@@ -18,9 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 
-/**
- * Created by chemakh on 12/07/2018.
- */
 @Service
 public class ContractService {
 
@@ -48,7 +45,7 @@ public class ContractService {
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         Contract contract = mapper.fromDTOToBean(contractDTO);
-        contract.setReference(MiscUtils.generateReference());
+        contract.setReference("con" + MiscUtils.generateReference());
         contract.setResponsible(userService.getCurrentUser());
         contract.setDeveloper(developer);
 

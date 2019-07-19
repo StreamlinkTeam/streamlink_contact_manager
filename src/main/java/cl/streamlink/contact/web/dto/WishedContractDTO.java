@@ -5,9 +5,7 @@ import cl.streamlink.contact.utils.enums.Currency;
 
 import java.math.BigDecimal;
 
-/**
- * Created by Chemakh on 11/07/2018.
- */
+
 public class WishedContractDTO {
 
     private String developerReference;

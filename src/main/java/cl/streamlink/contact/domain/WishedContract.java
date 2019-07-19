@@ -6,10 +6,6 @@ import cl.streamlink.contact.utils.enums.Currency;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-/**
- * Created by Chemakh on 11/07/2018.
- */
-
 @Entity
 @Table(indexes = {@Index(name = "index_wished_contract_reference", columnList = "reference", unique = true)})
 public class WishedContract {

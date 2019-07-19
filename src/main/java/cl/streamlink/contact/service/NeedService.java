@@ -38,7 +38,9 @@ public class NeedService {
 
         Need need = mapper.fromDTOToBean(needDTO);
 
-        need.setReference(MiscUtils.generateReference());
+        need.setReference("bes" + MiscUtils.generateReference());
+        need.setStage(NeedStage.InProgress);
+        need.setType(NeedType.Authority);
         return mapper.fromBeanToDTO(needRepository.save(need));
     }
 

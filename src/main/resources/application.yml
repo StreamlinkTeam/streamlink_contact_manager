@@ -8,6 +8,11 @@ security:
       expire-length: 5 #in Hours
 
 spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/streamlink?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: admin
   jpa:
     database: MYSQL
     show_sql: true

@@ -69,8 +69,10 @@ public class NeedController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<NeedResponseDTO> getNeeds(Pageable pageable, @RequestParam boolean fromAngular,
-                                          @RequestParam(required = false) String value, @RequestParam(required = false) ActivityArea activityArea,
-                                          @RequestParam(required = false) NeedType type, @RequestParam(required = false) NeedStage stage,
+                                          @RequestParam(required = false) String value,
+                                          @RequestParam(required = false) ActivityArea activityArea,
+                                          @RequestParam(required = false) NeedType type,
+                                          @RequestParam(required = false) NeedStage stage,
                                           @RequestParam(required = false) Sort.Direction dir) {
 
         if (fromAngular) {

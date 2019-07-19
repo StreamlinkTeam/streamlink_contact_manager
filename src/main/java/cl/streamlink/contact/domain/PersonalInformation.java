@@ -1,6 +1,7 @@
 package cl.streamlink.contact.domain;
 
 import cl.streamlink.contact.utils.enums.FamilySituation;
+import cl.streamlink.contact.utils.enums.OriginCv;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -8,9 +9,7 @@ import javax.persistence.Enumerated;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * Created by Chemakh on 11/07/2018.
- */
+
 @Embeddable
 public class PersonalInformation {
 
@@ -28,6 +27,8 @@ public class PersonalInformation {
 
     @Enumerated(EnumType.STRING)
     private FamilySituation familySituation;
+
+    private String originCv;
 
     public LocalDate getBirthDate() {
         return birthDate;
@@ -83,5 +84,13 @@ public class PersonalInformation {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getOriginCv() {
+        return originCv;
+    }
+
+    public void setOriginCv(String originCv) {
+        this.originCv = originCv;
     }
 }
