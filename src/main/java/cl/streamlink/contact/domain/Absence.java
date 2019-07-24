@@ -28,7 +28,7 @@ public class Absence {
     private float duration ;
     private float sum ;
 
-   @ManyToOne(optional = false)
+   @ManyToOne(optional = false , cascade=CascadeType.ALL)
    private AbsenceList absenceList;
 
 

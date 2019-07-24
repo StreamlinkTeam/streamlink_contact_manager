@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.io.Console;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AbsenceListService {
@@ -46,5 +49,31 @@ public class AbsenceListService {
 
         return
                 mapper.fromBeanToDTO(absenceListRepository.save(absenceList));
+    }
+    public AbsenceListDTO updateAbsence(AbsenceListDTO absenceListDTO, String absenceListReference) throws ContactApiException {
+
+        AbsenceList absenceList =
+                absenceListRepository.findOneByReference(absenceListReference).orElseThrow(()
+                        -> ContactApiException.resourceNotFoundExceptionBuilder("AbsenceList",
+                        absenceListReference));
+
+        mapper.updateBeanFromDto(absenceListDTO, absenceList);
+        return
+                mapper.fromBeanToDTO(absenceListRepository.save(absenceList));
+    }
+
+
+
+
+    public List<AbsenceListDTO> getListAbcences(String absenceListReference) throws ContactApiException {
+
+        if (absenceListReference!= null)
+            return Collections.singletonList(mapper.fromBeanToDTO(
+                    absenceListRepository.findOneByReference(absenceListReference).orElseThrow(() -> ContactApiException
+                            .resourceNotFoundExceptionBuilder("AbsenceList", absenceListReference))));
+
+        else
+            return absenceListRepository.findAll().stream().map(mapper::fromBeanToDTO)
+                    .collect(Collectors.toList());
     }
 }

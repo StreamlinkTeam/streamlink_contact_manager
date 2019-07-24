@@ -15,5 +15,6 @@ public interface AbsenceRepository extends JpaRepository<Absence, Long> {
     List<Absence> findByAbsenceListManagerReferenceAndAbsenceListResourceReference(String managerReference, String resourceReference);
     List<Absence> findByAbsenceListManagerReference(String managerReference);
 
-
+//to do
+    List<Absence> findByAbsenceList_Reference(String ref);
 }

@@ -60,7 +60,7 @@ public class AbsenceController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get timeLines Details Service")
+    @ApiOperation(value = "Get Absence Details Service")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Absence.class),
             @ApiResponse(code = 404, message = "Developer with Ref not Found")
@@ -96,5 +96,36 @@ public class AbsenceController {
     public List<AbsenceDTO> getResourceManager() throws ContactApiException {
         String refmanager = userService.getCurrentUser().getReference();
         return absenceService.getAbsenceByManger(refmanager );
+    }
+
+    @RequestMapping(value = "absence",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Create absence Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response =  Absence.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+    })
+    public AbsenceDTO updateAbsence(@Valid @RequestBody AbsenceDTO absenceDTO, @RequestParam(value = "absenceReference") String absenceReference) throws ContactApiException {
+
+        return absenceService.updateAbsence(absenceDTO,absenceReference);
+
+    }
+
+
+
+    @RequestMapping(value = "absenceListReference",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Absence Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Absence.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public List<AbsenceDTO> getAbsenceByAbsenceListReference( @RequestParam(value = "absenceListReference") String absenceListReference) throws ContactApiException {
+
+        return absenceService.getAbsenceByAbseceListReference(absenceListReference);
     }
 }

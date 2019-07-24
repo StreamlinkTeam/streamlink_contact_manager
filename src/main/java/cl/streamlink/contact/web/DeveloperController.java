@@ -14,7 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
-import org.apache.naming.StringManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -40,6 +40,8 @@ public class DeveloperController {
     private CurriculumVitaeService curriculumVitaeService;
     @Inject
     private UserService userservice;
+
+    Date actuelDate = new Date();
 
 
     @RequestMapping(value = "",
@@ -331,5 +333,33 @@ public class DeveloperController {
     public List<DeveloperDTO> getDevelopersManager(@RequestParam(value = "managerReference") String managerReference) throws ContactApiException {
        return developerService.getDeveloperByManger(managerReference);
    }
+    @RequestMapping(value = "currentResource",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Developer Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Developer.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public DeveloperDTO getCurrentDeveloper() throws ContactApiException {
+        return developerService.getDeveloperEmail(userservice.getCurrentUser().getEmail());
+    }
+
+
+
+
+    @RequestMapping(value = "currentLeave",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get Developer Details Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Developer.class),
+            @ApiResponse(code = 404, message = "Developer with Ref not Found")
+    })
+    public int currentLeave() throws ContactApiException {
+        return (actuelDate.getMonth()+1) -( developerService.getDeveloperEmail(userservice.getCurrentUser().getEmail()).getAvailability().getMonthValue());
+    }
 
 }
