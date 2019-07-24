@@ -239,7 +239,6 @@ public boolean isProject() {
         this.project = project;
     }
 
-
     public String getEmail() {
         return email;
     }

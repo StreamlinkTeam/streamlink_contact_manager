@@ -3,11 +3,15 @@ package cl.streamlink.contact.web;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.PhotoService;
 import cl.streamlink.contact.service.UserService;
+import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.PhotoDTO;
 import cl.streamlink.contact.web.dto.UserDTO;
 import io.swagger.annotations.*;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -216,6 +220,26 @@ public class UserController {
     })
     public PhotoDTO getPhotoByUserReference(@RequestParam(value = "userReference") String userReference) throws ContactApiException {
         return photoService.getPhotoByUserReference(userReference);
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public Page<UserDTO> getUsers(Pageable pageable, @RequestParam boolean fromAngular,
+                                     @RequestParam(required = false) String value,
+                                  @RequestParam(required = false) Sort.Direction dir) {
+
+        if (fromAngular) {
+
+            pageable = MiscUtils.convertFromAngularPage(pageable, dir, true);
+
+        }
+
+        return userService.searchUsers(value, pageable);
+
+    }
+
+    @GetMapping(value = "count")
+    public long usersCount(){
+        return userService.usersCount();
     }
 
 }

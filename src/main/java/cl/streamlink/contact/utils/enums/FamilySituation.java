@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
 
-/**
- * Created by Chemakh on 11/07/2018.
- */
+
 public enum FamilySituation {
 
     SINGLE,
