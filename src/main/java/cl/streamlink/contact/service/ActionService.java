@@ -7,6 +7,7 @@ import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.*;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.web.dto.ActionDTO;
 import cl.streamlink.contact.web.dto.DeveloperActionDTO;
 import cl.streamlink.contact.web.dto.SocietyActionDTO;
 import net.minidev.json.JSONObject;
@@ -53,8 +54,8 @@ public class ActionService {
     private ApiMapper mapper;
 
 
-    public List<Action> getActions() {
-        return actionRepository.findAll();
+    public List<ActionDTO> getActions() {
+        return actionRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
 
     }
 
