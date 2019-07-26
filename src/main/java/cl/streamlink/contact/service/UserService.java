@@ -14,6 +14,8 @@ import cl.streamlink.contact.utils.enums.Role;
 import cl.streamlink.contact.web.dto.UserDTO;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -152,5 +154,18 @@ public class UserService {
             }
         }
 
+    }
+
+    public Page<UserDTO> searchUsers(String value, Pageable pageable) {
+
+        if (MiscUtils.isEmpty(value))
+            value = "";
+
+        return userRepository.findByFirstnameContainingOrLastnameContainingOrEmailContaining
+                (value, value, value, pageable).map(user -> mapper.fromBeanToDTO(user));
+    }
+
+    public long usersCount() {
+        return userRepository.count();
     }
 }

@@ -1,88 +1,43 @@
-package cl.streamlink.contact.domain;
+package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.utils.enums.BillStage;
 import cl.streamlink.contact.utils.enums.Currency;
 import cl.streamlink.contact.utils.enums.PaymentType;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(indexes = {@Index(name = "index_bill_reference", columnList = "reference", unique = true)})
-@EntityListeners(AuditingEntityListener.class)
-public class Bill {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(unique = true)
+public class BillDTO {
     private String reference;
-
     private String title;
-
-    @ManyToOne
-    private User manager;
-
-    @ManyToOne(optional = false)
-    private Resource resource;
-
-    @ManyToOne(optional = false)
-    private ProjectPos projectPos;
-
-    @ManyToOne(optional = false)
-    private SocietyContact societyContact;
-
-    @Column(name = "created_date", updatable = false)
-    @CreatedDate
+    private String managerReference;
+    private String societyContactReference;
+    private String societyReference;
+    private String resourceReference;
+    private String resourceFullName;
+    private String projectReference;
+    private String projectName;
+    private String societyName;
     private LocalDateTime createdDate;
-
-    @Column(name = "modified_date")
-    @LastModifiedDate
     private LocalDateTime modifiedDate;
-
     private String state;
-
     private LocalDate billDate;
-
     private LocalDate billStartDate;
-
     private LocalDate billEndDate;
-
     private LocalDate scheduledDate;
-
     private LocalDate receiptDate;
-
     private BigDecimal tva;
-
-    @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
-
-    @Enumerated(EnumType.STRING)
     private BillStage billStage;
-
-    @Enumerated(EnumType.STRING)
     private Currency currency;
-
     private float discountRate;
-
     private String note;
-
     private BigDecimal quantity;
-
     private BigDecimal unitPrice;
+    private BigDecimal total;
+    private BigDecimal totalTtc;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getReference() {
         return reference;
@@ -92,12 +47,12 @@ public class Bill {
         this.reference = reference;
     }
 
-    public User getManager() {
-        return manager;
+    public String getManagerReference() {
+        return managerReference;
     }
 
-    public void setManager(User manager) {
-        this.manager = manager;
+    public void setManagerReference(String managerReference) {
+        this.managerReference = managerReference;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -220,28 +175,60 @@ public class Bill {
         this.title = title;
     }
 
-    public Resource getResource() {
-        return resource;
+    public String getSocietyContactReference() {
+        return societyContactReference;
     }
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    public void setSocietyContactReference(String societyContactReference) {
+        this.societyContactReference = societyContactReference;
     }
 
-    public ProjectPos getProjectPos() {
-        return projectPos;
+    public String getSocietyReference() {
+        return societyReference;
     }
 
-    public void setProjectPos(ProjectPos projectPos) {
-        this.projectPos = projectPos;
+    public void setSocietyReference(String societyReference) {
+        this.societyReference = societyReference;
     }
 
-    public SocietyContact getSocietyContact() {
-        return societyContact;
+    public String getResourceFullName() {
+        return resourceFullName;
     }
 
-    public void setSocietyContact(SocietyContact societyContact) {
-        this.societyContact = societyContact;
+    public void setResourceFullName(String resourceFullName) {
+        this.resourceFullName = resourceFullName;
+    }
+
+    public String getProjectReference() {
+        return projectReference;
+    }
+
+    public void setProjectReference(String projectReference) {
+        this.projectReference = projectReference;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getSocietyName() {
+        return societyName;
+    }
+
+    public void setSocietyName(String societyName) {
+        this.societyName = societyName;
+    }
+
+    public String getResourceReference() {
+        return resourceReference;
+    }
+
+    public void setResourceReference(String resourceReference) {
+        this.resourceReference = resourceReference;
     }
 
     public BigDecimal getQuantity() {
@@ -258,5 +245,22 @@ public class Bill {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public BigDecimal getTotal() {
+        return this.quantity.multiply(this.unitPrice);
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public BigDecimal getTotalTtc() {
+        return ((this.getTotal().multiply(this.getTva()))
+                .divide(BigDecimal.valueOf(100))).add(this.getTotal());
+    }
+
+    public void setTotalTtc(BigDecimal totalTtc) {
+        this.totalTtc = totalTtc;
     }
 }

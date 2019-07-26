@@ -3,6 +3,7 @@ package cl.streamlink.contact.web;
 import cl.streamlink.contact.domain.Action;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.ActionService;
+import cl.streamlink.contact.web.dto.ActionDTO;
 import cl.streamlink.contact.web.dto.DeveloperActionDTO;
 import cl.streamlink.contact.web.dto.SocietyActionDTO;
 import io.swagger.annotations.ApiOperation;
@@ -264,7 +265,8 @@ public class ActionController {
 
 
     @GetMapping
-    public List<Action> getActions() {
+    public List<ActionDTO> getActions() {
+
         return actionService.getActions();
     }
 
