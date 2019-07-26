@@ -60,4 +60,23 @@ public class AbsenceService {
 
 
     }
+    public AbsenceDTO updateAbsence(AbsenceDTO absenceDTO, String absenceReference) throws ContactApiException {
+
+        Absence absence =
+                absenceRepository.findOneByReference(absenceReference).orElseThrow(()
+                        -> ContactApiException.resourceNotFoundExceptionBuilder("Absence",
+                        absenceReference));
+
+        mapper.updateBeanFromDto(absenceDTO, absence);
+        return
+                mapper.fromBeanToDTO(absenceRepository.save(absence));
+    }
+
+
+    public List<AbsenceDTO> getAbsenceByAbseceListReference (String absenceListReference) throws ContactApiException {
+
+        return absenceRepository.findByAbsenceList_Reference(absenceListReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+
+
+    }
 }
