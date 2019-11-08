@@ -18,7 +18,7 @@ public class BillDTO {
     private String resourceFullName;
     private String projectReference;
     private String projectName;
-    private String societyName;
+    private String client;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String state;
@@ -37,6 +37,7 @@ public class BillDTO {
     private BigDecimal unitPrice;
     private BigDecimal total;
     private BigDecimal totalTtc;
+    private long commandeId;
 
 
     public String getReference() {
@@ -215,12 +216,12 @@ public class BillDTO {
         this.projectName = projectName;
     }
 
-    public String getSocietyName() {
-        return societyName;
+    public String getClient() {
+        return client;
     }
 
-    public void setSocietyName(String societyName) {
-        this.societyName = societyName;
+    public void setClient(String client) {
+        this.client = client;
     }
 
     public String getResourceReference() {
@@ -262,5 +263,14 @@ public class BillDTO {
 
     public void setTotalTtc(BigDecimal totalTtc) {
         this.totalTtc = totalTtc;
+    }
+
+
+    public long getCommandeId() {
+        return commandeId;
+    }
+
+    public void setCommandeId(long commandeId) {
+        this.commandeId = commandeId;
     }
 }

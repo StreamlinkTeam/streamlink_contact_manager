@@ -1,6 +1,7 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Absence;
+import cl.streamlink.contact.domain.AbsenceList;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.AbsenceRepository;
@@ -73,10 +74,22 @@ public class AbsenceService {
     }
 
 
-    public List<AbsenceDTO> getAbsenceByAbseceListReference (String absenceListReference) throws ContactApiException {
+    public List<Absence> getAbsenceByAbseceListReference (String absenceListReference) throws ContactApiException {
 
-        return absenceRepository.findByAbsenceList_Reference(absenceListReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+        return absenceRepository.findByAbsenceList_Reference(absenceListReference);
+    }
 
+    public List<Absence> getAbsenceByAbseceListId (AbsenceList absenceList) {
 
+        return absenceRepository.findByAbsenceList(absenceList);
+    }
+
+    public List<Absence> getAllAbcences() {
+        return absenceRepository.findAll();
+    }
+
+    public Absence validateAbsence(Absence absence) {
+        absenceRepository.validateAbsence(absence.getId());
+        return absence;
     }
 }

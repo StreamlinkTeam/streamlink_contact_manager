@@ -1,5 +1,6 @@
 package cl.streamlink.contact.service;
 
+import cl.streamlink.contact.domain.Contact;
 import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.exception.ContactApiException;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,12 +40,18 @@ public class ResourceService {
     @Inject
     private ApiMapper mapper;
 
+    public Resource save(Resource resource) {
+        return resourceRepository.save(resource);
+    }
+
     public ResourceDTO createResource(ResourceDTO resourceDTO) {
-
         Resource resource = mapper.fromDTOToBean(resourceDTO);
-
+        Contact contact = new Contact();
+        contact.setEmail1(resourceDTO.getEmail());
+        resource.setContact(contact);
         resource.setReference("res" + MiscUtils.generateReference());
         resource.setStage(Stage.ConvertedToResource);
+        resource.setAbsence(resourceDTO.getAbsence());
         return mapper.fromBeanToDTO(resourceRepository.save(resource));
     }
 
@@ -168,10 +176,22 @@ public class ResourceService {
     }
 
     public List<ResourceDTO> getResourceByManger(String managerReference) throws ContactApiException {
-
         return resourceRepository.findByManagerReference(managerReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
-
-
     }
 
+    public List<Resource> getByManager(String manager) {
+        return resourceRepository.findByManagerReference(manager);
+    }
+
+    public Resource getResourceByEmail1(String email1) {
+        return resourceRepository.findOneByContact_Email1(email1);
+    }
+
+    public List<Resource> getAll() {
+        return resourceRepository.findAll();
+    }
+
+    public Optional<Resource> getById(long id){
+        return resourceRepository.findById(id);
+    }
 }

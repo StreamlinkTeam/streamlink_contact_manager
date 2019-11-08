@@ -1,13 +1,16 @@
 package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Bill;
+import cl.streamlink.contact.domain.Commande;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.BillService;
+import cl.streamlink.contact.service.CommandeService;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.BillDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +28,10 @@ public class BillController {
     @Inject
     BillService billService;
 
+    @Autowired
+    CommandeService commandeService;
+
+    /*
     @GetMapping(value = "all")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get all bills")
@@ -33,6 +40,11 @@ public class BillController {
             @ApiResponse(code = 404, message = "bills not Found")})
     public List<BillDTO> getBills() {
         return billService.getBills();
+    }
+    */
+    @GetMapping("all")
+    public List<Bill> getAllBills() {
+        return billService.getAllBills();
     }
 
 
@@ -55,5 +67,25 @@ public class BillController {
     })
     public BillDTO getBillByReference(@RequestParam(value = "billReference") String billReference) throws ContactApiException {
         return billService.getBillByReference(billReference);
+    }
+
+    @PostMapping(value = "commande")
+    public List<Bill> getByCommande(@RequestBody Commande commande) {
+        return billService.getByCommande(commande);
+    }
+
+    @PostMapping(value = "create")
+    public Bill createBill(@RequestBody Bill bill) {
+
+        Bill bi = billService.create(bill);
+        Commande commande = commandeService.getById(bi.getCommande().getId());
+        Double montant = Double.sum(commande.getMontantR(), bi.getUnitPrice());
+        commandeService.updateMontant(commande.getId(), montant);
+        return bi;
+    }
+
+    @GetMapping(value = "bill/one")
+    public Bill getBillById(@RequestParam(value = "id") long id) {
+        return billService.getBillById(id);
     }
 }

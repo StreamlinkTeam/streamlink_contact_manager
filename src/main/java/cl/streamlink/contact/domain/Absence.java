@@ -22,6 +22,8 @@ public class Absence {
     private String description;
     private String type;
 
+    private String state;
+
 
     private Date dateAbsence;
 
@@ -96,5 +98,13 @@ public class Absence {
 
     public void setAbsenceList(AbsenceList absenceList) {
         this.absenceList = absenceList;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

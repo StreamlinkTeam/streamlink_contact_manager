@@ -31,6 +31,9 @@ public class TimeLine {
     @ManyToOne
     private Resource resource;
 
+    @Column(columnDefinition = "int default 0")
+    private long status;
+
 
     public Long getId() {
         return id;
@@ -94,5 +97,13 @@ public class TimeLine {
 
     public void setResource(Resource resource) {
         this.resource = resource;
+    }
+
+    public long getStatus() {
+        return status;
+    }
+
+    public void setStatus(long status) {
+        this.status = status;
     }
 }

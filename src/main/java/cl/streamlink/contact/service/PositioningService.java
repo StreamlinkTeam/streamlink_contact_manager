@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,8 +93,6 @@ public class PositioningService {
     }
 
     public List<PositioningDTO> getPositionings() throws ContactApiException {
-
-
         return positioningRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
@@ -150,4 +149,11 @@ public class PositioningService {
                 .stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
+    public List<Positioning> getAll() {
+        return positioningRepository.findAll();
+    }
+
+    public Optional<Positioning> getById(long id) {
+        return positioningRepository.findById(id);
+    }
 }

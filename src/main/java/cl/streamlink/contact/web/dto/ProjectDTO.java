@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 
 public class ProjectDTO {
 
+    private Long id;
+
     private String reference;
 
     private String title;
@@ -31,6 +33,7 @@ public class ProjectDTO {
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
+
 
     public String getReference() {
         return reference;
@@ -118,5 +121,13 @@ public class ProjectDTO {
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -14,7 +14,6 @@ import java.util.Optional;
 @Entity
 @Table(indexes = {@Index(name = "index_project_reference", columnList = "reference", unique = true)})
 @EntityListeners(AuditingEntityListener.class)
-//ext pos
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +33,7 @@ public class Project {
     @ManyToOne(optional = false)
     private SocietyContact societyContact;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "resource_id", nullable = true)
+    @ManyToOne
     private Resource resource;
 
     @ManyToOne

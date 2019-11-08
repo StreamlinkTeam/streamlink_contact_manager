@@ -551,16 +551,12 @@ public abstract class ApiMapper {
             @Mapping(source = "resource.reference", target = "resourceReference"),
             @Mapping(source = "manager.reference", target = "managerReference"),
             @Mapping(source = "projectPos.reference", target = "projectReference"),
-            @Mapping(source = "societyContact.reference", target = "societyContactReference"),
-            @Mapping(source = "societyContact.society.reference", target = "societyReference"),
-            @Mapping(source = "projectPos.need.title", target = "projectName"),
-            @Mapping(source = "societyContact.society.label", target = "societyName"),
-            @Mapping(target = "resourceFullName", expression = "java(bean.getResource().getFirstname()+\" \"+bean.getResource().getLastname())"),
+           @Mapping(source = "projectPos.need.title", target = "projectName"),
+           @Mapping(target = "resourceFullName", expression = "java(bean.getResource().getFirstname()+\" \"+bean.getResource().getLastname())"),
     })
     public abstract BillDTO fromBeanToDTO(Bill bean);
 
     @Mappings({
-            @Mapping(target = "societyContact", expression = "java(societyContactRepository.findOneByReference(dto.getSocietyContactReference()).orElse(null))"),
             @Mapping(target = "projectPos", expression = "java(projectPosRepository.findOneByReference(dto.getProjectReference()).orElse(null))"),
             @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))"),
             @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))"),

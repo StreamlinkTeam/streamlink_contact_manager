@@ -82,6 +82,10 @@ public class SocietyContactService {
                     .stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
+    public List<SocietyContact> getAll() {
+        return societyContactRepository.findAll();
+    }
+
     public Page<SocietyContactResponseDTO> searchSocietyContacts(String value, SocietyStage stage, String societyReference, Pageable pageable) {
 
         if (MiscUtils.isEmpty(value))

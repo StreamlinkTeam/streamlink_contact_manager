@@ -14,18 +14,20 @@ import javax.inject.Inject;
 @RequestMapping("/ws/mail")
 public class EmailController {
 
-    @Resource
-    public JavaMailSender javaMailSender;
+    //@Resource
+    //public JavaMailSender javaMailSender;
 
     @PostMapping
     public String sendEmail(@RequestBody Email email) {
-
+        /*
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email.getTo());
         message.setSubject(email.getMessageSubject());
         message.setText(email.getMessageBody());
 
         javaMailSender.send(message);
+
+         */
 
         return "Successfully sent Email";
     }

@@ -64,4 +64,8 @@ public class TimeListService {
         return mapper.fromBeanToDTO(timeListRepository.save(timeList));
     }
 
+    public TimeList save(TimeList timeList) {
+        return timeListRepository.save(timeList);
+    }
+
 }

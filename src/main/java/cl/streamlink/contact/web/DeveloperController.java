@@ -316,9 +316,9 @@ public class DeveloperController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = DeveloperDTO.class),
             @ApiResponse(code = 404, message = "Developer with Ref not Found")
     })
-    public DeveloperDTO getCurrentDeveloperByEmail( String developerEmail) throws ContactApiException {
+    public Developer getCurrentDeveloperByEmail(@RequestParam String developerEmail) throws ContactApiException {
       // String developerEmailj = userservice.getCurrentUser().getEmail();
-        return developerService.getDeveloperEmail(userservice.getCurrentUser().getEmail());
+        return developerService.getDeveloperByEmail(developerEmail);
     }
 
    @RequestMapping(value = "manager",

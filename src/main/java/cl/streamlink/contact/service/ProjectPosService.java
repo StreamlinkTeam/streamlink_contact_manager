@@ -49,14 +49,8 @@ public class ProjectPosService {
     }
 
 
-    public List<ProjectPosDTO> getProjects(String projectReference) throws ContactApiException {
-
-        if (MiscUtils.isNotEmpty(projectReference))
-            return Collections.singletonList(mapper.fromBeanToDTO(projectPosRepository.findOneByReference(projectReference)
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("ProjectPos", projectReference))));
-
-        else
-            return projectPosRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+    public List<ProjectPosDTO> getProjects() throws ContactApiException {
+        return projectPosRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
     public ProjectPosDTO getProject(String projectReference) throws ContactApiException {

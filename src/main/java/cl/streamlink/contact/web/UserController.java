@@ -35,15 +35,13 @@ public class UserController {
     @Inject
     private PhotoService photoService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 422, message = "Invalid username/password supplied")})
-    public JSONObject login(//
-                            @ApiParam("Username") @RequestParam String username, //
-                            @ApiParam("Password") @RequestParam String password) {
+    public JSONObject login(@RequestBody JSONObject user) {
 
-        return userService.signin(username, password);
+        return userService.signin(user.get("username").toString(), user.get("password").toString());
     }
 
     @PostMapping("")

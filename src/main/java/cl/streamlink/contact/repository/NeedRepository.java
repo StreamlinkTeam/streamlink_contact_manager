@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,8 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
     Page<Need> findByTitleContainingAndStageInAndTypeInAndNeedInformationActivityAreaIn
             (String value, List<NeedStage> stages, List<NeedType> types,
              List<ActivityArea> activityAreas, Pageable pageable);
+
+    Optional<Need> findById(long Id);
 
     @Transactional
     long deleteBySocietyContactReference(String societyContactReference);

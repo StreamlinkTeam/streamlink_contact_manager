@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -146,5 +147,9 @@ public class NeedService {
         NeedInformationDTO needInformation = getNeeds(needReference).get(0).getNeedInformation();
         needInformation.setNeedReference(needReference);
         return needInformation;
+    }
+
+    public Optional<Need> getById(long id){
+        return needRepository.findById(id);
     }
 }

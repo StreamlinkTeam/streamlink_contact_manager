@@ -6,9 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -115,4 +117,10 @@ public class MiscUtils {
         return Objects.equals(object1, object2);
     }
 
+    public static int daysDiff(Date start, Date end) {
+        long diffInMillies = Math.abs(end.getTime() - start.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        Long r = new Long(diff);
+        return r.intValue();
+    }
 }

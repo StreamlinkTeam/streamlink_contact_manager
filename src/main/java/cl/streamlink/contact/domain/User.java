@@ -24,6 +24,9 @@ public class User {
     private String lastname;
     @Column(unique = true, nullable = false)
     private String email;
+
+    private String status;
+
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
 
@@ -83,4 +86,11 @@ public class User {
         this.roles = roles;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

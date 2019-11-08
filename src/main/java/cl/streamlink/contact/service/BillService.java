@@ -1,5 +1,7 @@
 package cl.streamlink.contact.service;
 
+import cl.streamlink.contact.domain.Bill;
+import cl.streamlink.contact.domain.Commande;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.BillRepository;
@@ -33,6 +35,10 @@ public class BillService {
                 .map(bill -> mapper.fromBeanToDTO(bill));
     }
 
+    public List<Bill> getAllBills() {
+        return billRepository.findAll();
+    }
+
     public BillDTO getDeveloper(String resourceReference) throws ContactApiException {
         return mapper.fromBeanToDTO(billRepository.findByResourceReference(resourceReference).orElseThrow(
                 () -> ContactApiException.resourceNotFoundExceptionBuilder("Bill", resourceReference)));
@@ -41,5 +47,16 @@ public class BillService {
     public BillDTO getBillByReference(String billReference) throws ContactApiException {
         return mapper.fromBeanToDTO(billRepository.findOneByReference(billReference).orElseThrow(
                 () -> ContactApiException.resourceNotFoundExceptionBuilder("Bill", billReference)));
+    }
+
+    public Bill getBillById(long id) {
+        return billRepository.findById(id).get();
+    }
+    public List<Bill> getByCommande(Commande commande) {
+        return billRepository.findBycommande(commande);
+    }
+
+    public Bill create(Bill bill) {
+        return billRepository.save(bill);
     }
 }

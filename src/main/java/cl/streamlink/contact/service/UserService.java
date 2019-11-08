@@ -33,13 +33,13 @@ import java.util.stream.Collectors;
 public class UserService {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Inject
     private ApiMapper mapper;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -167,5 +167,13 @@ public class UserService {
 
     public long usersCount() {
         return userRepository.count();
+    }
+
+    public Optional<User> getById(long id) {
+        return userRepository.findById(id);
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

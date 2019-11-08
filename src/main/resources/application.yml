@@ -1,6 +1,5 @@
 server.port: 9090
-
-
+serverTimezone: Europe/France
 security:
   jwt:
     token:
@@ -20,7 +19,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: false
+        format_sql: true
         cache.use_query_cache: false
         generate_statistics: false
         dialect: org.hibernate.dialect.MySQL5Dialect

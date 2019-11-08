@@ -84,7 +84,6 @@ public class DeveloperService {
     }
 
 
-
     public List<DeveloperResponseDTO> getDevelopers(String developerReference) throws ContactApiException {
 
         if (developerReference != null)
@@ -248,6 +247,12 @@ public class DeveloperService {
         return developerRepository.findByManagerReference(managerReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
 
 
+    }
+
+
+    public Developer getDeveloperByEmail(String email) {
+        return developerRepository.findByContact_Email1(email).orElseThrow( () ->
+                ContactApiException.resourceNotFoundExceptionBuilder("Developer", email));
     }
 
 

@@ -127,6 +127,14 @@ public class SocietyContactController {
         return societyContactService.getSocietyContacts(null, societyReference);
     }
 
+    @RequestMapping(value = "tous",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SocietyContact> getAllSocietyContact()  {
+
+        return societyContactService.getAll();
+    }
+
     //contact
 
     @RequestMapping(value = "contact",

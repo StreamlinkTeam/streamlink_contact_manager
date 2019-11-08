@@ -26,6 +26,8 @@ public class TimeList {
 
     private boolean closing;
 
+    private int nombreJours;
+
     @Enumerated(EnumType.STRING)
     private TimeListStage stage;
 
@@ -88,6 +90,13 @@ public class TimeList {
         this.resource = resource;
     }
 
+    public int getNombreJours() {
+        return nombreJours;
+    }
+
+    public void setNombreJours(int nombreJours) {
+        this.nombreJours = nombreJours;
+    }
 
     @Override
     public boolean equals(Object o) {

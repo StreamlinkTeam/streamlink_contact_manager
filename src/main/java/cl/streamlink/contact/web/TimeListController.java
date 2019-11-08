@@ -3,15 +3,19 @@ package cl.streamlink.contact.web;
 import cl.streamlink.contact.domain.TimeList;
 import cl.streamlink.contact.domain.SocietyContact;
 import cl.streamlink.contact.domain.TimeLine;
+import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.AttachedFileService;
+import cl.streamlink.contact.service.ResourceService;
 import cl.streamlink.contact.service.TimeListService;
+import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.web.dto.TimeListDTO;
 import cl.streamlink.contact.web.dto.hireability.AttachedFileDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +33,11 @@ public class TimeListController {
     private TimeListService timeListService;
     @Inject
     private AttachedFileService attachedFileService;
+
+    @Autowired
+    ResourceService resourceService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 
@@ -82,6 +91,13 @@ public class TimeListController {
     public TimeListDTO createListTemps(@RequestBody @Valid TimeListDTO listTemps) {
 
         return timeListService.createListTemps(listTemps);
+    }
+
+    @PostMapping(value =  "/save")
+    public TimeList save(@RequestBody TimeList listTemps) {
+        User user = userService.getCurrentUser();
+        listTemps.setResource(resourceService.getResourceByEmail1(user.getEmail()));
+        return timeListService.save(listTemps);
     }
 
     @RequestMapping(value = "",

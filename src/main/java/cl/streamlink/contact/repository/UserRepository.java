@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Page<User> findByFirstnameContainingOrLastnameContainingOrEmailContaining(String value, String value1, String value2, Pageable pageable);
 
+    Optional<User> findById(long id);
     @Transactional
     void deleteByEmail(String username);
 

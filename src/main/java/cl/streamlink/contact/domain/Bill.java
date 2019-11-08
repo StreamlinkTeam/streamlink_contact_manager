@@ -28,14 +28,17 @@ public class Bill {
     @ManyToOne
     private User manager;
 
+    @ManyToOne
+    private Commande commande;
+
     @ManyToOne(optional = false)
     private Resource resource;
 
     @ManyToOne(optional = false)
     private ProjectPos projectPos;
 
-    @ManyToOne(optional = false)
-    private SocietyContact societyContact;
+
+    private String client;
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
@@ -74,7 +77,9 @@ public class Bill {
 
     private BigDecimal quantity;
 
-    private BigDecimal unitPrice;
+    private double unitPrice;
+
+    /**************************************/
 
     public long getId() {
         return id;
@@ -236,14 +241,6 @@ public class Bill {
         this.projectPos = projectPos;
     }
 
-    public SocietyContact getSocietyContact() {
-        return societyContact;
-    }
-
-    public void setSocietyContact(SocietyContact societyContact) {
-        this.societyContact = societyContact;
-    }
-
     public BigDecimal getQuantity() {
         return quantity;
     }
@@ -252,11 +249,27 @@ public class Bill {
         this.quantity = quantity;
     }
 
-    public BigDecimal getUnitPrice() {
+    public double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public Commande getCommande() {
+        return commande;
+    }
+
+    public void setCommande(Commande commande) {
+        this.commande = commande;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
     }
 }

@@ -1,10 +1,13 @@
 package cl.streamlink.contact.web;
 
+import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.domain.Resource;
+import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.CurriculumVitaeService;
 import cl.streamlink.contact.service.DeveloperService;
 import cl.streamlink.contact.service.ResourceService;
+import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.Experience;
 import cl.streamlink.contact.utils.enums.Formation;
@@ -15,11 +18,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +36,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/ws/resources")
 public class ResourceController {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Inject
     private ResourceService resourceService;
@@ -40,6 +47,9 @@ public class ResourceController {
 
     @Inject
     private CurriculumVitaeService curriculumVitaeService;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = "from-developer",
             method = RequestMethod.POST,
@@ -51,7 +61,6 @@ public class ResourceController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public ResourceDTO createResourceFromDeveloper(@RequestParam(value = "developerReference") String developerReference) {
-
         return resourceService.createResourceFromDeveloper(developerReference);
     }
 
@@ -65,7 +74,7 @@ public class ResourceController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public ResourceDTO createResource(@RequestBody @Valid ResourceDTO resource) {
-
+        System.err.println("CONTACT ::: " + resource.getEmail());
         return resourceService.createResource(resource);
     }
 
@@ -94,6 +103,11 @@ public class ResourceController {
     })
     public List<ResourceResponseDTO> getResources() {
         return resourceService.getResources(null);
+    }
+
+    @GetMapping("tous")
+    public List<Resource> getAllResources() {
+        return resourceService.getAll();
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
@@ -286,8 +300,8 @@ public class ResourceController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Resource.class),
             @ApiResponse(code = 404, message = "Developer with Ref not Found")
     })
-    public List<ResourceDTO> getResourceManager(@RequestParam(value = "managerReference") String managerReference) throws ContactApiException {
-        return resourceService.getResourceByManger(managerReference);
+    public List<Resource> getResourceManager(@RequestParam(value = "managerReference") String managerReference) throws ContactApiException {
+        return resourceService.getByManager(managerReference);
     }
 
 

@@ -8,6 +8,8 @@ import java.time.LocalDate;
 
 public class ProjectPosDTO extends PositioningDTO {
 
+    private Long id;
+
     private String country;
 
     private String address;
@@ -68,5 +70,15 @@ public class ProjectPosDTO extends PositioningDTO {
 
     public void setPresentationDate(LocalDate presentationDate) {
         this.presentationDate = presentationDate;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }

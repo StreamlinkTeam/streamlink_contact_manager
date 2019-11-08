@@ -11,6 +11,18 @@ public class ResourceDTO extends DeveloperDTO {
 
     private ResourceStage resourceStage;
 
+    private String email;
+
+    private float absence;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getRegistrationNumber() {
         return registrationNumber;
     }
@@ -38,5 +50,13 @@ public class ResourceDTO extends DeveloperDTO {
     @Override
     public boolean isResource() {
         return true;
+    }
+
+    public float getAbsence() {
+        return absence;
+    }
+
+    public void setAbsence(float absence) {
+        this.absence = absence;
     }
 }

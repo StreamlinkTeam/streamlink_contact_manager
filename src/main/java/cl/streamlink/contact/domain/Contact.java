@@ -128,4 +128,24 @@ public class Contact {
     public void setWebsite(String website) {
         this.website = website;
     }
+    public Contact(String email1, String email2, String email3, String tel1,
+                   String tel2, String tel3, String fax, String address,
+                   String npa, String city, String country, String website) {
+        this.email1 = email1;
+        this.email2 = email2;
+        this.email3 = email3;
+        this.tel1 = tel1;
+        this.tel2 = tel2;
+        this.tel3 = tel3;
+        this.fax = fax;
+        this.address = address;
+        this.npa = npa;
+        this.city = city;
+        this.country = country;
+        this.website = website;
+    }
+
+
+    public Contact() {
+    }
 }

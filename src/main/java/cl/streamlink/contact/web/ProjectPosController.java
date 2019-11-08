@@ -49,7 +49,7 @@ public class ProjectPosController {
     })
     public List<ProjectPosDTO> getProjects() {
 
-        return projectPosService.getProjects(null);
+        return projectPosService.getProjects();
     }
 
     @GetMapping

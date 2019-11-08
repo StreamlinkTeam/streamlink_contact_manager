@@ -1,6 +1,7 @@
 package cl.streamlink.contact.repository;
 
 import cl.streamlink.contact.domain.Bill;
+import cl.streamlink.contact.domain.Commande;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +19,5 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
 
     Page<Bill> findByTitleContaining(String value, Pageable pageable);
 
-//    Page<ProjectPos> findByNeedTitleContaining(String value, Pageable pageable);
-
-
+    List<Bill> findBycommande(Commande commande);
 }

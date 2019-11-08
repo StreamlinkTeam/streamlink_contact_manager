@@ -2,9 +2,11 @@ package cl.streamlink.contact.web;
 
 
 import cl.streamlink.contact.domain.Positioning;
+import cl.streamlink.contact.domain.Project;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.DeveloperService;
 import cl.streamlink.contact.service.PositioningService;
+import cl.streamlink.contact.service.ProjectService;
 import cl.streamlink.contact.service.UserService;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.NeedStage;
@@ -12,10 +14,12 @@ import cl.streamlink.contact.utils.enums.NeedType;
 import cl.streamlink.contact.utils.enums.PositioningStage;
 import cl.streamlink.contact.utils.enums.ResourceType;
 import cl.streamlink.contact.web.dto.PositioningDTO;
+import cl.streamlink.contact.web.dto.ProjectDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,6 +42,9 @@ public class PositioningController {
     @Inject
     private DeveloperService developerService;
 
+    @Autowired
+    private ProjectService projectService;
+
     @RequestMapping(value = "",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,6 +57,7 @@ public class PositioningController {
     public PositioningDTO createPositioning(@RequestBody @Valid PositioningDTO positioning) {
 
         return positioningService.createPositioning(positioning);
+
     }
 
     @RequestMapping(value = "",
@@ -76,8 +84,6 @@ public class PositioningController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Positioning.class),
             @ApiResponse(code = 404, message = "Positioning with Ref not Found")
     })
-//    public List<PositioningDTO> getPositionings(@RequestParam String projectReference) {
-//        return positioningService.getPositionings(projectReference);
     public List<PositioningDTO> getPositionings() {
         return positioningService.getPositionings();
     }
@@ -145,6 +151,10 @@ public class PositioningController {
     }
 
 
+    @GetMapping("tous")
+    public List<Positioning> getAllPositionings() {
+        return positioningService.getAll();
+    }
 
 
 

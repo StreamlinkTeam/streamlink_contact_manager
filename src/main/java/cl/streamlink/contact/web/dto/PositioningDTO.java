@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class PositioningDTO {
 
 
+    private Long id;
     private String reference;
 
     @NotEmpty
@@ -245,5 +246,13 @@ public boolean isProject() {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

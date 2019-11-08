@@ -1,6 +1,6 @@
 package cl.streamlink.contact.service;
 
-import cl.streamlink.contact.domain.AbsenceList;
+import cl.streamlink.contact.domain.*;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.AbsenceListRepository;
@@ -40,7 +40,7 @@ public class AbsenceListService {
 
         absenceList.setReference(MiscUtils.generateReference());
         absenceList.setAbsenceListDate(new Date());
-        absenceList.setState("Non validé");
+        absenceList.setState("NV");
 
        // absenceList.setResource(userService.getCurrentUser().getReference());
         /*absenceListDTO.setReference(MiscUtils.generateReference());
@@ -50,30 +50,25 @@ public class AbsenceListService {
         return
                 mapper.fromBeanToDTO(absenceListRepository.save(absenceList));
     }
-    public AbsenceListDTO updateAbsence(AbsenceListDTO absenceListDTO, String absenceListReference) throws ContactApiException {
+    public List<AbsenceList> getByDeveloper(String developer) {
+        return absenceListRepository.findByResource(developer);
+    }
 
-        AbsenceList absenceList =
-                absenceListRepository.findOneByReference(absenceListReference).orElseThrow(()
-                        -> ContactApiException.resourceNotFoundExceptionBuilder("AbsenceList",
-                        absenceListReference));
+    public AbsenceList validateAbsenceList(AbsenceList absenceList) {
+        absenceListRepository.validateAbsenceList(absenceList.getId());
+        return absenceList;
+    }
 
-        mapper.updateBeanFromDto(absenceListDTO, absenceList);
-        return
-                mapper.fromBeanToDTO(absenceListRepository.save(absenceList));
+    public List<AbsenceList> getByResource(Resource resource) {
+        return absenceListRepository.findAllByResource(resource);
     }
 
 
+    public List<AbsenceList> getAll() {
+        return absenceListRepository.findAll();
+    }
 
-
-    public List<AbsenceListDTO> getListAbcences(String absenceListReference) throws ContactApiException {
-
-        if (absenceListReference!= null)
-            return Collections.singletonList(mapper.fromBeanToDTO(
-                    absenceListRepository.findOneByReference(absenceListReference).orElseThrow(() -> ContactApiException
-                            .resourceNotFoundExceptionBuilder("AbsenceList", absenceListReference))));
-
-        else
-            return absenceListRepository.findAll().stream().map(mapper::fromBeanToDTO)
-                    .collect(Collectors.toList());
+    public List<AbsenceList> getByManager(User manager) {
+        return absenceListRepository.findByManager(manager);
     }
 }
