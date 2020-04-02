@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +50,7 @@ public class UserService {
         try {
             ApplicationConfig.getService(AuthenticationManager.class)
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            User user = userRepository.findOneByEmail(username).get();
+            User user = userRepository.findOneByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User ['" + username + "'] not found"));
             String token = jwtTokenProvider.createToken(username, user.getRoles());
 
             JSONObject result = new JSONObject();
@@ -58,7 +59,7 @@ public class UserService {
             return result;
 
         } catch (AuthenticationException e) {
-            throw new ContactApiException("Invalid email/password supplied", ContactApiError.UNAUTHORIZED, null);
+            throw new ContactApiException("Invalid email/password supplied", ContactApiError.UNAUTHORIZED, null, e);
         }
     }
 
@@ -133,7 +134,7 @@ public class UserService {
         String currentUserName = SecurityUtils.getCurrentUserLogin();
 
         if (!SecurityUtils.checkIfThereIsUserLogged())
-            throw new ContactApiException("Access denied", ContactApiError.UNAUTHORIZED, null);
+            throw new ContactApiException("Access denied", ContactApiError.UNAUTHORIZED, null, null);
 
         return userRepository.findOneByEmail(currentUserName).
                 orElseThrow(() -> ContactApiException.

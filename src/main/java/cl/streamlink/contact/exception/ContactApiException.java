@@ -19,36 +19,30 @@ public class ContactApiException extends RuntimeException {
     public ContactApiException(Throwable cause) {
         super(cause);
         this.motif = ContactApiError.ERR_API;
-
-        logger.error("ContactApiException is Thrown");
-        logger.error(this.getMessage());
     }
 
-    public ContactApiException(String txt, ContactApiError cause, String code) {
-        super(txt);
-        this.motif = cause;
+    public ContactApiException(String txt, ContactApiError motif, String code,Throwable cause) {
+        super(txt,cause);
+        this.motif = motif;
         this.code = code;
-
-        logger.error("ContactApiException is Thrown");
-        logger.error(this.getMessage());
     }
 
     public static ContactApiException unauthorizedExceptionBuilder(String key, String[] objects) {
 
         String message = MessageFactory.getMessage("contact.api.service.unauthorized_exception." + key, objects);
-        return new ContactApiException(message, ContactApiError.UNAUTHORIZED, null);
+        return new ContactApiException(message, ContactApiError.UNAUTHORIZED, null, null);
     }
 
     public static ContactApiException unprocessableEntityExceptionBuilder(String key, String[] objects) {
 
         String message = MessageFactory.getMessage("contact.api.service.unprocessable_entity_exception." + key, objects);
-        return new ContactApiException(message, ContactApiError.UNPROCESSABLE_ENTITY, null);
+        return new ContactApiException(message, ContactApiError.UNPROCESSABLE_ENTITY, null, null);
     }
 
     public static ContactApiException validationErrorBuilder(FieldErrorDTO fieldError) {
 
         String message = MessageFactory.getMessage("contact.api.exception.validation_error." + fieldError.getMessage(), new String[]{fieldError.getObjectName(), fieldError.getField()});
-        ContactApiException ex = new ContactApiException(message, ContactApiError.VALIDATION_ERROR, null);
+        ContactApiException ex = new ContactApiException(message, ContactApiError.VALIDATION_ERROR, null, null);
         ex.setFieldError(fieldError);
         return ex;
     }
@@ -56,7 +50,7 @@ public class ContactApiException extends RuntimeException {
     public static ContactApiException resourceNotFoundExceptionBuilder(String object, String reference) {
 
         return new ContactApiException(MessageFactory.getMessage("contact.api.exception.resource_not_found",
-                new String[]{object, reference}), ContactApiError.RESOURCE_NOT_FOUND, null);
+                new String[]{object, reference}), ContactApiError.RESOURCE_NOT_FOUND, null, null);
 
     }
 

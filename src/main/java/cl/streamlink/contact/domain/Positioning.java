@@ -15,10 +15,7 @@ import java.util.Optional;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(indexes = {@Index(name = "index_project_reference", columnList = "reference", unique = true)})
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "TYPE")
-@DiscriminatorValue("POSITIONING")
+@Table(indexes = {@Index(name = "index_positioning_reference", columnList = "reference", unique = true)})
 public class Positioning {
 
     @Id

@@ -21,12 +21,6 @@ public class Developer extends AbstractProfile {
     @NotNull
     private String firstname;
 
-
-    @Override
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
     @NotNull
     private String lastname;
 
@@ -35,9 +29,6 @@ public class Developer extends AbstractProfile {
 
     @Embedded
     private PersonalInformation personalInformation = new PersonalInformation();
-
-    @Embedded
-    private Contact contact = new Contact();
 
     @Embedded
     private SkillsInformation skillsInformation = new SkillsInformation();
@@ -140,10 +131,4 @@ public class Developer extends AbstractProfile {
         else
             return super.hashCode();
     }
-
-    @Override
-    public Contact getContact() {
-        return contact;
-    }
-
 }

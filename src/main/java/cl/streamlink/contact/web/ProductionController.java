@@ -43,9 +43,8 @@ public class ProductionController {
     ResourceService resourceService;
 
     @GetMapping(value = "/all")
-
     public List<ProductionDTO> getAll() {
-        List<ProductionDTO> productions = new ArrayList<>();
+        List<ProductionDTO> productions;
         List<Commande> commandes = commandeService.getAll();
         productions = commandes.stream().map(e ->  new ProductionDTO(
                 e.getProject() ,
