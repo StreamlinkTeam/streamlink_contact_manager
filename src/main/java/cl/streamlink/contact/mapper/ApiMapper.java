@@ -69,23 +69,38 @@ public abstract class ApiMapper {
     AbsenceListRepository absenceListRepository;
 
 
-    @Mappings({ @Mapping(source = "resource.reference", target = "resourceReference"),@Mapping(source = "manager.reference", target = "managerReference")})
+    @Mappings({@Mapping(source = "resource.reference", target = "resourceReference")})
+    public abstract AbsenceManageDTO fromBeanToDTO(AbsenceManage bean);
+
+    @Mappings({@Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
+    public abstract AbsenceManage fromDTOToBean(AbsenceManageDTO dto);
+
+
+    // @Mappings({@Mapping(target = "reference", ignore = true),
+    //       @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))")})
+    @Mapping(target = "reference", ignore = true)
+    public abstract void updateBeanFromDto(AbsenceManageDTO dto, @MappingTarget AbsenceManage bean);
+
+
+    @Mappings({@Mapping(source = "resource.reference", target = "resourceReference"), @Mapping(source = "manager.reference", target = "managerReference")})
     public abstract AbsenceListDTO fromBeanToDTO(AbsenceList bean);
+
     @Mappings({@Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))"),
             @Mapping(target = "absenceListDate", ignore = true),
-            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))") })
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))")})
     public abstract AbsenceList fromDTOToBean(AbsenceListDTO dto);
 
 
     @Mappings({@Mapping(target = "reference", ignore = true),
             @Mapping(target = "resource", expression = "java(resourceRepository.findOneByReference(dto.getResourceReference()).orElse(null))"),
-            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))") })
+            @Mapping(target = "manager", expression = "java(userRepository.findOneByReference(dto.getManagerReference()).orElse(null))")})
     public abstract void updateBeanFromDto(AbsenceListDTO dto, @MappingTarget AbsenceList bean);
 
     @Mappings({@Mapping(source = "absenceList.reference", target = "absenceListReference"),
             @Mapping(source = "absenceList.state", target = "state"),
-            @Mapping(source = "absenceList.manager.reference", target = "manager") })
+            @Mapping(source = "absenceList.manager.reference", target = "manager")})
     public abstract AbsenceDTO fromBeanToDTO(Absence bean);
+
     @Mappings({@Mapping(target = "absenceList", expression = "java(absenceListRepository.findOneByReference(dto.getAbsenceListReference()).orElse(null))")
 
     })
@@ -271,6 +286,7 @@ public abstract class ApiMapper {
 
     @Mappings({@Mapping(source = "manager.reference", target = "managerReference"),
             @Mapping(source = "rh.reference", target = "rhReference"),
+            @Mapping(target = "password", ignore = true),
             @Mapping(target = "mobility", expression = "java(Arrays.asList(bean.getMobility().split(\",\")))"),
     })
     public abstract ResourceDTO fromBeanToDTO(Resource bean);
@@ -412,6 +428,7 @@ public abstract class ApiMapper {
 
     @Mappings({
             @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "password", ignore = true),
             @Mapping(target = "stage", ignore = true),
             @Mapping(target = "createdDate", ignore = true),
             @Mapping(target = "mobility", expression = "java(String.join(\" , \", dto.getMobility()))"),
@@ -551,8 +568,8 @@ public abstract class ApiMapper {
             @Mapping(source = "resource.reference", target = "resourceReference"),
             @Mapping(source = "manager.reference", target = "managerReference"),
             @Mapping(source = "projectPos.reference", target = "projectReference"),
-           @Mapping(source = "projectPos.need.title", target = "projectName"),
-           @Mapping(target = "resourceFullName", expression = "java(bean.getResource().getFirstname()+\" \"+bean.getResource().getLastname())"),
+            @Mapping(source = "projectPos.need.title", target = "projectName"),
+            @Mapping(target = "resourceFullName", expression = "java(bean.getResource().getFirstname()+\" \"+bean.getResource().getLastname())"),
     })
     public abstract BillDTO fromBeanToDTO(Bill bean);
 
@@ -576,5 +593,12 @@ public abstract class ApiMapper {
             @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
     })
     public abstract Action fromDTOToBean(ActionDTO dto);
+
+
+    @Mappings({
+            @Mapping(target = "reference", ignore = true),
+            @Mapping(target = "createdDate", ignore = true),
+    })
+    public abstract void updateBeanFromDto(BillDTO dto, @MappingTarget Bill bean);
 }
 

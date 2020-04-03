@@ -84,7 +84,7 @@ public class AbsenceController {
 
     @GetMapping(value = "absence/all")
     public List<Absence> getAllAbsencesByUser(@RequestParam String mail) {
-        Resource resource = resourceService.getResourceByEmail1(mail);
+        Resource resource = resourceService.getResourceByEmail(mail);
         List<AbsenceList> absenceLists2 = absenceListService.getAll();
 
         List<AbsenceList> absenceLists = absenceLists2.stream().filter(e -> e.getResource().getId() == resource.getId()).collect(Collectors.toList());
@@ -92,14 +92,14 @@ public class AbsenceController {
         List<Absence> absences = new ArrayList<>();
 
         for(int i = 0; i < absenceLists.size(); i++) {
-            absences.addAll(absenceService.getAbsenceByAbseceListId(absenceLists.get(i)));
+            absences.addAll(absenceService.getAbsenceByAbsenceListId(absenceLists.get(i)));
         }
         return absences;
     }
 
     @GetMapping(value = "absence_list/user")
     public List<AbsenceList> getAllAbsencesListByUser(@RequestParam String mail) {
-        Resource resource = resourceService.getResourceByEmail1(mail);
+        Resource resource = resourceService.getResourceByEmail(mail);
         List<AbsenceList> absenceLists2 = absenceListService.getAll();
         List<AbsenceList> absenceLists = absenceLists2.stream().filter(e -> e.getResource().getId() == resource.getId()).collect(Collectors.toList());
         return absenceLists;
@@ -154,7 +154,7 @@ public class AbsenceController {
     @GetMapping(value = "absence/absence-reference")
     public List<Absence> getAbsenceByAbsenceListReference( @RequestParam(value = "reference") String reference) {
 
-        return absenceService.getAbsenceByAbseceListReference(reference);
+        return absenceService.getAbsenceByAbsenceListReference(reference);
     }
 
     @PutMapping(value = "absence/validate")

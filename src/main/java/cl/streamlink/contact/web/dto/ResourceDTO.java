@@ -13,7 +13,15 @@ public class ResourceDTO extends DeveloperDTO {
 
     private String email;
 
-    private float absence;
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getEmail() {
         return email;
@@ -52,11 +60,4 @@ public class ResourceDTO extends DeveloperDTO {
         return true;
     }
 
-    public float getAbsence() {
-        return absence;
-    }
-
-    public void setAbsence(float absence) {
-        this.absence = absence;
-    }
 }

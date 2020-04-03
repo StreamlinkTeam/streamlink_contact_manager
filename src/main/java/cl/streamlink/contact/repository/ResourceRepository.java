@@ -29,5 +29,8 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     List<Resource> findByManagerReference(String managerReference);
 
-    Resource findOneByContact_Email1(String email1);
+//    Optional<Resource> findOneByContactEmail1(String email1);
+
+    Optional<Resource> findOneByEmail(String email);
+
 }

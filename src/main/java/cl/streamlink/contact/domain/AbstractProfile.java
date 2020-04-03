@@ -107,4 +107,11 @@ public class AbstractProfile  implements Serializable {
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
+
+    public AbstractProfile(String reference) {
+        this.reference = reference;
+    }
+
+    public AbstractProfile() {
+    }
 }

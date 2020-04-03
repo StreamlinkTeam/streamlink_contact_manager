@@ -136,7 +136,7 @@ public class TimeLineController {
 
         User user = userService.getCurrentUser();
 
-        return timeLineService.getAllByDateAndResource(startDate, resourceService.getResourceByEmail1(user.getEmail()));
+        return timeLineService.getAllByDateAndResource(startDate, resourceService.getResourceByEmail(user.getEmail()));
     }
 
     @GetMapping("all")
@@ -149,7 +149,7 @@ public class TimeLineController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public TimeLine saveTimeLine(@RequestBody TimeLine timeLine) {
         User user = userService.getCurrentUser();
-        timeLine.setResource(resourceService.getResourceByEmail1(user.getEmail()));
+        timeLine.setResource(resourceService.getResourceByEmail(user.getEmail()));
         return timeLineService.save(timeLine);
     }
 

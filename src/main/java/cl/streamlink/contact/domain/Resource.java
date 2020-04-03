@@ -8,6 +8,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -19,7 +20,8 @@ public class Resource extends Developer {
 
     private String email;
 
-    private float absence;
+    @Size(min = 8, message = "Minimum password length: 8 characters")
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private ResourceType resourceType;
@@ -53,19 +55,19 @@ public class Resource extends Developer {
     }
 
 
-    public float getAbsence() {
-        return absence;
-    }
-
-    public void setAbsence(float absence) {
-        this.absence = absence;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
     public void setResourceStage(ResourceStage resourceStage) {
         this.resourceStage = resourceStage;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

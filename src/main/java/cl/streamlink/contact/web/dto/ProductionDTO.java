@@ -1,8 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.domain.*;
-import javafx.geometry.Pos;
-
 public class ProductionDTO {
 
     private Positioning project;

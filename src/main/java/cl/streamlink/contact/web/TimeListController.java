@@ -96,7 +96,7 @@ public class TimeListController {
     @PostMapping(value =  "/save")
     public TimeList save(@RequestBody TimeList listTemps) {
         User user = userService.getCurrentUser();
-        listTemps.setResource(resourceService.getResourceByEmail1(user.getEmail()));
+        listTemps.setResource(resourceService.getResourceByEmail(user.getEmail()));
         return timeListService.save(listTemps);
     }
 

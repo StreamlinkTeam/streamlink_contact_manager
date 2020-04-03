@@ -7,8 +7,6 @@ import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.TimeLineRepository;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.TimeLineDTO;
-import cl.streamlink.contact.web.dto.TimeMonthDTO;
-import javafx.animation.Timeline;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +120,10 @@ public class  TimeLineService {
     public TimeLine validateTimeline(TimeLine timeLine) {
         timeLineRepository.validateTimeline(timeLine.getId());
         return timeLine;
+    }
+
+    public void validate(LocalDate d, Resource r) {
+        timeLineRepository.validate(d, r);
     }
 
 }

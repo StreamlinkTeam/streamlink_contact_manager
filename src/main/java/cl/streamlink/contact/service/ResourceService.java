@@ -3,6 +3,7 @@ package cl.streamlink.contact.service;
 import cl.streamlink.contact.domain.Contact;
 import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.domain.Resource;
+import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.DeveloperRepository;
@@ -15,8 +16,10 @@ import cl.streamlink.contact.web.dto.ResourceResponseDTO;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -32,6 +35,9 @@ public class ResourceService {
 
     @Inject
     private ResourceRepository resourceRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Inject
     private DeveloperRepository developerRepository;
@@ -51,7 +57,6 @@ public class ResourceService {
         resource.setContact(contact);
         resource.setReference("res" + MiscUtils.generateReference());
         resource.setStage(Stage.ConvertedToResource);
-        resource.setAbsence(resourceDTO.getAbsence());
         return mapper.fromBeanToDTO(resourceRepository.save(resource));
     }
 
@@ -66,6 +71,9 @@ public class ResourceService {
             resource.setResourceStage(ResourceStage.NOT_DEFINED);
             resource.setResourceType(ResourceType.NOT_DEFINED);
             resource.setStage(Stage.ConvertedToResource);
+
+            resource.setEmail(developer.getContact().getEmail1());
+            resource.setPassword(passwordEncoder.encode("change-me"));
 
             developerRepository.delete(developer);
             return mapper.fromBeanToDTO(resourceRepository.save(resource));
@@ -93,10 +101,14 @@ public class ResourceService {
 
             mapper.updateBeanFromDto(developerDTO, developer);
 
+            checkIfEmailIsUsed(developer.getContact().getEmail1(),developerReference);
+
             Resource resource = mapper.fromDeveloperToResource(developer);
             resource.setResourceStage(ResourceStage.NOT_DEFINED);
             resource.setResourceType(ResourceType.NOT_DEFINED);
             resource.setStage(Stage.ConvertedToResource);
+            resource.setEmail(developer.getContact().getEmail1());
+            resource.setPassword(passwordEncoder.encode("change-me"));
 
             developerRepository.delete(developer);
             return mapper.fromBeanToDTO(resourceRepository.save(resource));
@@ -183,8 +195,9 @@ public class ResourceService {
         return resourceRepository.findByManagerReference(manager);
     }
 
-    public Resource getResourceByEmail1(String email1) {
-        return resourceRepository.findOneByContact_Email1(email1);
+    public Resource getResourceByEmail(String email) {
+        return resourceRepository.findOneByEmail(email).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", email));
     }
 
     public List<Resource> getAll() {
@@ -193,5 +206,17 @@ public class ResourceService {
 
     public Optional<Resource> getById(long id){
         return resourceRepository.findById(id);
+    }
+
+    private void checkIfEmailIsUsed(String email, String reference) {
+
+        if (MiscUtils.isNotEmpty(email)) {
+            Optional<Resource> find = resourceRepository.findOneByEmail(email).
+                    filter(user -> MiscUtils.isEmpty(reference) || !user.getReference().equals(reference));
+            if (find.isPresent()) {
+                throw ContactApiException.unauthorizedExceptionBuilder("email_exist", null);
+            }
+        }
+
     }
 }

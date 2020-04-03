@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -87,5 +88,17 @@ public class BillController {
     @GetMapping(value = "bill/one")
     public Bill getBillById(@RequestParam(value = "id") long id) {
         return billService.getBillById(id);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Create Bill Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Bill.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+    })
+    public BillDTO updateResource(@Valid @RequestBody BillDTO bill, @RequestParam(value = "billReference") Long billReference) throws ContactApiException {
+
+        return billService.updateBill(bill, billReference);
     }
 }

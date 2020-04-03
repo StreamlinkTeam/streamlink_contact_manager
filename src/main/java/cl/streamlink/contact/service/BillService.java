@@ -59,4 +59,15 @@ public class BillService {
     public Bill create(Bill bill) {
         return billRepository.save(bill);
     }
+
+
+
+    public BillDTO updateBill(BillDTO billDTO, Long billReference) throws ContactApiException {
+
+        Bill bill = billRepository.findById(billReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Bill", billReference.toString()));
+
+        mapper.updateBeanFromDto(billDTO, bill);
+        return mapper.fromBeanToDTO(billRepository.save(bill));
+    }
 }

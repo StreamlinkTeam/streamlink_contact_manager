@@ -39,4 +39,10 @@ public interface TimeLineRepository extends JpaRepository<TimeLine, Long> {
     @Query(value = "update TimeLine t set t.status = 1 where t.id = ?1")
     @Transactional
     void validateTimeline(long id);
+
+
+    @Modifying
+    @Query(value = "update TimeLine t set t.timeWork = 0 where t.resource = ?2 AND t.start = ?1")
+    @Transactional
+    void validate(LocalDate date, Resource resource);
 }

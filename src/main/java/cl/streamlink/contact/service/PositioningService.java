@@ -59,7 +59,7 @@ public class PositioningService {
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource",
                         positioningDTO.getResourceReference()));
 
-        positioningDTO.setResponsibleReference(userService.getCurrentUser().getReference());
+        positioningDTO.setResponsibleReference("usrw1MnpFtHhWVfsp9");
 
         Positioning positioning = mapper.fromDTOToBean(positioningDTO);
 

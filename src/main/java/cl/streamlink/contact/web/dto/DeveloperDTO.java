@@ -11,12 +11,12 @@ import java.util.List;
 
 public class DeveloperDTO extends AbstractProfileDTO {
 
-    @NotNull
-    @Size(min = 2, max = 255)
+   // @NotNull
+    // @Size(min = 2, max = 255)
     private String firstname;
 
-    @NotNull
-    @Size(min = 2, max = 255)
+   // @NotNull
+   // @Size(min = 2, max = 255)
     private String lastname;
 
     private Stage stage;

@@ -239,4 +239,13 @@ public class UserController {
         return userService.usersCount();
     }
 
+
+    @PutMapping(value = "/updateUserPassword")
+    public JSONObject changeUserPassword(
+            @RequestParam("userReference") String userReference,
+            @RequestParam("oldPassword") String oldPassword,
+            @RequestParam("newPassword") String newPassword) {
+        return userService.changeUserPassword(userReference, oldPassword, newPassword);
+    }
+
 }

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,14 +49,14 @@ public class UserService {
 
     public JSONObject signin(String username, String password) {
         try {
-            ApplicationConfig.getService(AuthenticationManager.class)
+            Authentication authentication = ApplicationConfig.getService(AuthenticationManager.class)
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            User user = userRepository.findOneByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User ['" + username + "'] not found"));
-            String token = jwtTokenProvider.createToken(username, user.getRoles());
+
+            String token = jwtTokenProvider.createToken(username, authentication.getAuthorities());
 
             JSONObject result = new JSONObject();
             result.put("access_token", token);
-            result.put("roles", user.getRoles());
+            result.put("roles", authentication.getAuthorities());
             return result;
 
         } catch (AuthenticationException e) {
@@ -127,6 +128,22 @@ public class UserService {
             throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("User", "Password", "must_match"));
         }
 
+        return MiscUtils.createSuccessfullyResult();
+    }
+
+    public JSONObject changeUserPassword(String userReference,
+                                         String oldPassword,
+                                         String newPassword) {
+
+        User user = userRepository.findOneByReference(userReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference));
+
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } else {
+            throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("User", "Password", "must_match"));
+        }
         return MiscUtils.createSuccessfullyResult();
     }
 

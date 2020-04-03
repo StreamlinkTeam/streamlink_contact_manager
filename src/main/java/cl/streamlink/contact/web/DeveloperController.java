@@ -41,9 +41,6 @@ public class DeveloperController {
     @Inject
     private UserService userservice;
 
-    Date actuelDate = new Date();
-
-
     @RequestMapping(value = "",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -185,35 +182,7 @@ public class DeveloperController {
         return developerService.getDeveloperSkills(developerReference);
     }
 
-    /*@RequestMapping(value = "skills/languages",
-            method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "add Language to developer skills")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = DeveloperResponseDTO.class),
-            @ApiResponse(code = 404, message = "Developer or language with Ref not Found")
-    })
-    public DeveloperResponseDTO addLanguage(@RequestParam(value = "developerReference") String developerReference,
-                                            @RequestParam(value = "languageReference") String languageReference) throws ContactApiException {
-        return developerService.addLanguage(developerReference, languageReference);
-    }
 
-    @RequestMapping(value = "skills/languages",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "remove Language to developer skills")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = DeveloperResponseDTO.class),
-            @ApiResponse(code = 404, message = "Developer or language with Ref not Found")
-    })
-    public DeveloperResponseDTO removeLanguage(@RequestParam(value = "developerReference") String developerReference,
-                                               @RequestParam(value = "languageReference") String languageReference) throws ContactApiException {
-        return developerService.removeLanguage(developerReference, languageReference);
-    }*/
-
-    //personal
     @RequestMapping(value = "personal_info",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -359,7 +328,7 @@ public class DeveloperController {
             @ApiResponse(code = 404, message = "Developer with Ref not Found")
     })
     public int currentLeave() throws ContactApiException {
-        return (actuelDate.getMonth()+1) -( developerService.getDeveloperEmail(userservice.getCurrentUser().getEmail()).getAvailability().getMonthValue());
+        return (new Date().getMonth()+1) -( developerService.getDeveloperEmail(userservice.getCurrentUser().getEmail()).getAvailability().getMonthValue());
     }
 
 }

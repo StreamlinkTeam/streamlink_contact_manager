@@ -140,47 +140,7 @@ public class DeveloperService {
         return MiscUtils.createSuccessfullyResult();
     }
 
-    /*
-     * public DeveloperResponseDTO addLanguage(String developerReference, String
-     * languageReference) throws ContactApiException { Developer developer =
-     * developerRepository.findOneByReference(developerReference) .orElseThrow(() ->
-     * ContactApiException.resourceNotFoundExceptionBuilder("Developer",
-     * developerReference));
-     *
-     * Language language = languageRepository.findOneByReference(languageReference)
-     * .orElseThrow(() ->
-     * ContactApiException.resourceNotFoundExceptionBuilder("Language",
-     * languageReference));
-     *
-     *
-     * if (developer.getSkillsInformation().getLanguages().add(language)) { return
-     * mapper.fromBeanToDTOResponse(developerRepository.save(developer));
-     *
-     * } else { throw
-     * ContactApiException.unprocessableEntityExceptionBuilder("relation.exist", new
-     * String[]{developerReference, languageReference}); } }
-     */
 
-    /*
-     * public DeveloperResponseDTO removeLanguage(String developerReference, String
-     * languageReference) throws ContactApiException { Developer developer =
-     * developerRepository.findOneByReference(developerReference) .orElseThrow(() ->
-     * ContactApiException.resourceNotFoundExceptionBuilder("Developer",
-     * developerReference));
-     *
-     * Language language = languageRepository.findOneByReference(languageReference)
-     * .orElseThrow(() ->
-     * ContactApiException.resourceNotFoundExceptionBuilder("Language",
-     * languageReference));
-     *
-     *
-     * if (developer.getSkillsInformation().getLanguages().remove(language)) {
-     * return mapper.fromBeanToDTOResponse(developerRepository.save(developer));
-     *
-     * } else { throw
-     * ContactApiException.unprocessableEntityExceptionBuilder("relation.not.exist",
-     * new String[]{developerReference, languageReference}); } }
-     */
 
     public ContactDTO updateDeveloperContact(ContactDTO contact, String developerReference) {
         Developer developer = developerRepository.findOneByReference(developerReference).orElseThrow(

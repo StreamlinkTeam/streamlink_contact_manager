@@ -6,11 +6,12 @@ import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.AbsenceRepository;
 import cl.streamlink.contact.utils.MiscUtils;
-import cl.streamlink.contact.web.dto.DeveloperActionDTO;
 import cl.streamlink.contact.web.dto.hireability.AbsenceDTO;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,9 @@ public class AbsenceService {
     private AbsenceRepository absenceRepository;
 
     @Inject
+    private TimeLineService timeLineService;
+
+    @Inject
     private ApiMapper mapper;
 
 
@@ -30,7 +34,12 @@ public class AbsenceService {
 
         Absence absence = mapper.fromDTOToBean(absenceDTO);
 
+        // get absence by user and date
         absence.setReference(MiscUtils.generateReference());
+        LocalDate startDate = absence.getDateAbsence().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        timeLineService.validate(startDate, absence.getAbsenceList().getResource());
 
         return
                 mapper.fromBeanToDTO(absenceRepository.save(absence));
@@ -74,17 +83,17 @@ public class AbsenceService {
     }
 
 
-    public List<Absence> getAbsenceByAbseceListReference (String absenceListReference) throws ContactApiException {
+    public List<Absence> getAbsenceByAbsenceListReference(String absenceListReference) throws ContactApiException {
 
         return absenceRepository.findByAbsenceList_Reference(absenceListReference);
     }
 
-    public List<Absence> getAbsenceByAbseceListId (AbsenceList absenceList) {
+    public List<Absence> getAbsenceByAbsenceListId(AbsenceList absenceList) {
 
         return absenceRepository.findByAbsenceList(absenceList);
     }
 
-    public List<Absence> getAllAbcences() {
+    public List<Absence> getAllAbsences() {
         return absenceRepository.findAll();
     }
 
