@@ -9,7 +9,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>streamlink_contact</name>
+    <name>streamlink_contact_manager</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
