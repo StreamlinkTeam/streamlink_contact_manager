@@ -1,3 +1,6 @@
 contact:
-    photo:
+    avatar:
+        path: D:\ldk\streamlink_condidats_manager\temp
+
+    cv:
         path: D:\ldk\streamlink_condidats_manager\temp
