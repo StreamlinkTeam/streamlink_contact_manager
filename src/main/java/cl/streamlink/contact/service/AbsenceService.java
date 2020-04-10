@@ -45,9 +45,9 @@ public class AbsenceService {
                 mapper.fromBeanToDTO(absenceRepository.save(absence));
     }
 
-    public List<AbsenceDTO> getAbcences(String absenceReference) throws ContactApiException {
+    public List<AbsenceDTO> getAbsences(String absenceReference) throws ContactApiException {
 
-        if (absenceReference!= null)
+        if (absenceReference != null)
             return Collections.singletonList(mapper.fromBeanToDTO(
                     absenceRepository.findOneByReference(absenceReference).orElseThrow(() -> ContactApiException
                             .resourceNotFoundExceptionBuilder("Absence", absenceReference))));

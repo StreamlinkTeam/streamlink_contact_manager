@@ -62,7 +62,7 @@ public class NeedController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Need.class),
             @ApiResponse(code = 404, message = "Need with Ref not Found")})
-    public List<NeedResponseDTO> getNeeds() {
+    public List<NeedResponseDTO> getNeeds() throws ContactApiException {
         return needService.getNeeds(null);
     }
 

@@ -1,7 +1,5 @@
 package cl.streamlink.contact.domain;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import java.io.Serializable;
 @Entity
@@ -21,8 +19,6 @@ public class AttachedFile  implements Serializable {
     private String name;
 
     private String note;
-
-
 
 
     @ManyToOne

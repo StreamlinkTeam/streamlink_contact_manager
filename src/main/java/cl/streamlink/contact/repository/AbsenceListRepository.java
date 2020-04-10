@@ -1,6 +1,7 @@
 package cl.streamlink.contact.repository;
 
-import cl.streamlink.contact.domain.*;
+import cl.streamlink.contact.domain.AbsenceList;
+import cl.streamlink.contact.domain.Resource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +21,7 @@ public interface AbsenceListRepository extends JpaRepository<AbsenceList, Long> 
 
     List<AbsenceList> findAllByResource(Resource resource);
 
-    List<AbsenceList> findByManager(User manager);
+    List<AbsenceList> findByManagerReference(String managerReference);
 
     @Modifying
     @Query(value = "update AbsenceList t set t.state = 'V' where t.id = ?1")

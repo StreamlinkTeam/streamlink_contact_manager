@@ -59,7 +59,7 @@ public class Language implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        return Optional.ofNullable(object).filter(obj -> obj instanceof Developer).map(obj -> (Developer) obj).
+        return Optional.ofNullable(object).filter(obj -> obj instanceof Language).map(obj -> (Language) obj).
                 filter(ag -> getId() == null || MiscUtils.equals(ag.getReference(), this.reference)).
                 filter(ag -> getId() != null || MiscUtils.equals(ag, this)).
                 isPresent();

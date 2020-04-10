@@ -7,16 +7,12 @@ import cl.streamlink.contact.utils.enums.ResourceStage;
 import cl.streamlink.contact.utils.enums.ResourceType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ResourceRepository extends JpaRepository<Resource, Long> {
+public interface ResourceRepository extends AbstractDevResRepository<Resource> {
 
-    Optional<Resource> findOneByReference(String reference);
-
-    boolean existsByReference(String reference);
 
     Page<Resource> findByFirstnameContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrLastnameContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrSkillsInformationTitleContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrSkillsInformationLanguagesContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeIn
             (String value, List<ResourceStage> stages, List<Formation> formations, List<Experience> experiences, List<ResourceType> types,
@@ -25,11 +21,6 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
              String value3, List<ResourceStage> stages3, List<Formation> formations3, List<Experience> experiences3, List<ResourceType> types3,
              Pageable pageable);
 
-    List<Resource> findByFirstnameContaining(String value);
-
-    List<Resource> findByManagerReference(String managerReference);
-
-//    Optional<Resource> findOneByContactEmail1(String email1);
 
     Optional<Resource> findOneByEmail(String email);
 

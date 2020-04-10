@@ -1,15 +1,18 @@
 package cl.streamlink.contact.domain;
 
+import cl.streamlink.contact.security.ContactUserDetails;
 import cl.streamlink.contact.utils.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(indexes = {@Index(name = "index_user_reference", columnList = "reference", unique = true)})
-public class User {
+public class User implements ContactUserDetails {
 
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
@@ -27,6 +30,7 @@ public class User {
 
     private String status;
 
+    @NotNull
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
 
@@ -92,5 +96,35 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.getRoles();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

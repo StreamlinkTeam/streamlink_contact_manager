@@ -36,12 +36,15 @@ public class SocietyContactService {
     private ProjectService projectService;
 
     @Inject
+    private NeedService needService;
+
+    @Inject
     private SocietyRepository societyRepository;
 
     @Inject
     private ApiMapper mapper;
 
-    public SocietyContactDTO createSocietyContact(SocietyContactDTO societyContactDTO, String societyReference) {
+    public SocietyContactDTO createSocietyContact(SocietyContactDTO societyContactDTO, String societyReference) throws ContactApiException {
 
         Society society = societyRepository.findOneByReference(societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Society", societyReference));
@@ -107,6 +110,7 @@ public class SocietyContactService {
     public JSONObject deleteSocietyContacts(String societyReference) throws ContactApiException {
 
         projectService.deleteBySociety(societyReference, null);
+        needService.deleteBySociety(societyReference, null);
         societyContactRepository.deleteBySocietyReference(societyReference);
 
         return MiscUtils.createSuccessfullyResult();
@@ -125,7 +129,7 @@ public class SocietyContactService {
     }
 
 
-    public ContactDTO updateSocietyContactContact(ContactDTO contact, String societyContactReference, String societyReference) {
+    public ContactDTO updateSocietyContactContact(ContactDTO contact, String societyContactReference, String societyReference) throws ContactApiException {
 
         SocietyContact societyContact = societyContactRepository.findOneByReferenceAndSocietyReference(societyContactReference, societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("SocietyContact", societyContactReference));
@@ -138,7 +142,7 @@ public class SocietyContactService {
 
     }
 
-    public ContactDTO getSocietyContactContact(String societyContactReference, String societyReference) {
+    public ContactDTO getSocietyContactContact(String societyContactReference, String societyReference) throws ContactApiException {
 
         SocietyContact societyContact = societyContactRepository.findOneByReferenceAndSocietyReference(societyContactReference, societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("SocietyContact", societyContactReference));

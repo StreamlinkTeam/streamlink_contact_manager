@@ -50,7 +50,7 @@ public class HireabilityService {
     private ObjectMapper objectMapper;
 
 
-    public Developer parseResume(File resume) throws IOException {
+    public Developer parseResume(File resume) throws IOException, ContactApiException {
 
         LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("document", new FileSystemResource(resume));
@@ -78,7 +78,7 @@ public class HireabilityService {
         return new File(hireAbilityPath, fileName);
     }
 
-    private Developer convertToHireAbilityResult(File jsonResult) throws IOException {
+    private Developer convertToHireAbilityResult(File jsonResult) throws IOException, ContactApiException {
 
         Results results = objectMapper.readValue(jsonResult, Results.class);
 

@@ -35,6 +35,9 @@ public class NeedService {
     @Inject
     private ApiMapper mapper;
 
+    @Inject
+    private PositioningService positioningService;
+
     public NeedDTO createNeed(NeedDTO needDTO) {
 
         Need need = mapper.fromDTOToBean(needDTO);
@@ -115,21 +118,37 @@ public class NeedService {
         Need need = needRepository.findOneByReference(needReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
 
+        positioningService.deletePositioningByNeed(needReference);
+
         needRepository.delete(need);
 
         return MiscUtils.createSuccessfullyResult();
     }
 
-    public void deleteBySociety(String societyReference, String societyContactReference) throws ContactApiException {
+    public void deleteBySociety(String societyReference, String societyContactReference) {
 
         if (MiscUtils.isNotEmpty(societyReference))
-            needRepository.deleteBySocietyContactSocietyReference(societyReference);
+            needRepository.findBySocietyContactSocietyReference(societyReference)
+                    .forEach(need -> {
+                        try {
+                            deleteNeed(need.getReference());
+                        } catch (ContactApiException e) {
+                            logger.error(e.getMessage(), e);
+                        }
+                    });
         else if (MiscUtils.isNotEmpty(societyContactReference))
-            needRepository.deleteBySocietyContactReference(societyContactReference);
+            needRepository.findBySocietyContactReference(societyContactReference)
+                    .forEach(need -> {
+                        try {
+                            deleteNeed(need.getReference());
+                        } catch (ContactApiException e) {
+                            logger.error(e.getMessage(), e);
+                        }
+                    });
 
     }
 
-    public NeedInformationDTO updateNeedInformation(NeedInformationDTO needInformation, String needReference) {
+    public NeedInformationDTO updateNeedInformation(NeedInformationDTO needInformation, String needReference) throws ContactApiException {
 
         Need need = needRepository.findOneByReference(needReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
@@ -142,7 +161,7 @@ public class NeedService {
 
     }
 
-    public NeedInformationDTO getNeedInformation(String needReference) {
+    public NeedInformationDTO getNeedInformation(String needReference) throws ContactApiException {
 
         NeedInformationDTO needInformation = getNeeds(needReference).get(0).getNeedInformation();
         needInformation.setNeedReference(needReference);

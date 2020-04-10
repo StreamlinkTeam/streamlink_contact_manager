@@ -5,7 +5,7 @@ import cl.streamlink.contact.utils.enums.ActionType;
 import java.time.LocalDateTime;
 
 
-public class DeveloperActionDTO {
+public class ResourceActionDTO {
 
     private String reference;
 

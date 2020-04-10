@@ -12,7 +12,7 @@ public class AbsenceManageDTO {
     private float provisional_Balance;
     private Date createdDate;
     private Date modifiedDate;
-    private String resourceReference;
+    private String developerReference;
 
     public String getReference() {
         return reference;
@@ -63,11 +63,11 @@ public class AbsenceManageDTO {
     }
 
     public String getResourceReference() {
-        return resourceReference;
+        return developerReference;
     }
 
-    public void setResourceReference(String resourceReference) {
-        this.resourceReference = resourceReference;
+    public void setResourceReference(String developerReference) {
+        this.developerReference = developerReference;
     }
 
     public Date getCreatedDate() {

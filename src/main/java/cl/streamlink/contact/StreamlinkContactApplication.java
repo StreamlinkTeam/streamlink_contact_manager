@@ -36,7 +36,7 @@ public class StreamlinkContactApplication  implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... params) {
+    public void run(String... params) throws ContactApiException {
 
         try {
             UserDTO admin = new UserDTO();
@@ -47,7 +47,7 @@ public class StreamlinkContactApplication  implements CommandLineRunner {
             admin.setEmail("admin@email.com");
             admin.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_ADMIN)));
 
-            userService.signup(admin);
+            userService.signUp(admin);
         } catch (ContactApiException e) {
             logger.warn(e.getMessage());
         }
@@ -60,7 +60,7 @@ public class StreamlinkContactApplication  implements CommandLineRunner {
             admin.setEmail("adminZ@email.com");
             admin.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_ADMIN)));
 
-            userService.signup(admin);
+            userService.signUp(admin);
         } catch (ContactApiException e) {
             logger.warn(e.getMessage());
         }
@@ -72,27 +72,15 @@ public class StreamlinkContactApplication  implements CommandLineRunner {
             client.setEmail("client@email.com");
             client.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_CLIENT)));
 
-            userService.signup(client);
-        } catch (ContactApiException e) {
-            logger.warn(e.getMessage());
-        }
-        try {
-            UserDTO resource = new UserDTO();
-            resource.setLastname("resource");
-            resource.setFirstname("resource");
-
-            resource.setPassword("resource");
-            resource.setEmail("resource@email.com");
-            resource.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_RESOURCE)));
-
-            userService.signup(resource);
+            userService.signUp(client);
         } catch (ContactApiException e) {
             logger.warn(e.getMessage());
         }
 
-//             fakerService.deleteAll();
-//          fakerService.generateFakerDeveloperData(10);
-//          fakerService.generateFakerResourceDate(10);
-//         fakerService.generateFakerSocietyData(20,10);
+
+//        fakerService.deleteAll();
+//        fakerService.generateFakerDeveloperData(10);
+//        fakerService.generateFakerResourceDate(10);
+//        fakerService.generateFakerSocietyData(5, 5);
     }
 }

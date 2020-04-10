@@ -24,9 +24,7 @@ public class Action {
     @Column(unique = true)
     private String reference;
 
-    @ManyToOne
-    private Developer developer;
-
+    private String developerReference;
 
     @ManyToOne
     private SocietyContact societyContact;
@@ -73,12 +71,12 @@ public class Action {
         this.reference = reference;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public String getDeveloperReference() {
+        return developerReference;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setDeveloperReference(String developerReference) {
+        this.developerReference = developerReference;
     }
 
     public SocietyContact getSocietyContact() {

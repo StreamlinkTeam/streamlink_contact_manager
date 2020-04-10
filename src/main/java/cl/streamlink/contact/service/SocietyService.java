@@ -121,7 +121,7 @@ public class SocietyService {
         return MiscUtils.createSuccessfullyResult();
     }
 
-    public ContactDTO updateSocietyContact(ContactDTO contact, String societyReference) {
+    public ContactDTO updateSocietyContact(ContactDTO contact, String societyReference) throws ContactApiException {
         Society society = societyRepository.findOneByReference(societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Society", societyReference));
         mapper.updateBeanFromDto(contact, society.getContact());
@@ -132,14 +132,14 @@ public class SocietyService {
 
     }
 
-    public ContactDTO getSocietyContact(String societyReference) {
+    public ContactDTO getSocietyContact(String societyReference) throws ContactApiException {
 
         ContactDTO contact = getSocieties(societyReference).get(0).getContact();
         contact.setOwnerReference(societyReference);
         return contact;
     }
 
-    public SocietyLegalInformationDTO updateSocietyLegalInformation(SocietyLegalInformationDTO legalInformation, String societyReference) {
+    public SocietyLegalInformationDTO updateSocietyLegalInformation(SocietyLegalInformationDTO legalInformation, String societyReference) throws ContactApiException {
 
         Society society = societyRepository.findOneByReference(societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Society", societyReference));
@@ -152,7 +152,7 @@ public class SocietyService {
 
     }
 
-    public SocietyLegalInformationDTO getSocietyLegalInformation(String societyReference) {
+    public SocietyLegalInformationDTO getSocietyLegalInformation(String societyReference) throws ContactApiException {
 
         SocietyLegalInformationDTO legalInformation = getSocieties(societyReference).get(0).getLegalInformation();
         legalInformation.setSocietyReference(societyReference);

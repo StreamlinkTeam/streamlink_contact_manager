@@ -1,10 +1,11 @@
 package cl.streamlink.contact.web.dto;
 
+import cl.streamlink.contact.domain.AbstractProfile;
 import cl.streamlink.contact.utils.enums.Gender;
 
 import java.time.LocalDateTime;
 
-public class AbstractProfileDTO {
+public class AbstractProfileDTO<T extends AbstractProfile> {
 
     private String reference;
 

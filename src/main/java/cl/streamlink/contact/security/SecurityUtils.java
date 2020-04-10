@@ -1,9 +1,13 @@
 package cl.streamlink.contact.security;
 
+import cl.streamlink.contact.exception.ContactApiError;
+import cl.streamlink.contact.exception.ContactApiException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Optional;
 
 
 public final class SecurityUtils {
@@ -31,5 +35,34 @@ public final class SecurityUtils {
         }
         return userName;
     }
+
+    public static Optional<ContactUserDetails> getCurrentUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof ContactUserDetails)
+
+                return Optional.of((ContactUserDetails) authentication.getPrincipal());
+
+
+        }
+        return Optional.empty();
+    }
+
+    public static ContactUserDetails getCurrentUserOrThrowUnauthorizedException() throws ContactApiException {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof ContactUserDetails)
+
+                return (ContactUserDetails) authentication.getPrincipal();
+
+
+        }
+        throw new ContactApiException("Access denied", ContactApiError.UNAUTHORIZED, null, null);
+    }
+
 
 }

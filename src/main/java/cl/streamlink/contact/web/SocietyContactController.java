@@ -62,7 +62,7 @@ public class SocietyContactController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public SocietyContactDTO createSocietyContact(@RequestBody @Valid SocietyContactDTO societyContact,
-                                                  @RequestParam(value = "societyReference") String societyReference) {
+                                                  @RequestParam(value = "societyReference") String societyReference) throws ContactApiException {
 
         return societyContactService.createSocietyContact(societyContact, societyReference);
     }

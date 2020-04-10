@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 
 @Embeddable
-public class SkillsInformation {
+public class SkillsInformation implements Serializable {
 
     private String title;
 
@@ -24,7 +25,7 @@ public class SkillsInformation {
     @ElementCollection()
     @LazyCollection(LazyCollectionOption.FALSE)
     @Lob
-    private List<String> qualifications = new ArrayList<String>();
+    private List<String> qualifications = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Experience experience = Experience.NOT_DEFINED;

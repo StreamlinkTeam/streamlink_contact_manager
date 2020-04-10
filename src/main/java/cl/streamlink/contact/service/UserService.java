@@ -1,16 +1,21 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.config.ApplicationConfig;
+import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiError;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.exception.FieldErrorDTO;
 import cl.streamlink.contact.mapper.ApiMapper;
+import cl.streamlink.contact.repository.ResourceRepository;
 import cl.streamlink.contact.repository.UserRepository;
+import cl.streamlink.contact.security.ContactUserDetails;
 import cl.streamlink.contact.security.JwtTokenProvider;
 import cl.streamlink.contact.security.SecurityUtils;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.Role;
+import cl.streamlink.contact.web.dto.AvatarDTO;
+import cl.streamlink.contact.web.dto.ChangePasswordDTO;
 import cl.streamlink.contact.web.dto.UserDTO;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +25,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,14 +46,20 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ResourceRepository resourceRepository;
+
     @Inject
     private ApiMapper mapper;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private AvatarService avatarService;
 
-    public JSONObject signin(String username, String password) {
+
+    public JSONObject signIn(String username, String password) throws ContactApiException {
         try {
             Authentication authentication = ApplicationConfig.getService(AuthenticationManager.class)
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -57,6 +69,10 @@ public class UserService {
             JSONObject result = new JSONObject();
             result.put("access_token", token);
             result.put("roles", authentication.getAuthorities());
+
+            if (authentication.getPrincipal() instanceof ContactUserDetails)
+                result.put("user_reference", ((ContactUserDetails) authentication.getPrincipal()).getReference());
+
             return result;
 
         } catch (AuthenticationException e) {
@@ -64,7 +80,7 @@ public class UserService {
         }
     }
 
-    public UserDTO signup(UserDTO userDTO) {
+    public UserDTO signUp(UserDTO userDTO) throws ContactApiException {
 
         checkIfEmailIsUsed(userDTO.getEmail(), null);
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -87,7 +103,7 @@ public class UserService {
         return mapper.fromBeanToDTO(userRepository.save(user));
     }
 
-    public UserDTO getUser(String userReference) {
+    public UserDTO getUser(String userReference) throws ContactApiException {
 
         return mapper.fromBeanToDTO(userRepository.findOneByReference(userReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference)));
@@ -105,7 +121,7 @@ public class UserService {
         return MiscUtils.createSuccessfullyResult();
     }
 
-    public UserDTO search(String email) {
+    public UserDTO search(String email) throws ContactApiException {
         User user = userRepository.findOneByEmail(email).orElse(null);
         if (user == null) {
             throw ContactApiException.resourceNotFoundExceptionBuilder("User", email);
@@ -118,12 +134,15 @@ public class UserService {
                 (jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req))).orElse(null));
     }
 
-    public JSONObject changeCurrentUserPassword(String oldPassword, String newPassword) {
+    public JSONObject changeCurrentUserPassword(ChangePasswordDTO passwordDTO) throws ContactApiException {
 
-        User user = getCurrentUser();
-        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(newPassword));
-            userRepository.save(user);
+        ContactUserDetails user = getCurrentUser();
+        if (passwordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
+            if (user.isResource())
+                resourceRepository.save(((Resource) user));
+            else
+                userRepository.save(((User) user));
         } else {
             throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("User", "Password", "must_match"));
         }
@@ -131,9 +150,7 @@ public class UserService {
         return MiscUtils.createSuccessfullyResult();
     }
 
-    public JSONObject changeUserPassword(String userReference,
-                                         String oldPassword,
-                                         String newPassword) {
+    public JSONObject changeUserPassword(String userReference, String oldPassword, String newPassword) throws ContactApiException {
 
         User user = userRepository.findOneByReference(userReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference));
@@ -147,22 +164,16 @@ public class UserService {
         return MiscUtils.createSuccessfullyResult();
     }
 
-    public User getCurrentUser() {
-        String currentUserName = SecurityUtils.getCurrentUserLogin();
+    public ContactUserDetails getCurrentUser() throws ContactApiException {
 
-        if (!SecurityUtils.checkIfThereIsUserLogged())
-            throw new ContactApiException("Access denied", ContactApiError.UNAUTHORIZED, null, null);
-
-        return userRepository.findOneByEmail(currentUserName).
-                orElseThrow(() -> ContactApiException.
-                        resourceNotFoundExceptionBuilder("User", currentUserName));
+        return SecurityUtils.getCurrentUserOrThrowUnauthorizedException();
     }
 
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
-    private void checkIfEmailIsUsed(String email, String reference) {
+    private void checkIfEmailIsUsed(String email, String reference) throws ContactApiException {
 
         if (MiscUtils.isNotEmpty(email)) {
             Optional<User> find = userRepository.findOneByEmail(email).
@@ -193,5 +204,47 @@ public class UserService {
 
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    public AvatarDTO addUserAvatar(MultipartFile file, String userReference) throws ContactApiException, IOException {
+
+        User user = userRepository.findOneByReference(userReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference));
+
+        return avatarService.updateUserAvatar(file, user);
+
+    }
+
+    public JSONObject removeUserAvatar(String reference, String userReference) throws ContactApiException {
+
+        User user = userRepository.findOneByReference(userReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference));
+        return avatarService.removeUserAvatar(reference, user);
+
+    }
+
+    public AvatarDTO getUserAvatar(String userReference) throws ContactApiException {
+        User user = userRepository.findOneByReference(userReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", userReference));
+
+        return avatarService.getUserAvatar(user);
+
+    }
+
+    public AvatarDTO addCurrentUserAvatar(MultipartFile multipartFile) throws ContactApiException, IOException {
+
+        ContactUserDetails user = getCurrentUser();
+        return avatarService.updateUserAvatar(multipartFile, user);
+
+    }
+
+    public JSONObject removeCurrentUserAvatar(String reference) throws ContactApiException {
+        ContactUserDetails user = getCurrentUser();
+        return avatarService.removeUserAvatar(reference, user);
+    }
+
+    public AvatarDTO getCurrentUserAvatar() throws ContactApiException {
+        ContactUserDetails user = getCurrentUser();
+        return avatarService.getUserAvatar(user);
     }
 }

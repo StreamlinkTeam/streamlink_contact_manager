@@ -1,5 +1,6 @@
 package cl.streamlink.contact.service;
 
+import cl.streamlink.contact.domain.AbstractDevResProfile;
 import cl.streamlink.contact.domain.Action;
 import cl.streamlink.contact.domain.Need;
 import cl.streamlink.contact.domain.Project;
@@ -8,7 +9,7 @@ import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.*;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.ActionDTO;
-import cl.streamlink.contact.web.dto.DeveloperActionDTO;
+import cl.streamlink.contact.web.dto.ResourceActionDTO;
 import cl.streamlink.contact.web.dto.SocietyActionDTO;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
@@ -27,13 +28,10 @@ import java.util.stream.Collectors;
 @Service
 public class ActionService {
 
-    private final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
+    private final Logger logger = LoggerFactory.getLogger(ActionService.class);
 
     @Inject
     private ActionRepository actionRepository;
-
-    @Inject
-    private DeveloperRepository developerRepository;
 
     @Inject
     private ProjectRepository projectRepository;
@@ -60,30 +58,25 @@ public class ActionService {
     }
 
 
-    public DeveloperActionDTO createAction(DeveloperActionDTO developerActionDTO, String developerReference) {
+    ResourceActionDTO createResourceAction(ResourceActionDTO resourceActionDTO, AbstractDevResProfile devResProfile) throws ContactApiException {
 
-        developerRepository.findOneByReference(developerReference).orElseThrow(
-                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
-        developerActionDTO.setReference("act" + MiscUtils.generateReference());
-        developerActionDTO.setDeveloperReference(developerReference);
-        developerActionDTO.setResponsibleReference(userService.getCurrentUser().getReference());
+        resourceActionDTO.setReference("act" + MiscUtils.generateReference());
+        resourceActionDTO.setDeveloperReference(devResProfile.getReference());
+        resourceActionDTO.setResponsibleReference(userService.getCurrentUser().getReference());
 
-        Action action = mapper.fromDTOToBean(developerActionDTO);
+        Action action = mapper.fromDTOToBean(resourceActionDTO);
 
         return mapper.fromBeanToDeveloperActionDTO(actionRepository.save(action));
     }
 
-    public DeveloperActionDTO updateAction(DeveloperActionDTO developerActionDTO, String reference,
-                                           String developerReference) {
+    ResourceActionDTO updateResourceAction(ResourceActionDTO resourceActionDTO, String reference,
+                                           AbstractDevResProfile devResProfile) throws ContactApiException {
 
-        developerRepository.findOneByReference(developerReference).orElseThrow(
-                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
-
-        Action action = actionRepository.findOneByReferenceAndDeveloperReference(reference, developerReference)
+        Action action = actionRepository.findOneByReferenceAndDeveloperReference(reference, devResProfile.getReference())
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Action", reference));
 
-        mapper.updateBeanFromDto(developerActionDTO, action);
+        mapper.updateBeanFromDto(resourceActionDTO, action);
 
         action = actionRepository.save(action);
 
@@ -91,28 +84,22 @@ public class ActionService {
 
     }
 
-    public List<DeveloperActionDTO> getAction(String reference, String developerReference) {
-
-        developerRepository.findOneByReference(developerReference).orElseThrow(
-                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+    List<ResourceActionDTO> getResourceAction(String reference, AbstractDevResProfile devResProfile) throws ContactApiException {
 
         if (MiscUtils.isEmpty(reference))
-            return actionRepository.findByDeveloperReference(developerReference).stream()
+            return actionRepository.findByDeveloperReference(devResProfile.getReference()).stream()
                     .map(mapper::fromBeanToDeveloperActionDTO).collect(Collectors.toList());
         else {
-            Action action = actionRepository.findOneByReferenceAndDeveloperReference(reference, developerReference)
+            Action action = actionRepository.findOneByReferenceAndDeveloperReference(reference, devResProfile.getReference())
                     .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Action", reference));
 
             return Collections.singletonList(mapper.fromBeanToDeveloperActionDTO(action));
         }
     }
 
-    public JSONObject deleteAction(String reference, String developerReference) {
+    JSONObject deleteResourceAction(String reference, AbstractDevResProfile devResProfile) throws ContactApiException {
 
-        developerRepository.findOneByReference(developerReference).orElseThrow(
-                () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
-
-        Action action = actionRepository.findOneByReferenceAndDeveloperReference(reference, developerReference)
+        Action action = actionRepository.findOneByReferenceAndDeveloperReference(reference, devResProfile.getReference())
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Action", reference));
 
         actionRepository.delete(action);
@@ -121,7 +108,7 @@ public class ActionService {
     }
 
     public SocietyActionDTO createAction(SocietyActionDTO societyActionDTO, String societyContactReference,
-                                         String societyReference) {
+                                         String societyReference) throws ContactApiException {
 
         societyRepository.findOneByReference(societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Society", societyReference));
@@ -140,7 +127,7 @@ public class ActionService {
     }
 
     public SocietyActionDTO updateAction(SocietyActionDTO societyActionDTO, String reference,
-                                         String societyContactReference, String societyReference) {
+                                         String societyContactReference, String societyReference) throws ContactApiException {
 
         societyRepository.findOneByReference(societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Society", societyReference));
@@ -176,7 +163,7 @@ public class ActionService {
 
     }
 
-    public List<SocietyActionDTO> getAction(String reference, String societyContactReference, String societyReference) {
+    public List<SocietyActionDTO> getAction(String reference, String societyContactReference, String societyReference) throws ContactApiException {
 
         societyRepository.findOneByReference(societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Society", societyReference));
@@ -202,7 +189,7 @@ public class ActionService {
         }
     }
 
-    public JSONObject deleteAction(String reference, String societyContactReference, String societyReference) {
+    public JSONObject deleteAction(String reference, String societyContactReference, String societyReference) throws ContactApiException {
 
         societyRepository.findOneByReference(societyReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Society", societyReference));
@@ -220,7 +207,7 @@ public class ActionService {
 
     }
 
-    public SocietyActionDTO createProjectAction(SocietyActionDTO societyActionDTO, String projectReference) {
+    public SocietyActionDTO createProjectAction(SocietyActionDTO societyActionDTO, String projectReference) throws ContactApiException {
 
         Project project = projectRepository.findOneByReference(projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
@@ -237,9 +224,9 @@ public class ActionService {
     }
 
     public SocietyActionDTO updateProjectAction(SocietyActionDTO societyActionDTO, String reference,
-                                                String projectReference) {
+                                                String projectReference) throws ContactApiException {
 
-        Project project = projectRepository.findOneByReference(projectReference)
+        projectRepository.findOneByReference(projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
 
         Action action = actionRepository.findOneByReferenceAndProjectReference(reference, projectReference)
@@ -252,7 +239,7 @@ public class ActionService {
         return mapper.fromBeanToSocietyActionDTO(action);
     }
 
-    public List<SocietyActionDTO> getProjectAction(String reference, String projectReference) {
+    public List<SocietyActionDTO> getProjectAction(String reference, String projectReference) throws ContactApiException {
 
         projectRepository.findOneByReference(projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
@@ -268,7 +255,7 @@ public class ActionService {
         }
     }
 
-    public JSONObject deleteProjectAction(String reference, String projectReference) {
+    public JSONObject deleteProjectAction(String reference, String projectReference) throws ContactApiException {
 
         projectRepository.findOneByReference(projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
@@ -281,7 +268,7 @@ public class ActionService {
     }
 
 
-    public SocietyActionDTO createNeedAction(SocietyActionDTO societyActionDTO, String needReference) {
+    public SocietyActionDTO createNeedAction(SocietyActionDTO societyActionDTO, String needReference) throws ContactApiException {
 
         Need need = needRepository.findOneByReference(needReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
@@ -298,9 +285,9 @@ public class ActionService {
     }
 
     public SocietyActionDTO updateNeedAction(SocietyActionDTO societyActionDTO, String reference,
-                                             String needReference) {
+                                             String needReference) throws ContactApiException {
 
-        Need need = needRepository.findOneByReference(needReference)
+        needRepository.findOneByReference(needReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
 
         Action action = actionRepository.findOneByReferenceAndNeedReference(reference, needReference)
@@ -313,7 +300,7 @@ public class ActionService {
         return mapper.fromBeanToSocietyActionDTO(action);
     }
 
-    public List<SocietyActionDTO> getNeedAction(String reference, String needReference) {
+    public List<SocietyActionDTO> getNeedAction(String reference, String needReference) throws ContactApiException {
 
         needRepository.findOneByReference(needReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));
@@ -329,7 +316,7 @@ public class ActionService {
         }
     }
 
-    public JSONObject deleteNeedAction(String reference, String needReference) {
+    public JSONObject deleteNeedAction(String reference, String needReference) throws ContactApiException {
 
         needRepository.findOneByReference(needReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Need", needReference));

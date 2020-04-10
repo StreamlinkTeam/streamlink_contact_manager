@@ -21,7 +21,7 @@ public class Society extends AbstractProfile {
 
     private Integer staffNumber;
 
-    private String SupplierNumber;
+    private String supplierNumber;
 
 
     @Enumerated(EnumType.STRING)
@@ -55,11 +55,11 @@ public class Society extends AbstractProfile {
     }
 
     public String getSupplierNumber() {
-        return SupplierNumber;
+        return supplierNumber;
     }
 
     public void setSupplierNumber(String supplierNumber) {
-        SupplierNumber = supplierNumber;
+        supplierNumber = supplierNumber;
     }
 
     public SocietyStage getStage() {

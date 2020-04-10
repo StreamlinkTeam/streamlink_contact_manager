@@ -144,7 +144,7 @@ public class ProjectService {
     }
 
 
-    public ProjectInformationDTO updateProjectInformation(ProjectInformationDTO projectInformation, String projectReference) {
+    public ProjectInformationDTO updateProjectInformation(ProjectInformationDTO projectInformation, String projectReference) throws ContactApiException {
 
         Project project = projectRepository.findOneByReference(projectReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", projectReference));
@@ -157,7 +157,7 @@ public class ProjectService {
 
     }
 
-    public ProjectInformationDTO getProjectInformation(String projectReference) {
+    public ProjectInformationDTO getProjectInformation(String projectReference) throws ContactApiException {
 
         ProjectInformationDTO projectInformation = getProjects(projectReference).get(0).getProjectInformation();
         projectInformation.setProjectReference(projectReference);

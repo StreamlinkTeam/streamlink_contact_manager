@@ -1,9 +1,12 @@
 package cl.streamlink.contact.service;
 
+import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.domain.TimeList;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
+import cl.streamlink.contact.repository.ResourceRepository;
 import cl.streamlink.contact.repository.TimeListRepository;
+import cl.streamlink.contact.security.SecurityUtils;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.TimeListDTO;
 import net.minidev.json.JSONObject;
@@ -22,6 +25,9 @@ public class TimeListService {
 
     @Inject
     private TimeListRepository timeListRepository;
+
+    @Inject
+    private ResourceRepository resourceRepository;
 
     @Inject
     private ApiMapper mapper;
@@ -60,11 +66,16 @@ public class TimeListService {
         TimeList timeList = timeListRepository.findOneByReference(timeListReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Project", timeListReference));
 
-        mapper.updateBeanFromDto(timeListDTO,timeList);
+        mapper.updateBeanFromDto(timeListDTO, timeList);
         return mapper.fromBeanToDTO(timeListRepository.save(timeList));
     }
 
-    public TimeList save(TimeList timeList) {
+    public TimeList saveForCurrentResource(TimeList timeList) throws ContactApiException {
+
+        Resource resource = resourceRepository.findOneByEmail(SecurityUtils.getCurrentUserLogin())
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", SecurityUtils.getCurrentUserLogin()));
+        timeList.setResource(resource);
+
         return timeListRepository.save(timeList);
     }
 

@@ -35,8 +35,7 @@ public class ProjectPosController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = ProjectPos.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public ProjectPosDTO createProjectFromPositioning(
-            @RequestParam(value = "positioningReference") String positioningReference) {
+    public ProjectPosDTO createProjectFromPositioning(@RequestParam(value = "positioningReference") String positioningReference) throws ContactApiException {
         return projectPosService.createProjectFromPositioning(positioningReference);
     }
 
@@ -47,7 +46,7 @@ public class ProjectPosController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = ProjectPos.class),
             @ApiResponse(code = 404, message = "Project with Ref not Found")
     })
-    public List<ProjectPosDTO> getProjects() {
+    public List<ProjectPosDTO> getProjects() throws ContactApiException {
 
         return projectPosService.getProjects();
     }

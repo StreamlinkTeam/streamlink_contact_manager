@@ -1,25 +1,31 @@
 package cl.streamlink.contact.domain;
 
 
+import cl.streamlink.contact.security.ContactUserDetails;
+import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.ResourceStage;
 import cl.streamlink.contact.utils.enums.ResourceType;
+import cl.streamlink.contact.utils.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
 
 @Entity
-@DiscriminatorValue("RESOURCE")
-public class Resource extends Developer {
+@Table(indexes = {@Index(name = "index_resource_reference", columnList = "reference", unique = true)})
+public class Resource extends AbstractDevResProfile implements ContactUserDetails {
 
 
     private String registrationNumber;
 
     private String email;
 
+    @NotNull
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
 
@@ -38,6 +44,52 @@ public class Resource extends Developer {
         this.registrationNumber = registrationNumber;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(Role.ROLE_RESOURCE);
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public ResourceType getResourceType() {
         return resourceType;
     }
@@ -50,24 +102,25 @@ public class Resource extends Developer {
         return resourceStage;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void setResourceStage(ResourceStage resourceStage) {
         this.resourceStage = resourceStage;
     }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public boolean equals(Object object) {
+        return Optional.ofNullable(object).filter(obj -> obj instanceof Resource).map(obj -> (Resource) obj).
+                filter(ag -> getId() == null || MiscUtils.equals(ag.getReference(), this.getReference())).
+                filter(ag -> getId() != null || MiscUtils.equals(ag, this)).
+                isPresent();
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public int hashCode() {
+        if (this.getReference() != null)
+            return this.getReference().hashCode();
+        else if (this.getId() != null)
+            return this.getId().hashCode();
+        else
+            return super.hashCode();
     }
 }

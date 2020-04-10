@@ -78,7 +78,7 @@ public class AbsenceManageService {
         return mapper.fromBeanToDTO(absenceManageRepository.save(absenceManage));
     }
 
-    public AbsenceManageDTO createAbsence(AbsenceManageDTO absenceManageDTO, String resourceReference) {
+    public AbsenceManageDTO createAbsence(AbsenceManageDTO absenceManageDTO, String resourceReference) throws ContactApiException {
 
         resourceRepository.findOneByReference(resourceReference).orElseThrow(
                 () -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference));

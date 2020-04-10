@@ -1,8 +1,5 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.utils.enums.TimeLineType;
-
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 public class TimeLineDTO {

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
+
+    <appender name="RollingFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGBACK_LOG_DIRECTORY}/stream-condidats-back.log</file>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <fileNamePattern>${LOGBACK_LOG_DIRECTORY}/archived/stream-condidats-back-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.zaxxer" level="info"/>
+    <logger name="org.hibernate" level="info"/>
+    <logger name="org.springframework.beans" level="info"/>
+    <logger name="springfox.documentation" level="info"/>
+    <logger name="org.springframework.security" level="info"/>
+    <logger name="org.springframework.web" level="info"/>
+    <logger name="org.springframework.jdbc" level="info"/>
+    <logger name="org.springframework.core" level="info"/>
+    <logger name="org.springframework.orm" level="info"/>
+    <logger name="org.springframework.boot.autoconfigure" level="info"/>
+    <logger name="org.springframework.boot.actuate" level="info"/>
+
+    <!-- LOG everything at INFO level -->
+    <root level="debug">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
+    </root>
+
+
+</configuration>

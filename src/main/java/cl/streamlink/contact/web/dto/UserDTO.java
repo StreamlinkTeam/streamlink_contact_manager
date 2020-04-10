@@ -1,6 +1,5 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.utils.enums.Role;
 
 import javax.validation.constraints.Email;
@@ -19,8 +18,6 @@ public class UserDTO {
    /* @NotNull
     @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
     private String username;*/
-
-   private Long id;
 
     @NotNull
     @Size(min = 2, max = 255)
@@ -56,15 +53,6 @@ public class UserDTO {
     public void setUsername(String username) {
         this.username = username;
     }*/
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstname() {
         return firstname;

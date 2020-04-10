@@ -1,7 +1,6 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Positioning;
-import cl.streamlink.contact.domain.Project;
 import cl.streamlink.contact.domain.ProjectPos;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,7 @@ public class ProjectPosService {
     @Inject
     private ApiMapper mapper;
 
-    public ProjectPosDTO createProjectFromPositioning(String positioningReference) {
+    public ProjectPosDTO createProjectFromPositioning(String positioningReference) throws ContactApiException {
 
         if (!projectPosRepository.existsByReference(positioningReference)) {
             Positioning positioning = positioningRepository.findOneByReference(positioningReference)

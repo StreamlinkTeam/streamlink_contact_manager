@@ -21,8 +21,8 @@ public class CurriculumVitae {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Developer developer;
+    @Column(updatable = false, nullable = false)
+    private String developerReference;
 
     public Long getId() {
         return id;
@@ -56,11 +56,11 @@ public class CurriculumVitae {
         this.name = name;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public String getDeveloperReference() {
+        return developerReference;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setDeveloperReference(String developerReference) {
+        this.developerReference = developerReference;
     }
 }

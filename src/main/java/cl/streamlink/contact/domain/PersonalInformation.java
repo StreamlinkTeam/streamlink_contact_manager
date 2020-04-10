@@ -1,17 +1,17 @@
 package cl.streamlink.contact.domain;
 
 import cl.streamlink.contact.utils.enums.FamilySituation;
-import cl.streamlink.contact.utils.enums.OriginCv;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
 @Embeddable
-public class PersonalInformation {
+public class PersonalInformation implements Serializable {
 
     private LocalDate birthDate;
 

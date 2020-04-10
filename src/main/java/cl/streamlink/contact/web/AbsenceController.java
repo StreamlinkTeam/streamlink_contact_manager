@@ -2,13 +2,12 @@ package cl.streamlink.contact.web;
 
 import cl.streamlink.contact.domain.Absence;
 import cl.streamlink.contact.domain.AbsenceList;
-import cl.streamlink.contact.domain.Resource;
-import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.AbsenceListService;
 import cl.streamlink.contact.service.AbsenceService;
 import cl.streamlink.contact.service.ResourceService;
 import cl.streamlink.contact.service.UserService;
+import cl.streamlink.contact.web.dto.ResourceDTO;
 import cl.streamlink.contact.web.dto.hireability.AbsenceDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/ws")
+@RequestMapping("/ws/absences")
 public class AbsenceController {
 
     @Inject
@@ -38,7 +37,7 @@ public class AbsenceController {
     @Autowired
     private ResourceService resourceService;
 
-    @RequestMapping(value = "absence",
+    @RequestMapping(value = "",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -78,30 +77,30 @@ public class AbsenceController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Absence.class),
             @ApiResponse(code = 404, message = "Developer with Ref not Found")
     })
-    public List<AbsenceDTO> getAbsences() {
-        return absenceService.getAbcences(null);
+    public List<AbsenceDTO> getAbsences() throws ContactApiException {
+        return absenceService.getAbsences(null);
     }
 
-    @GetMapping(value = "absence/all")
-    public List<Absence> getAllAbsencesByUser(@RequestParam String mail) {
-        Resource resource = resourceService.getResourceByEmail(mail);
+    @GetMapping(value = "resource")
+    public List<Absence> getAllAbsencesByUser(@RequestParam String developerReference) throws ContactApiException {
+        ResourceDTO resource = resourceService.getResource(developerReference);
         List<AbsenceList> absenceLists2 = absenceListService.getAll();
 
-        List<AbsenceList> absenceLists = absenceLists2.stream().filter(e -> e.getResource().getId() == resource.getId()).collect(Collectors.toList());
+        List<AbsenceList> absenceLists = absenceLists2.stream().filter(e -> e.getResource().getReference().equals(resource.getReference())).collect(Collectors.toList());
 
         List<Absence> absences = new ArrayList<>();
 
-        for(int i = 0; i < absenceLists.size(); i++) {
+        for (int i = 0; i < absenceLists.size(); i++) {
             absences.addAll(absenceService.getAbsenceByAbsenceListId(absenceLists.get(i)));
         }
         return absences;
     }
 
     @GetMapping(value = "absence_list/user")
-    public List<AbsenceList> getAllAbsencesListByUser(@RequestParam String mail) {
-        Resource resource = resourceService.getResourceByEmail(mail);
+    public List<AbsenceList> getAllAbsencesListByUser(@RequestParam String mail) throws ContactApiException {
+        ResourceDTO resource = resourceService.getResourceByEmail(mail);
         List<AbsenceList> absenceLists2 = absenceListService.getAll();
-        List<AbsenceList> absenceLists = absenceLists2.stream().filter(e -> e.getResource().getId() == resource.getId()).collect(Collectors.toList());
+        List<AbsenceList> absenceLists = absenceLists2.stream().filter(e -> e.getResource().getReference().equals(resource.getReference())).collect(Collectors.toList());
         return absenceLists;
     }
 
@@ -116,8 +115,8 @@ public class AbsenceController {
             @ApiResponse(code = 404, message = "Developer with Ref not Found")
     })
     public List<AbsenceDTO> getResourceManager(@RequestParam(value = "managerReference") String managerReference,
-                                               @RequestParam(value = "resourceReference") String resourceReference) throws ContactApiException {
-        return absenceService.getAbsenceByMangerAndResource(managerReference, resourceReference);
+                                               @RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
+        return absenceService.getAbsenceByMangerAndResource(managerReference, developerReference);
     }
 
     @RequestMapping(value = "manager",
@@ -134,7 +133,7 @@ public class AbsenceController {
         return absenceService.getAbsenceByManger(refmanager );
     }
 
-    @RequestMapping(value = "absence",
+    @RequestMapping(value = "",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -145,19 +144,18 @@ public class AbsenceController {
     })
     public AbsenceDTO updateAbsence(@Valid @RequestBody AbsenceDTO absenceDTO, @RequestParam(value = "absenceReference") String absenceReference) throws ContactApiException {
 
-        return absenceService.updateAbsence(absenceDTO,absenceReference);
+        return absenceService.updateAbsence(absenceDTO, absenceReference);
 
     }
 
 
-
-    @GetMapping(value = "absence/absence-reference")
-    public List<Absence> getAbsenceByAbsenceListReference( @RequestParam(value = "reference") String reference) {
+    @GetMapping(value = "absence-reference")
+    public List<Absence> getAbsenceByAbsenceListReference(@RequestParam(value = "reference") String reference) throws ContactApiException {
 
         return absenceService.getAbsenceByAbsenceListReference(reference);
     }
 
-    @PutMapping(value = "absence/validate")
+    @PutMapping(value = "validate")
     public Absence validateAbsence(@RequestBody Absence absence) {
         return absenceService.validateAbsence(absence);
     }

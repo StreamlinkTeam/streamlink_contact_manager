@@ -4,7 +4,7 @@ import cl.streamlink.contact.utils.MessageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ContactApiException extends RuntimeException {
+public class ContactApiException extends Exception {
     /**
      *
      */

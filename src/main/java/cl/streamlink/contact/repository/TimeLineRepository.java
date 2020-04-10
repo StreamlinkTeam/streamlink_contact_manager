@@ -1,9 +1,7 @@
 package cl.streamlink.contact.repository;
 
 import cl.streamlink.contact.domain.Resource;
-import cl.streamlink.contact.domain.Time;
 import cl.streamlink.contact.domain.TimeLine;
-import cl.streamlink.contact.web.dto.TimeMonthDTO;
 import net.minidev.json.JSONObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,14 +21,14 @@ public interface TimeLineRepository extends JpaRepository<TimeLine, Long> {
     @Transactional
     long deleteByReference(String timeLineReference);
 
-    List<TimeLine> findAllByResource(Resource resource);
+    List<TimeLine> findAllByResourceReference(String resourceReference);
 
     @Query(value = "select resource_id as id, project, extract(year from start) as year, extract(month from start) as month, sum(time_work) as total from time_line group by resource_id, project, extract(year from start), extract(month from start) order by year, month", nativeQuery = true)
     List<JSONObject> getGrouped();
 
-    TimeLine findByStartAndResource(LocalDate date, Resource resource);
+    TimeLine findByStartAndResourceReference(LocalDate date, String resourceReference);
 
-    List<TimeLine> findAllByStartAndResource(LocalDate date, Resource resource);
+    List<TimeLine> findAllByStartAndResourceReference(LocalDate date, String resourceReference);
 
     @Query(value = "select * from time_line where MONTH(start) = ?1 AND YEAR(start) = ?2 AND  resource_id = ?3", nativeQuery = true)
     List<TimeLine> getByMonthAndYear(int month, int year, long id);

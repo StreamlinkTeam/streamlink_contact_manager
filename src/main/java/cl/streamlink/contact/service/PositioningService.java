@@ -1,6 +1,7 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Positioning;
+import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.NeedRepository;
@@ -50,7 +51,7 @@ public class PositioningService {
     private ApiMapper mapper;
 
 
-    public PositioningDTO createPositioning(PositioningDTO positioningDTO) {
+    public PositioningDTO createPositioning(PositioningDTO positioningDTO) throws ContactApiException {
 
         needRepository.findOneByReference(positioningDTO.getNeedReference()).orElseThrow(
                 () -> ContactApiException.resourceNotFoundExceptionBuilder("Need", positioningDTO.getNeedReference()));
@@ -59,7 +60,9 @@ public class PositioningService {
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource",
                         positioningDTO.getResourceReference()));
 
-        positioningDTO.setResponsibleReference("usrw1MnpFtHhWVfsp9");
+        positioningDTO.setResponsibleReference(userService.getCurrentUser().getReference());
+
+//        positioningDTO.setResponsibleReference("usriIXXRQYhBLqEwYq");
 
         Positioning positioning = mapper.fromDTOToBean(positioningDTO);
 
@@ -92,12 +95,16 @@ public class PositioningService {
                 () -> ContactApiException.resourceNotFoundExceptionBuilder("Positioning", positioningReference)));
     }
 
-    public List<PositioningDTO> getPositionings() throws ContactApiException {
-        return positioningRepository.findAll().stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
+    public List<PositioningDTO> getCurrentResourcePositioning() throws ContactApiException {
+
+        Resource resource = ((Resource) userService.getCurrentUser());
+
+        return positioningRepository.findByResourceReference(resource.getReference())
+                .stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
-    public Page<PositioningDTO> searchPositionings(String value, NeedStage needStage, NeedType needType,
-                                                   ResourceType type, PositioningStage stage, Pageable pageable) {
+    public Page<PositioningDTO> searchPositioning(String value, NeedStage needStage, NeedType needType,
+                                                  ResourceType type, PositioningStage stage, Pageable pageable) {
 
         if (MiscUtils.isEmpty(value))
             value = "";
@@ -143,15 +150,42 @@ public class PositioningService {
         return MiscUtils.createSuccessfullyResult();
     }
 
-    public List<PositioningDTO> getPositioningResource( String resourceReference){
+    public JSONObject deletePositioningByNeed(String needReference) {
+
+        positioningRepository.findByNeedReference(needReference)
+                .forEach(positioning -> {
+                    try {
+                        deletePositioning(positioning.getReference());
+                    } catch (ContactApiException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                });
+
+
+        return MiscUtils.createSuccessfullyResult();
+    }
+
+    public JSONObject deletePositioningByResource(String resourceReference) {
+
+        positioningRepository.findByResourceReference(resourceReference)
+                .forEach(positioning -> {
+                    try {
+                        deletePositioning(positioning.getReference());
+                    } catch (ContactApiException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                });
+
+
+        return MiscUtils.createSuccessfullyResult();
+    }
+
+    public List<PositioningDTO> getPositioningResource(String resourceReference) {
 
         return positioningRepository.findByResourceReference(resourceReference)
                 .stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
     }
 
-    public List<Positioning> getAll() {
-        return positioningRepository.findAll();
-    }
 
     public Optional<Positioning> getById(long id) {
         return positioningRepository.findById(id);

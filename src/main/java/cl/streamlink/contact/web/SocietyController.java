@@ -63,7 +63,7 @@ public class SocietyController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Society.class),
             @ApiResponse(code = 404, message = "Society with Ref not Found")
     })
-    public List<SocietyResponseDTO> getSocieties() {
+    public List<SocietyResponseDTO> getSocieties() throws ContactApiException {
         return societyService.getSocieties(null);
     }
 

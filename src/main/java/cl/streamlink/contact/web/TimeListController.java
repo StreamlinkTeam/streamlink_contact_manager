@@ -1,14 +1,14 @@
 package cl.streamlink.contact.web;
 
-import cl.streamlink.contact.domain.TimeList;
 import cl.streamlink.contact.domain.SocietyContact;
 import cl.streamlink.contact.domain.TimeLine;
-import cl.streamlink.contact.domain.User;
+import cl.streamlink.contact.domain.TimeList;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.AttachedFileService;
 import cl.streamlink.contact.service.ResourceService;
 import cl.streamlink.contact.service.TimeListService;
 import cl.streamlink.contact.service.UserService;
+import cl.streamlink.contact.utils.Constants;
 import cl.streamlink.contact.web.dto.TimeListDTO;
 import cl.streamlink.contact.web.dto.hireability.AttachedFileDTO;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +18,7 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -93,21 +94,21 @@ public class TimeListController {
         return timeListService.createListTemps(listTemps);
     }
 
-    @PostMapping(value =  "/save")
-    public TimeList save(@RequestBody TimeList listTemps) {
-        User user = userService.getCurrentUser();
-        listTemps.setResource(resourceService.getResourceByEmail(user.getEmail()));
-        return timeListService.save(listTemps);
+    @PostMapping(value = "")
+    @Secured(Constants.ROLE_RESOURCE)
+    public TimeList save(@RequestBody TimeList listTemps) throws ContactApiException {
+
+        return timeListService.saveForCurrentResource(listTemps);
     }
 
     @RequestMapping(value = "",
-           method = RequestMethod.PUT,
-           produces = MediaType.APPLICATION_JSON_VALUE)
-   @ResponseStatus(HttpStatus.OK)
-   @ApiOperation(value = "Create TimeList Service")
-   @ApiResponses(value = {
-           @ApiResponse(code = 200, message = "Operation Executed Successfully", response = TimeList.class),
-           @ApiResponse(code = 400, message = "Validation Error, Database conflict")
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Create TimeList Service")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = TimeList.class),
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
   })
    public TimeListDTO  updateProject(@Valid @RequestBody TimeListDTO  timeListDTO, @RequestParam(value = "projectReference") String projectReference) throws ContactApiException {
 
@@ -127,9 +128,9 @@ public class TimeListController {
             @ApiResponse(code = 403, message = "Forbidden")
 
     })
-    public AttachedFileDTO addDeveloperCV(@RequestParam String resourceReference,@RequestParam String timelistReference, @RequestPart(value = "file") MultipartFile file) throws IOException {
+    public AttachedFileDTO addDeveloperCV(@RequestParam String developerReference, @RequestParam String timelistReference, @RequestPart(value = "file") MultipartFile file) throws IOException, ContactApiException {
 
-        return attachedFileService.addTimeListFile(file,resourceReference,timelistReference);
-                //addDeveloperCV(cv, developerReference);
+        return attachedFileService.addTimeListFile(file, developerReference, timelistReference);
+        //addDeveloperCV(cv, developerReference);
     }
 }

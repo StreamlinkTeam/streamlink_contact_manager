@@ -4,7 +4,6 @@ import cl.streamlink.contact.domain.Action;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.ActionService;
 import cl.streamlink.contact.web.dto.ActionDTO;
-import cl.streamlink.contact.web.dto.DeveloperActionDTO;
 import cl.streamlink.contact.web.dto.SocietyActionDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -29,66 +28,6 @@ public class ActionController {
     private ActionService actionService;
 
 
-    @RequestMapping(value = "developers/actions",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Create Action Service")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
-            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
-    })
-    public DeveloperActionDTO createDeveloperAction(@RequestBody @Valid DeveloperActionDTO action,
-                                                    @RequestParam(value = "developerReference") String developerReference) {
-
-        return actionService.createAction(action, developerReference);
-    }
-
-    @RequestMapping(value = "developers/actions",
-            method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Create Action Service")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
-            @ApiResponse(code = 400, message = "Validation Error, Database conflict")
-    })
-    public DeveloperActionDTO updateDeveloperAction(@Valid @RequestBody DeveloperActionDTO action, @RequestParam(value = "developerReference") String developerReference,
-                                                    @RequestParam(value = "reference") String reference) throws ContactApiException {
-
-        return actionService.updateAction(action, reference, developerReference);
-    }
-
-    @RequestMapping(value = "developers/actions",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get Action Details Service")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
-            @ApiResponse(code = 404, message = "Action with Ref not Found")
-    })
-    public List<DeveloperActionDTO> getDeveloperAction(@RequestParam(value = "developerReference") String developerReference,
-                                                       @RequestParam(value = "reference", required = false) String reference) throws ContactApiException {
-
-        return actionService.getAction(reference, developerReference);
-    }
-
-    @RequestMapping(value = "developers/actions",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Delete Action Service")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
-            @ApiResponse(code = 404, message = "Action with Ref not Found")
-    })
-    public JSONObject deleteDeveloperAction(@RequestParam("reference") String reference
-            , @RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
-
-        return actionService.deleteAction(reference, developerReference);
-    }
-
     @RequestMapping(value = "societies/contacts/actions",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,7 +38,7 @@ public class ActionController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public SocietyActionDTO createSocietyAction(@RequestBody @Valid SocietyActionDTO action,
-                                                @RequestParam String societyContactReference, @RequestParam String societyReference) {
+                                                @RequestParam String societyContactReference, @RequestParam String societyReference) throws ContactApiException {
 
         return actionService.createAction(action, societyContactReference, societyReference);
     }
@@ -158,7 +97,7 @@ public class ActionController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public SocietyActionDTO createProjectAction(@RequestBody @Valid SocietyActionDTO action, @RequestParam String projectReference) {
+    public SocietyActionDTO createProjectAction(@RequestBody @Valid SocietyActionDTO action, @RequestParam String projectReference) throws ContactApiException {
 
         return actionService.createProjectAction(action, projectReference);
     }
@@ -215,7 +154,7 @@ public class ActionController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Action.class),
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
-    public SocietyActionDTO createNeedAction(@RequestBody @Valid SocietyActionDTO action, @RequestParam String needReference) {
+    public SocietyActionDTO createNeedAction(@RequestBody @Valid SocietyActionDTO action, @RequestParam String needReference) throws ContactApiException {
 
         return actionService.createNeedAction(action, needReference);
     }

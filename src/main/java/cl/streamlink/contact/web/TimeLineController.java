@@ -1,10 +1,13 @@
 package cl.streamlink.contact.web;
 
-import cl.streamlink.contact.domain.*;
+import cl.streamlink.contact.domain.Bill;
+import cl.streamlink.contact.domain.TimeLine;
+import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiException;
+import cl.streamlink.contact.security.ContactUserDetails;
 import cl.streamlink.contact.service.*;
+import cl.streamlink.contact.utils.Constants;
 import cl.streamlink.contact.web.dto.TimeLineDTO;
-import cl.streamlink.contact.web.dto.TimeMonthDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,6 +15,7 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -20,8 +24,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -126,7 +130,8 @@ public class TimeLineController {
     }
 
     @GetMapping("date")
-    public List<TimeLine> getByDate(@RequestParam String start) {
+    @Secured(Constants.ROLE_RESOURCE)
+    public List<TimeLine> getByDate(@RequestParam String start) throws ContactApiException {
 
         Date startd = new Date();
 
@@ -134,23 +139,22 @@ public class TimeLineController {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
 
-        User user = userService.getCurrentUser();
+        ContactUserDetails user = userService.getCurrentUser();
 
-        return timeLineService.getAllByDateAndResource(startDate, resourceService.getResourceByEmail(user.getEmail()));
+        return timeLineService.getAllByDateAndResourceReference(startDate, user.getReference());
     }
 
     @GetMapping("all")
-    public List<TimeLine> getTimelines() {
-        User user = userService.getCurrentUser();
-        return timeLineService.getAllTimeLines().stream().filter(e -> e.getResource().getContact().getEmail1().equalsIgnoreCase(user.getEmail())).collect(Collectors.toList());
+    public List<TimeLine> getTimelines() throws ContactApiException {
+        ContactUserDetails user = userService.getCurrentUser();
+        return timeLineService.getAllTimeLines().stream().filter(e -> e.getResource().getContact().getEmail1().equalsIgnoreCase(user.getUsername())).collect(Collectors.toList());
     }
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public TimeLine saveTimeLine(@RequestBody TimeLine timeLine) {
-        User user = userService.getCurrentUser();
-        timeLine.setResource(resourceService.getResourceByEmail(user.getEmail()));
-        return timeLineService.save(timeLine);
+    public TimeLine saveTimeLine(@RequestBody TimeLine timeLine) throws ContactApiException {
+
+        return timeLineService.createForCurrentResource(timeLine);
     }
 
     @RequestMapping(value = "timelines", method = RequestMethod.GET)

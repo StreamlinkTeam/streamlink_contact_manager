@@ -1,6 +1,6 @@
 package cl.streamlink.contact.web.dto;
 
-public class PhotoDTO {
+public class AvatarDTO {
 
     private String reference;
 
@@ -9,6 +9,8 @@ public class PhotoDTO {
     private String name;
 
     private String userReference;
+
+    private String resourceReference;
 
     private String url;
 
@@ -50,5 +52,13 @@ public class PhotoDTO {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getResourceReference() {
+        return resourceReference;
+    }
+
+    public void setResourceReference(String resourceReference) {
+        this.resourceReference = resourceReference;
     }
 }

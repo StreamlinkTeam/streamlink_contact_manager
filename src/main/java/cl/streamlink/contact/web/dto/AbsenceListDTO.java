@@ -1,8 +1,5 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.domain.Resource;
-
-import javax.persistence.ManyToOne;
 import java.util.Date;
 
 public class AbsenceListDTO {
@@ -13,7 +10,7 @@ public class AbsenceListDTO {
     private String subject;
     private String state;
 
-    private String resourceReference;
+    private String developerReference;
 
     private Date absenceListDate ;
     private String managerReference;
@@ -50,11 +47,11 @@ public class AbsenceListDTO {
     }
 
     public String getResourceReference() {
-        return resourceReference;
+        return developerReference;
     }
 
-    public void setResourceReference(String resourceReference) {
-        this.resourceReference = resourceReference;
+    public void setResourceReference(String developerReference) {
+        this.developerReference = developerReference;
     }
 
     public Date getAbsenceListDate() {

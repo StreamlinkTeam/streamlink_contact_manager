@@ -4,7 +4,9 @@ import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.domain.TimeLine;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
+import cl.streamlink.contact.repository.ResourceRepository;
 import cl.streamlink.contact.repository.TimeLineRepository;
+import cl.streamlink.contact.security.SecurityUtils;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.web.dto.TimeLineDTO;
 import net.minidev.json.JSONObject;
@@ -20,13 +22,16 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class  TimeLineService {
+public class TimeLineService {
 
 
     private final Logger logger = LoggerFactory.getLogger(TimeLineService.class);
 
     @Inject
     private TimeLineRepository timeLineRepository;
+
+    @Inject
+    private ResourceRepository resourceRepository;
 
     @Inject
     private ApiMapper mapper;
@@ -85,11 +90,17 @@ public class  TimeLineService {
                     .collect(Collectors.toList());
     }
 
-    public TimeLine save(TimeLine timeLine) {
+    public TimeLine createForCurrentResource(TimeLine timeLine) throws ContactApiException {
+
         timeLine.setReference(MiscUtils.generateReference());
-        List<TimeLine> timeline2 = timeLineRepository.findAllByStartAndResource(timeLine.getStart(), timeLine.getResource());
-        if(timeline2.size() > 0) {
-            for(int i=0; i<timeline2.size(); i++) {
+
+        Resource resource = resourceRepository.findOneByEmail(SecurityUtils.getCurrentUserLogin())
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", SecurityUtils.getCurrentUserLogin()));
+        timeLine.setResource(resource);
+
+        List<TimeLine> timeline2 = timeLineRepository.findAllByStartAndResourceReference(timeLine.getStart(), resource.getReference());
+        if (timeline2.size() > 0) {
+            for (int i = 0; i < timeline2.size(); i++) {
                 timeLineRepository.delete(timeline2.get(i));
             }
         }
@@ -100,8 +111,8 @@ public class  TimeLineService {
         return timeLineRepository.findAll();
     }
 
-    public List<TimeLine> getAllByResource(Resource resource){
-        return timeLineRepository.findAllByResource(resource);
+    public List<TimeLine> findAllByResourceReference(String resourceReference) {
+        return timeLineRepository.findAllByResourceReference(resourceReference);
     }
 
     public List<JSONObject> getGrouped() {
@@ -109,12 +120,12 @@ public class  TimeLineService {
         return timeLineRepository.getGrouped();
     }
 
-    public List<TimeLine> getAllByDateAndResource(LocalDate date, Resource resource){
-        return timeLineRepository.findAllByStartAndResource(date, resource);
+    public List<TimeLine> getAllByDateAndResourceReference(LocalDate date, String resourceReference) {
+        return timeLineRepository.findAllByStartAndResourceReference(date, resourceReference);
     }
 
-    public List<TimeLine> getByMonthAndYear(int month, int year, long id){
-        return timeLineRepository.getByMonthAndYear(month,year, id);
+    public List<TimeLine> getByMonthAndYear(int month, int year, long id) {
+        return timeLineRepository.getByMonthAndYear(month, year, id);
     }
 
     public TimeLine validateTimeline(TimeLine timeLine) {

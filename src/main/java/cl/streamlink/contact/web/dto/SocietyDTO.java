@@ -1,18 +1,19 @@
 package cl.streamlink.contact.web.dto;
 
+import cl.streamlink.contact.domain.Society;
 import cl.streamlink.contact.utils.enums.ActivityArea;
 import cl.streamlink.contact.utils.enums.SocietyStage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SocietyDTO extends AbstractProfileDTO {
+public class SocietyDTO extends AbstractProfileDTO<Society> {
 
     private String label;
 
     private Integer staffNumber;
 
-    private String SupplierNumber;
+    private String supplierNumber;
 
     private SocietyStage stage;
 
@@ -37,11 +38,11 @@ public class SocietyDTO extends AbstractProfileDTO {
     }
 
     public String getSupplierNumber() {
-        return SupplierNumber;
+        return supplierNumber;
     }
 
     public void setSupplierNumber(String supplierNumber) {
-        SupplierNumber = supplierNumber;
+        supplierNumber = supplierNumber;
     }
 
     public SocietyStage getStage() {

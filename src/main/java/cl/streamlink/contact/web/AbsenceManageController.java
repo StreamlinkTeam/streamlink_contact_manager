@@ -76,7 +76,7 @@ public class AbsenceManageController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public AbsenceManageDTO createAbsence(@RequestBody @Valid AbsenceManageDTO absence,
-                                                    @RequestParam(value = "resourceReference") String resourceReference) {
+                                          @RequestParam(value = "resourceReference") String resourceReference) throws ContactApiException {
 
         return absenceManageService.createAbsence(absence, resourceReference);
     }

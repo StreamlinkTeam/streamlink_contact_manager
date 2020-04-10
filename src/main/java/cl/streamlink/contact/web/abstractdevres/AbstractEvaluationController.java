@@ -1,8 +1,13 @@
-package cl.streamlink.contact.web;
+package cl.streamlink.contact.web.abstractdevres;
 
+import cl.streamlink.contact.domain.AbstractDevResProfile;
 import cl.streamlink.contact.domain.Evaluation;
 import cl.streamlink.contact.exception.ContactApiException;
-import cl.streamlink.contact.service.EvaluationService;
+import cl.streamlink.contact.mapper.DevResMapper;
+import cl.streamlink.contact.repository.AbstractDevResRepository;
+import cl.streamlink.contact.service.AbstractDevResService;
+import cl.streamlink.contact.web.dto.AbstractDevResProfileDTO;
+import cl.streamlink.contact.web.dto.AbstractDevResResponseDTO;
 import cl.streamlink.contact.web.dto.EvaluationDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -19,15 +24,14 @@ import java.util.List;
 /**
  * Created by chemakh on 13/07/2018.
  */
-@RestController
-@RequestMapping("/ws/developers/evaluations")
-public class EvaluationController {
+public abstract class AbstractEvaluationController<E extends AbstractDevResProfile, T extends AbstractDevResRepository<E>, D extends AbstractDevResProfileDTO<E>,
+        R extends AbstractDevResResponseDTO<E>, M extends DevResMapper<E, D, R>, S extends AbstractDevResService<E, T, D, R, M>> {
 
     @Inject
-    private EvaluationService evaluationService;
+    private S devResService;
 
 
-    @RequestMapping(value = "",
+    @RequestMapping(value = "evaluations",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -37,12 +41,12 @@ public class EvaluationController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public EvaluationDTO createEvaluation(@RequestBody @Valid EvaluationDTO evaluation,
-                                          @RequestParam(value = "developerReference") String developerReference) {
+                                          @RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
 
-        return evaluationService.createEvaluation(evaluation, developerReference);
+        return devResService.createEvaluation(evaluation, developerReference);
     }
 
-    @RequestMapping(value = "",
+    @RequestMapping(value = "evaluations",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -54,10 +58,10 @@ public class EvaluationController {
     public EvaluationDTO updateEvaluation(@Valid @RequestBody EvaluationDTO evaluation, @RequestParam(value = "developerReference") String developerReference,
                                           @RequestParam(value = "reference") String reference) throws ContactApiException {
 
-        return evaluationService.updateEvaluation(evaluation, reference, developerReference);
+        return devResService.updateEvaluation(evaluation, reference, developerReference);
     }
 
-    @RequestMapping(value = "",
+    @RequestMapping(value = "evaluations",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -69,10 +73,10 @@ public class EvaluationController {
     public List<EvaluationDTO> getEvaluation(@RequestParam(value = "developerReference") String developerReference,
                                              @RequestParam(value = "reference", required = false) String reference) throws ContactApiException {
 
-        return evaluationService.getEvaluation(reference, developerReference);
+        return devResService.getEvaluation(reference, developerReference);
     }
 
-    @RequestMapping(value = "",
+    @RequestMapping(value = "evaluations",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -84,6 +88,6 @@ public class EvaluationController {
     public JSONObject deleteEvaluation(@RequestParam("reference") String reference
             , @RequestParam(value = "developerReference") String developerReference) throws ContactApiException {
 
-        return evaluationService.deleteEvaluation(reference, developerReference);
+        return devResService.deleteEvaluation(reference, developerReference);
     }
 }

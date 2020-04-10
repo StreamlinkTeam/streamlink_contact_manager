@@ -38,11 +38,11 @@ public class CurriculumVitaeDTO {
         this.name = name;
     }
 
-    public String getDeveloperReference() {
+    public String getdeveloperReference() {
         return developerReference;
     }
 
-    public void setDeveloperReference(String developerReference) {
+    public void setdeveloperReference(String developerReference) {
         this.developerReference = developerReference;
     }
 

@@ -1,7 +1,6 @@
 package cl.streamlink.contact.security;
 
 import cl.streamlink.contact.utils.MiscUtils;
-import cl.streamlink.contact.utils.enums.Role;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,7 +32,7 @@ public class JwtTokenProvider {
     private long validityInHours = 5; // 1h
 
     @Autowired
-    private MyUserDetails myUserDetails;
+    private ContactUserDetailsService contactUserDetailsService;
 
     @PostConstruct
     protected void init() {
@@ -60,7 +58,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         try {
-            UserDetails userDetails = myUserDetails.loadUserByUsername(getUsername(token));
+            UserDetails userDetails = contactUserDetailsService.loadUserByUsername(getUsername(token));
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         } catch (UsernameNotFoundException ex) {
             return null;

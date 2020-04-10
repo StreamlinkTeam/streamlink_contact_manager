@@ -3,13 +3,17 @@ package cl.streamlink.contact.service;
 import cl.streamlink.contact.domain.Contact;
 import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.domain.Resource;
-import cl.streamlink.contact.domain.User;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
+import cl.streamlink.contact.mapper.ResourceApiMapper;
 import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.ResourceRepository;
 import cl.streamlink.contact.utils.MiscUtils;
-import cl.streamlink.contact.utils.enums.*;
+import cl.streamlink.contact.utils.enums.Experience;
+import cl.streamlink.contact.utils.enums.Formation;
+import cl.streamlink.contact.utils.enums.ResourceStage;
+import cl.streamlink.contact.utils.enums.ResourceType;
+import cl.streamlink.contact.web.dto.AvatarDTO;
 import cl.streamlink.contact.web.dto.DeveloperDTO;
 import cl.streamlink.contact.web.dto.ResourceDTO;
 import cl.streamlink.contact.web.dto.ResourceResponseDTO;
@@ -21,20 +25,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class ResourceService {
+public class ResourceService extends AbstractDevResService<Resource, ResourceRepository, ResourceDTO, ResourceResponseDTO, ResourceApiMapper> {
 
     private final Logger logger = LoggerFactory.getLogger(ResourceService.class);
 
     @Inject
-    private ResourceRepository resourceRepository;
+    private PositioningService positioningService;
+
+    @Inject
+    private AvatarService avatarService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -42,27 +50,48 @@ public class ResourceService {
     @Inject
     private DeveloperRepository developerRepository;
 
+    @Inject
+    private AbsenceManageService absenceManageService;
 
     @Inject
     private ApiMapper mapper;
 
-    public Resource save(Resource resource) {
-        return resourceRepository.save(resource);
+
+    @Override
+    protected String getEntityName() {
+        return "Resource";
     }
 
-    public ResourceDTO createResource(ResourceDTO resourceDTO) {
+    @Override
+    public ResourceResponseDTO generateDeveloperFromCv(MultipartFile cv) throws ContactApiException {
+        throw ContactApiException.unprocessableEntityExceptionBuilder
+                ("can not generate Resource From CV directly ,generate new developer instead", null);
+    }
+
+    @Override
+    public ResourceDTO getResourceByEmail(String email) throws ContactApiException {
+        return mapper.fromBeanToDTO(devResRepository.findOneByEmail(email).orElseThrow(
+                () -> ContactApiException.resourceNotFoundExceptionBuilder(getEntityName(), email)));
+    }
+
+
+    public ResourceDTO createResource(ResourceDTO resourceDTO) throws ContactApiException {
+
+        checkIfEmailIsUsed(resourceDTO.getEmail(), null);
+        resourceDTO.setPassword(passwordEncoder.encode(resourceDTO.getPassword()));
+
         Resource resource = mapper.fromDTOToBean(resourceDTO);
         Contact contact = new Contact();
         contact.setEmail1(resourceDTO.getEmail());
         resource.setContact(contact);
         resource.setReference("res" + MiscUtils.generateReference());
-        resource.setStage(Stage.ConvertedToResource);
-        return mapper.fromBeanToDTO(resourceRepository.save(resource));
+
+        return mapper.fromBeanToDTO(devResRepository.save(resource));
     }
 
-    public ResourceDTO createResourceFromDeveloper(String developerReference) {
+    public ResourceDTO createResourceFromDeveloper(String developerReference) throws ContactApiException {
 
-        if (!resourceRepository.existsByReference(developerReference)) {
+        if (!devResRepository.existsByReference(developerReference)) {
             Developer developer = developerRepository.findOneByReference(developerReference)
 
                     .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
@@ -70,76 +99,48 @@ public class ResourceService {
             Resource resource = mapper.fromDeveloperToResource(developer);
             resource.setResourceStage(ResourceStage.NOT_DEFINED);
             resource.setResourceType(ResourceType.NOT_DEFINED);
-            resource.setStage(Stage.ConvertedToResource);
 
             resource.setEmail(developer.getContact().getEmail1());
             resource.setPassword(passwordEncoder.encode("change-me"));
 
             developerRepository.delete(developer);
-            return mapper.fromBeanToDTO(resourceRepository.save(resource));
+            return mapper.fromBeanToDTO(devResRepository.save(resource));
         } else
             throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
     }
 
 
-    public List<ResourceResponseDTO> searchResources(String term) {
+    public ResourceDTO createResourceFromDeveloper(String developerReference, DeveloperDTO developerDTO) throws ContactApiException {
 
-        if (MiscUtils.isEmpty(term) || term.length() < 3)
-            return Collections.EMPTY_LIST;
-
-        else return resourceRepository.findByFirstnameContaining(term).stream()
-                .map(resource -> mapper.fromBeanToDTOResponse(resource))
-                .collect(Collectors.toList());
-    }
-
-
-    public ResourceDTO createResourceFromDeveloper(String developerReference, DeveloperDTO developerDTO) {
-
-        if (!resourceRepository.existsByReference(developerReference)) {
+        if (!devResRepository.existsByReference(developerReference)) {
             Developer developer = developerRepository.findOneByReference(developerReference)
                     .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
             mapper.updateBeanFromDto(developerDTO, developer);
 
-            checkIfEmailIsUsed(developer.getContact().getEmail1(),developerReference);
+            checkIfEmailIsUsed(developer.getContact().getEmail1(), developerReference);
 
             Resource resource = mapper.fromDeveloperToResource(developer);
             resource.setResourceStage(ResourceStage.NOT_DEFINED);
             resource.setResourceType(ResourceType.NOT_DEFINED);
-            resource.setStage(Stage.ConvertedToResource);
             resource.setEmail(developer.getContact().getEmail1());
             resource.setPassword(passwordEncoder.encode("change-me"));
 
             developerRepository.delete(developer);
-            return mapper.fromBeanToDTO(resourceRepository.save(resource));
+            return mapper.fromBeanToDTO(devResRepository.save(resource));
         } else
             throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
     }
 
     public ResourceDTO updateResource(ResourceDTO resourceDTO, String resourceReference) throws ContactApiException {
 
-        Resource resource = resourceRepository.findOneByReference(resourceReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference));
+        Resource resource = devResRepository.findOneByReference(resourceReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder(getEntityName(), resourceReference));
+
+        checkIfEmailIsUsed(resourceDTO.getEmail(), resourceReference);
 
         mapper.updateBeanFromDto(resourceDTO, resource);
-        return mapper.fromBeanToDTO(resourceRepository.save(resource));
-    }
-
-    public ResourceDTO getResource(String resourceReference) throws ContactApiException {
-
-        return mapper.fromBeanToDTO(resourceRepository.findOneByReference(resourceReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference)));
-    }
-
-
-    public List<ResourceResponseDTO> getResources(String resourceReference) throws ContactApiException {
-
-        if (MiscUtils.isNotEmpty(resourceReference))
-            return Collections.singletonList(mapper.fromBeanToDTOResponse(resourceRepository.findOneByReference(resourceReference)
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference))));
-
-        else
-            return resourceRepository.findAll().stream().map(mapper::fromBeanToDTOResponse).collect(Collectors.toList());
+        return mapper.fromBeanToDTO(devResRepository.save(resource));
     }
 
     public Page<ResourceResponseDTO> searchResources(String value, ResourceStage stage, Experience experience, Formation formation, ResourceType type, Pageable pageable) {
@@ -171,7 +172,7 @@ public class ResourceService {
         else
             types = ResourceType.getAll();
 
-        return resourceRepository.
+        return devResRepository.
                 findByFirstnameContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrLastnameContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrSkillsInformationTitleContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrSkillsInformationLanguagesContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeIn
                         (value, stages, formations, experiences, types, value, stages, formations, experiences, types, value, stages, formations, experiences, types, value, stages, formations, experiences, types, pageable)
                 .map(resource -> mapper.fromBeanToDTOResponse(resource));
@@ -179,44 +180,50 @@ public class ResourceService {
 
     public JSONObject deleteResource(String resourceReference) throws ContactApiException {
 
-        Resource resource = resourceRepository.findOneByReference(resourceReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference));
+        Resource resource = devResRepository.findOneByReference(resourceReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder(getEntityName(), resourceReference));
 
-        resourceRepository.delete(resource);
+        positioningService.deletePositioningByResource(resourceReference);
+
+        devResRepository.delete(resource);
 
         return MiscUtils.createSuccessfullyResult();
     }
 
-    public List<ResourceDTO> getResourceByManger(String managerReference) throws ContactApiException {
-        return resourceRepository.findByManagerReference(managerReference).stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
-    }
-
-    public List<Resource> getByManager(String manager) {
-        return resourceRepository.findByManagerReference(manager);
-    }
-
-    public Resource getResourceByEmail(String email) {
-        return resourceRepository.findOneByEmail(email).orElseThrow(
-                () -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", email));
-    }
-
-    public List<Resource> getAll() {
-        return resourceRepository.findAll();
-    }
-
-    public Optional<Resource> getById(long id){
-        return resourceRepository.findById(id);
-    }
-
-    private void checkIfEmailIsUsed(String email, String reference) {
+    private void checkIfEmailIsUsed(String email, String reference) throws ContactApiException {
 
         if (MiscUtils.isNotEmpty(email)) {
-            Optional<Resource> find = resourceRepository.findOneByEmail(email).
+            Optional<Resource> find = devResRepository.findOneByEmail(email).
                     filter(user -> MiscUtils.isEmpty(reference) || !user.getReference().equals(reference));
             if (find.isPresent()) {
                 throw ContactApiException.unauthorizedExceptionBuilder("email_exist", null);
             }
         }
+
+    }
+
+    public AvatarDTO addResourceAvatar(MultipartFile file, String resourceReference) throws ContactApiException, IOException {
+
+        Resource resource = devResRepository.findOneByReference(resourceReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference));
+
+        return avatarService.updateUserAvatar(file, resource);
+
+    }
+
+    public JSONObject removeResourceAvatar(String reference, String resourceReference) throws ContactApiException {
+
+        Resource resource = devResRepository.findOneByReference(resourceReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference));
+        return avatarService.removeUserAvatar(reference, resource);
+
+    }
+
+    public AvatarDTO getResourceAvatar(String resourceReference) throws ContactApiException {
+        Resource resource = devResRepository.findOneByReference(resourceReference)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference));
+
+        return avatarService.getUserAvatar(resource);
 
     }
 }

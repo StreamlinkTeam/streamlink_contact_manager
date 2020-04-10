@@ -1,11 +1,12 @@
 package cl.streamlink.contact.web.dto;
 
+import cl.streamlink.contact.domain.SocietyContact;
 import cl.streamlink.contact.utils.enums.SocietyStage;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class SocietyContactDTO extends AbstractProfileDTO {
+public class SocietyContactDTO extends AbstractProfileDTO<SocietyContact> {
 
     @NotNull
     @Size(min = 2, max = 255)

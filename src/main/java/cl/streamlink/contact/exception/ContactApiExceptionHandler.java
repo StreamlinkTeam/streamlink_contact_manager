@@ -36,6 +36,8 @@ public class ContactApiExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorDTO processConcurrencyFailureException(ConcurrencyFailureException ex) {
+
+        logger.error(ex.getMessage(), ex);
         return new ErrorDTO(null, ErrorConstants.ERR_CONCURRENCY_FAILURE, ex.getMessage());
     }
 
@@ -43,6 +45,8 @@ public class ContactApiExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorDTO processMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+
+        logger.error(ex.getMessage(), ex);
         return new ErrorDTO(null, ErrorConstants.ERR_MISSING_REQUEST_PARAMETER, ex.getMessage());
     }
 
@@ -50,6 +54,8 @@ public class ContactApiExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public ErrorDTO processAuthenticationException(AuthenticationException ex) {
+
+        logger.error(ex.getMessage(), ex);
         return new ErrorDTO(null, ErrorConstants.ERR_UNAUTHORIZED, ex.getMessage());
     }
 
@@ -61,6 +67,8 @@ public class ContactApiExceptionHandler {
         List<FieldError> fieldErrors = result.getFieldErrors();
         logger.error(ex.getClass().getName(), ex);
         logger.error(fieldErrors.stream().map(FieldError::toString).collect(Collectors.joining("\n")));
+
+        logger.error(ex.getMessage(), ex);
 
         return processFieldErrors(fieldErrors);
     }
@@ -85,7 +93,7 @@ public class ContactApiExceptionHandler {
 
 
         }
-        logger.error(errorDTO.toString());
+        logger.error(ex.getMessage(), ex);
         return errorDTO;
     }
 
@@ -95,7 +103,7 @@ public class ContactApiExceptionHandler {
     public ErrorDTO processNullPointerException(NullPointerException ex) {
         ErrorDTO errorDTO = new ErrorDTO(null, ErrorConstants.ERR_INTERNAL_SERVER_ERROR, ex.getMessage());
         logger.error(ex.getClass().getName(), ex);
-        logger.error(errorDTO.toString());
+        logger.error(ex.getMessage(), ex);
         return errorDTO;
     }
 
@@ -116,7 +124,7 @@ public class ContactApiExceptionHandler {
     public ErrorDTO processHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
         ErrorDTO errorDTO = new ErrorDTO(null, ErrorConstants.ERR_METHOD_NOT_SUPPORTED, ex.getMessage());
         logger.error(ex.getClass().getName(), ex);
-        logger.error(errorDTO.toString());
+        logger.error(ex.getMessage(), ex);
         return errorDTO;
     }
 
@@ -127,7 +135,7 @@ public class ContactApiExceptionHandler {
 
         ErrorDTO errorDTO = new ErrorDTO("", ex.getLocalizedMessage(), ex.getMessage());
 
-        logger.error(errorDTO.toString());
+        logger.error(ex.getMessage(), ex);
 
         return errorDTO;
 
@@ -142,7 +150,7 @@ public class ContactApiExceptionHandler {
             errorDTO.add(ex.getFieldError());
         }
 
-        logger.error(errorDTO.toString());
+        logger.error(ex.getMessage(), ex);
         return ResponseEntity.status(ex.getMotif().getHttpStatus()).body(errorDTO);
 
 
@@ -161,7 +169,7 @@ public class ContactApiExceptionHandler {
             errorDTO = new ErrorDTO(null, ErrorConstants.ERR_INTERNAL_SERVER_ERROR, ex.getMessage());
         }
         logger.error(ex.getClass().getName(), ex);
-        logger.error(errorDTO.toString());
+        logger.error(ex.getMessage(), ex);
 
         return builder.body(errorDTO);
     }

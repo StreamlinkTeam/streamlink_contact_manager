@@ -8,9 +8,9 @@ security:
 
 spring:
   datasource:
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/stream?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
-   # url: jdbc:mysql://streamlinkdatabasefinal.mysql.database.azure.com:3306/streamlink?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+    #    url: jdbc:mysql://streamlinkdatabasefinal.mysql.database.azure.com:3306/stream?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
 #    username: streamadmin@streamlinkdatabasefinal
 #    password: Temporaire99ABC
     username: root
@@ -22,7 +22,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         cache.use_query_cache: false
         generate_statistics: false
 #        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -42,4 +42,7 @@ contact:
     product_code: e11adbba5cffb9a8b529097145a2a86f
   security:
     token:
-debug: true
+  avatar:
+    url: http://localhost/avatar/
+
+

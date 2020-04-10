@@ -1,9 +1,10 @@
 package cl.streamlink.contact.web.dto;
 
+import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.utils.enums.ResourceStage;
 import cl.streamlink.contact.utils.enums.ResourceType;
 
-public class ResourceDTO extends DeveloperDTO {
+public class ResourceDTO extends AbstractDevResProfileDTO<Resource> {
 
     private String registrationNumber;
 

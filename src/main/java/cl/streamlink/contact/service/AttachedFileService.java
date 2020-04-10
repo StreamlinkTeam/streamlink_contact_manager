@@ -10,6 +10,7 @@ import cl.streamlink.contact.repository.AttachedFileRepository;
 import cl.streamlink.contact.repository.ResourceRepository;
 import cl.streamlink.contact.repository.TimeListRepository;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.utils.MultipartFilesUtils;
 import cl.streamlink.contact.web.dto.hireability.AttachedFileDTO;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.io.IOException;
 
 @Service
@@ -42,25 +42,13 @@ public class AttachedFileService {
     private TimeListRepository timeListRepository;
 
 
-
-
-
-    private File saveAttachedFile(String fileName, MultipartFile cv) throws IOException {
-
-        cv.transferTo(new File(filePath, fileName));
-        return new File(filePath, fileName);
-
-    }
-
-
-
-    public AttachedFileDTO addTimeListFile(MultipartFile file, String resourceReference, String timeListReference) throws IOException {
+    public AttachedFileDTO addTimeListFile(MultipartFile file, String resourceReference, String timeListReference) throws IOException, ContactApiException {
 
         if (file != null) {
             Resource resource = resourceRepository.findOneByReference(resourceReference)
                     .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference));
-           TimeList timeList = timeListRepository.findOneByReference(timeListReference)
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("TimeList",timeListReference));
+            TimeList timeList = timeListRepository.findOneByReference(timeListReference)
+                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("TimeList", timeListReference));
             if (attachedFileRepository.countByResourceReference(resourceReference) >= 5)
                 throw ContactApiException.unprocessableEntityExceptionBuilder("cv-number", null);
 
@@ -69,8 +57,9 @@ public class AttachedFileService {
             attachedFile.setLabel(file.getOriginalFilename());
             attachedFile.setTimeList(timeList);
             attachedFile.setName(attachedFile.getReference() + "." + FilenameUtils.getExtension(file.getOriginalFilename()));
-            attachedFile. setResource(resource);
-            saveAttachedFile(attachedFile.getName(), file);
+            attachedFile.setResource(resource);
+
+            MultipartFilesUtils.saveMultipartFile(filePath, attachedFile.getName(), file);
 
             attachedFile = attachedFileRepository.save(attachedFile);
 

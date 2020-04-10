@@ -24,8 +24,8 @@ public class Evaluation {
     @Column(unique = true)
     private String reference;
 
-    @ManyToOne(optional = false)
-    private Developer developer;
+    @Column(updatable = false, nullable = false)
+    private String developerReference;
 
     @ManyToOne(optional = false)
     private User responsible;
@@ -63,12 +63,12 @@ public class Evaluation {
         this.reference = reference;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public String getDeveloperReference() {
+        return developerReference;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setDeveloperReference(String developerReference) {
+        this.developerReference = developerReference;
     }
 
     public User getResponsible() {
