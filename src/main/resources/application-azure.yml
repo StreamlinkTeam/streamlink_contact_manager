@@ -1,7 +1,6 @@
 #contact:
 #  security:
 #    token:
-server.port: 9091
 spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
@@ -20,3 +19,6 @@ contact:
 
     cv:
         path: /destination/files/cvs
+server:
+    address: 0.0.0.0
+    port: 9091

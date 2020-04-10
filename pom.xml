@@ -276,6 +276,23 @@
         </dependency>
 
     </dependencies>
+    <profiles>
+        <profile>
+            <id>azure</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <profiles>azure</profiles>
+                            <finalName>streamlink_condidats_manger-azure</finalName>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
