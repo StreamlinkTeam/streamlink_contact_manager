@@ -1,6 +1,7 @@
 #contact:
 #  security:
 #    token:
+server.port: 9091
 spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
