@@ -1,6 +1,10 @@
 package cl.streamlink.contact.web.dto;
 
 import cl.streamlink.contact.utils.enums.Stage;
+import cl.streamlink.contact.domain.Address;
+import cl.streamlink.contact.domain.Diplomes;
+import cl.streamlink.contact.domain.EmergencyContact;
+import cl.streamlink.contact.domain.FamilyElement;
 import cl.streamlink.contact.utils.MiscUtils;
 
 import javax.validation.constraints.NotNull;
@@ -23,8 +27,27 @@ public class DeveloperDTO extends AbstractProfileDTO {
 
     private String rhReference;
 
+    private Address address;
+
+    private Diplomes diplomes;
+
+    private EmergencyContact emergencyContact;
 
     private LocalDate availability;
+
+    private FamilyElement familyElement;
+
+    public void setFamilyElement(FamilyElement familyElement) {
+        this.familyElement = familyElement;
+    }
+
+    public FamilyElement getFamilyElement() {
+        return familyElement;
+    }
+
+    public EmergencyContact getEmergencyContact() {
+        return emergencyContact;
+    }
 
     private boolean resource;
 
@@ -86,5 +109,25 @@ public class DeveloperDTO extends AbstractProfileDTO {
 
     public void setResource(boolean resource) {
         this.resource = resource;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Diplomes getDiplomes() {
+        return diplomes;
+    }
+
+    public void setDiplomes(Diplomes diplomes) {
+        this.diplomes = diplomes;
+    }
+
+    public void setEmergencyContact(EmergencyContact emergencyContact) {
+        this.emergencyContact = emergencyContact;
     }
 }

@@ -1,6 +1,5 @@
 package cl.streamlink.contact.domain;
 
-
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.Stage;
 
@@ -9,10 +8,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Optional;
 
-
-
 @Entity
-@Table(indexes = {@Index(name = "index_developer_reference", columnList = "reference", unique = true)})
+@Table(indexes = { @Index(name = "index_developer_reference", columnList = "reference", unique = true) })
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE")
 @DiscriminatorValue("DEVELOPER")
@@ -40,6 +37,30 @@ public class Developer extends AbstractProfile {
 
     private String mobility;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private Address address;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private Diplomes diplomes;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private EmergencyContact emergencyContact;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private FamilyElement familyElement;
+
+    public Address getAddress() {
+        return address;
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -60,10 +81,13 @@ public class Developer extends AbstractProfile {
         return stage;
     }
 
+    public void setDiplomes(Diplomes diplomes) {
+        this.diplomes = diplomes;
+    }
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
 
     public PersonalInformation getPersonalInformation() {
 
@@ -113,13 +137,11 @@ public class Developer extends AbstractProfile {
         this.mobility = mobility;
     }
 
-
     @Override
     public boolean equals(Object object) {
-        return Optional.ofNullable(object).filter(obj -> obj instanceof Developer).map(obj -> (Developer) obj).
-                filter(ag -> getId() == null || MiscUtils.equals(ag.getReference(), this.getReference())).
-                filter(ag -> getId() != null || MiscUtils.equals(ag, this)).
-                isPresent();
+        return Optional.ofNullable(object).filter(obj -> obj instanceof Developer).map(obj -> (Developer) obj)
+                .filter(ag -> getId() == null || MiscUtils.equals(ag.getReference(), this.getReference()))
+                .filter(ag -> getId() != null || MiscUtils.equals(ag, this)).isPresent();
     }
 
     @Override
@@ -130,5 +152,29 @@ public class Developer extends AbstractProfile {
             return this.getId().hashCode();
         else
             return super.hashCode();
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Diplomes getDiplomes() {
+        return diplomes;
+    }
+
+    public EmergencyContact getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(EmergencyContact emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public FamilyElement getFamilyElement() {
+        return familyElement;
+    }
+
+    public void setFamilyElement(FamilyElement familyElement) {
+        this.familyElement = familyElement;
     }
 }
