@@ -130,4 +130,25 @@ public class DeveloperDTO extends AbstractProfileDTO {
     public void setEmergencyContact(EmergencyContact emergencyContact) {
         this.emergencyContact = emergencyContact;
     }
+
+    public DeveloperDTO() {
+    }
+
+    public DeveloperDTO(@NotNull @Size(min = 2, max = 255) String firstname,
+            @NotNull @Size(min = 2, max = 255) String lastname, Stage stage, String rhReference, Address address,
+            Diplomes diplomes, EmergencyContact emergencyContact, LocalDate availability, FamilyElement familyElement,
+            boolean resource, List<String> mobility) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.stage = stage;
+        this.rhReference = rhReference;
+        this.address = address;
+        this.diplomes = diplomes;
+        this.emergencyContact = emergencyContact;
+        this.availability = availability;
+        this.familyElement = familyElement;
+        this.resource = resource;
+        this.mobility = mobility;
+    }
+
 }

@@ -37,24 +37,20 @@ public class Developer extends AbstractProfile {
 
     private String mobility;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "diplomes_id", referencedColumnName = "id")
     private Diplomes diplomes;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emergencyContact_id", referencedColumnName = "id")
     private EmergencyContact emergencyContact;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "familyElement_id", referencedColumnName = "id")
     private FamilyElement familyElement;
 
     public Address getAddress() {
@@ -177,4 +173,5 @@ public class Developer extends AbstractProfile {
     public void setFamilyElement(FamilyElement familyElement) {
         this.familyElement = familyElement;
     }
+
 }
