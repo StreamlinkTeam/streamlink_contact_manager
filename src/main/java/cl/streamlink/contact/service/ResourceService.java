@@ -1,16 +1,16 @@
 package cl.streamlink.contact.service;
 
+import cl.streamlink.contact.domain.Contact;
 import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.domain.Resource;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.mapper.ApiMapper;
 import cl.streamlink.contact.repository.DeveloperRepository;
 import cl.streamlink.contact.repository.ResourceRepository;
+import cl.streamlink.contact.utils.FakerService;
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.*;
-import cl.streamlink.contact.web.dto.DeveloperDTO;
-import cl.streamlink.contact.web.dto.ResourceDTO;
-import cl.streamlink.contact.web.dto.ResourceResponseDTO;
+import cl.streamlink.contact.web.dto.*;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,17 +36,47 @@ public class ResourceService {
     @Inject
     private DeveloperRepository developerRepository;
 
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private DeveloperService developerService;
 
     @Inject
     private ApiMapper mapper;
 
     public ResourceDTO createResource(ResourceDTO resourceDTO) {
 
+        //Retrieve Object from resourceDTO
         Resource resource = mapper.fromDTOToBean(resourceDTO);
 
+        //Create new user with Resource credentials
+        UserDTO user=new UserDTO();
+        user.setPassword("Stream2023");
+        user.setFirstname(resource.getFirstname());
+        user.setLastname(resource.getLastname());
+        user.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_RESOURCE)));
+        user.setEmail(resourceDTO.getEmail());
+        //Save User with resource information
+        userService.signup(user);
+
+        //Generate Reference Key & store data to resource
         resource.setReference("res" + MiscUtils.generateReference());
         resource.setStage(Stage.ConvertedToResource);
-        return mapper.fromBeanToDTO(resourceRepository.save(resource));
+        //Create Resource
+        mapper.fromBeanToDTO(resourceRepository.save(resource));
+
+        //Search Developer by Reference
+        Developer res = developerRepository.findOneByReference(resource.getReference())
+                        .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", resource.getReference()));
+
+        //Store email into Contact
+        ContactDTO contact = new ContactDTO();
+        contact.setEmail1(resourceDTO.getEmail());
+
+        //Update Developer details
+        developerService.updateDeveloperContact(contact,resource.getReference());
+        return resourceDTO;
     }
 
     public ResourceDTO createResourceFromDeveloper(String developerReference) {

@@ -113,8 +113,6 @@ public abstract class ApiMapper {
     @Mappings({@Mapping(source = "reference", target = "timeListReference"),
             @Mapping(source="resource.reference",target = "resourceReference")})
 
-    @Mappings({@Mapping(source = "resource.reference", target = "resourceReference"),
-            @Mapping(source = "reference", target = "timeListReference")})
     public abstract TimeLineDTO fromBeanToDTO(TimeLine bean);
 
     @Mappings({

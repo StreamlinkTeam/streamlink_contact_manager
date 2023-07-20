@@ -19,10 +19,13 @@ public class DeveloperDTO extends AbstractProfileDTO {
     @Size(min = 2, max = 255)
     private String lastname;
 
+    @NotNull
+    @Size(min = 2, max = 255)
+    private String email;
+
     private Stage stage;
 
     private String rhReference;
-
 
     private LocalDate availability;
 
@@ -74,6 +77,14 @@ public class DeveloperDTO extends AbstractProfileDTO {
         if (MiscUtils.isEmpty(mobility))
             return new ArrayList<>();
         return mobility;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setMobility(List<String> mobility) {

@@ -24,6 +24,9 @@ public class Developer extends AbstractProfile {
     @NotNull
     private String lastname;
 
+    @NotNull
+    private String email;
+
     @Enumerated(EnumType.STRING)
     private Stage stage = Stage.ToTreat;
 
@@ -39,6 +42,14 @@ public class Developer extends AbstractProfile {
     private LocalDate availability;
 
     private String mobility;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getFirstname() {
         return firstname;
