@@ -16,17 +16,18 @@ public interface ProjectPosRepository extends JpaRepository<ProjectPos, Long> {
 
     List<ProjectPos> findByNeedContaining(String value);
 
-//    Page<Need> findByTitleContainingAndStageInAndTypeInAndNeedInformationActivityAreaIn
-//            (String value, List<NeedStage> stages, List<NeedType> types,
-//             List<ActivityArea> activityAreas, Pageable pageable);
+    // Page<Need>
+    // findByTitleContainingAndStageInAndTypeInAndNeedInformationActivityAreaIn
+    // (String value, List<NeedStage> stages, List<NeedType> types,
+    // List<ActivityArea> activityAreas, Pageable pageable);
 
     Page<ProjectPos> findByNeedTitleContaining(String value, Pageable pageable);
 
+    Page<ProjectPos> findAll(Pageable pageable);
 
-
-//    @Transactional
-//    long deleteBySocietyContactReference(String societyContactReference);
-//
-//    @Transactional
-//    long deleteBySocietyContactSocietyReference(String societyReference);
+    // @Transactional
+    // long deleteBySocietyContactReference(String societyContactReference);
+    //
+    // @Transactional
+    // long deleteBySocietyContactSocietyReference(String societyReference);
 }

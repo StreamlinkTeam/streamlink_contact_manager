@@ -34,7 +34,6 @@ public class ResourceService {
     @Inject
     private DeveloperRepository developerRepository;
 
-
     @Inject
     private ApiMapper mapper;
 
@@ -52,7 +51,8 @@ public class ResourceService {
         if (!resourceRepository.existsByReference(developerReference)) {
             Developer developer = developerRepository.findOneByReference(developerReference)
 
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer",
+                            developerReference));
 
             Resource resource = mapper.fromDeveloperToResource(developer);
             resource.setResourceStage(ResourceStage.NOT_DEFINED);
@@ -65,23 +65,23 @@ public class ResourceService {
             throw ContactApiException.unprocessableEntityExceptionBuilder("resource-exist", null);
     }
 
-
     public List<ResourceResponseDTO> searchResources(String term) {
 
         if (MiscUtils.isEmpty(term) || term.length() < 3)
             return Collections.EMPTY_LIST;
 
-        else return resourceRepository.findByFirstnameContaining(term).stream()
-                .map(resource -> mapper.fromBeanToDTOResponse(resource))
-                .collect(Collectors.toList());
+        else
+            return resourceRepository.findByFirstnameContaining(term).stream()
+                    .map(resource -> mapper.fromBeanToDTOResponse(resource))
+                    .collect(Collectors.toList());
     }
-
 
     public ResourceDTO createResourceFromDeveloper(String developerReference, DeveloperDTO developerDTO) {
 
         if (!resourceRepository.existsByReference(developerReference)) {
             Developer developer = developerRepository.findOneByReference(developerReference)
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer",
+                            developerReference));
 
             mapper.updateBeanFromDto(developerDTO, developer);
 
@@ -108,21 +108,25 @@ public class ResourceService {
     public ResourceDTO getResource(String resourceReference) throws ContactApiException {
 
         return mapper.fromBeanToDTO(resourceRepository.findOneByReference(resourceReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference)));
+                .orElseThrow(
+                        () -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference)));
     }
-
 
     public List<ResourceResponseDTO> getResources(String resourceReference) throws ContactApiException {
 
         if (MiscUtils.isNotEmpty(resourceReference))
-            return Collections.singletonList(mapper.fromBeanToDTOResponse(resourceRepository.findOneByReference(resourceReference)
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource", resourceReference))));
+            return Collections
+                    .singletonList(mapper.fromBeanToDTOResponse(resourceRepository.findOneByReference(resourceReference)
+                            .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Resource",
+                                    resourceReference))));
 
         else
-            return resourceRepository.findAll().stream().map(mapper::fromBeanToDTOResponse).collect(Collectors.toList());
+            return resourceRepository.findAll().stream().map(mapper::fromBeanToDTOResponse)
+                    .collect(Collectors.toList());
     }
 
-    public Page<ResourceResponseDTO> searchResources(String value, ResourceStage stage, Experience experience, Formation formation, ResourceType type, Pageable pageable) {
+    public Page<ResourceResponseDTO> searchResources(String value, ResourceStage stage, Experience experience,
+            Formation formation, ResourceType type, Pageable pageable) {
 
         if (MiscUtils.isEmpty(value))
             value = "";
@@ -151,9 +155,7 @@ public class ResourceService {
         else
             types = ResourceType.getAll();
 
-        return resourceRepository.
-                findByFirstnameContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrLastnameContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrSkillsInformationTitleContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeInOrSkillsInformationLanguagesContainingAndResourceStageInAndSkillsInformationFormationInAndSkillsInformationExperienceInAndResourceTypeIn
-                        (value, stages, formations, experiences, types, value, stages, formations, experiences, types, value, stages, formations, experiences, types, value, stages, formations, experiences, types, pageable)
+        return resourceRepository.findByResourceTypeIn(types, pageable)
                 .map(resource -> mapper.fromBeanToDTOResponse(resource));
     }
 
@@ -166,6 +168,5 @@ public class ResourceService {
 
         return MiscUtils.createSuccessfullyResult();
     }
-
 
 }

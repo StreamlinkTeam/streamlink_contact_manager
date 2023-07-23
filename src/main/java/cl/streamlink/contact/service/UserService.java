@@ -42,7 +42,6 @@ public class UserService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-
     public JSONObject signin(String username, String password) {
         try {
             ApplicationConfig.getService(AuthenticationManager.class)
@@ -90,7 +89,6 @@ public class UserService {
 
     }
 
-
     public JSONObject deleteUser(String userReference) throws ContactApiException {
 
         User user = userRepository.findOneByReference(userReference)
@@ -110,8 +108,8 @@ public class UserService {
     }
 
     public UserDTO whoami(HttpServletRequest req) {
-        return mapper.fromBeanToDTO(userRepository.findOneByEmail
-                (jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req))).orElse(null));
+        return mapper.fromBeanToDTO(userRepository
+                .findOneByEmail(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req))).orElse(null));
     }
 
     public JSONObject changeCurrentUserPassword(String oldPassword, String newPassword) {
@@ -133,9 +131,8 @@ public class UserService {
         if (!SecurityUtils.checkIfThereIsUserLogged())
             throw new ContactApiException("Access denied", ContactApiError.UNAUTHORIZED, null);
 
-        return userRepository.findOneByEmail(currentUserName).
-                orElseThrow(() -> ContactApiException.
-                        resourceNotFoundExceptionBuilder("User", currentUserName));
+        return userRepository.findOneByEmail(currentUserName)
+                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("User", currentUserName));
     }
 
     public List<UserDTO> getAllUsers() {
@@ -145,8 +142,8 @@ public class UserService {
     private void checkIfEmailIsUsed(String email, String reference) {
 
         if (MiscUtils.isNotEmpty(email)) {
-            Optional<User> find = userRepository.findOneByEmail(email).
-                    filter(user -> MiscUtils.isEmpty(reference) || !user.getReference().equals(reference));
+            Optional<User> find = userRepository.findOneByEmail(email)
+                    .filter(user -> MiscUtils.isEmpty(reference) || !user.getReference().equals(reference));
             if (find.isPresent()) {
                 throw ContactApiException.unauthorizedExceptionBuilder("email_exist", null);
             }

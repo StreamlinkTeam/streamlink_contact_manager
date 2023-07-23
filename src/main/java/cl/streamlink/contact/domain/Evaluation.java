@@ -1,11 +1,13 @@
 package cl.streamlink.contact.domain;
 
-import cl.streamlink.contact.utils.enums.EvaluationNote;
-import org.springframework.data.annotation.CreatedDate;
+import cl.streamlink.contact.utils.enums.NoteStatus;
+
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
  */
 
 @Entity
-@Table(indexes = {@Index(name = "index_evaluation_reference", columnList = "reference", unique = true)})
+@Table(indexes = { @Index(name = "index_evaluation_reference", columnList = "reference", unique = true) })
 @EntityListeners(AuditingEntityListener.class)
 public class Evaluation {
 
@@ -31,17 +33,13 @@ public class Evaluation {
     private User responsible;
 
     @Enumerated(EnumType.STRING)
-    private EvaluationNote relational;
-
-    @Enumerated(EnumType.STRING)
-    private EvaluationNote technical;
+    private NoteStatus noteStatus;
 
     @Lob
     private String note;
 
-    @Column(name = "created_date", updatable = false)
-    @CreatedDate
-    private LocalDateTime createdDate;
+    @Column(name = "created_date", updatable = true)
+    private LocalDate createdDate;
 
     @Column(name = "modified_date")
     @LastModifiedDate
@@ -79,22 +77,6 @@ public class Evaluation {
         this.responsible = responsible;
     }
 
-    public EvaluationNote getRelational() {
-        return relational;
-    }
-
-    public void setRelational(EvaluationNote relational) {
-        this.relational = relational;
-    }
-
-    public EvaluationNote getTechnical() {
-        return technical;
-    }
-
-    public void setTechnical(EvaluationNote technical) {
-        this.technical = technical;
-    }
-
     public String getNote() {
         return note;
     }
@@ -103,11 +85,19 @@ public class Evaluation {
         this.note = note;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public NoteStatus getNoteStatus() {
+        return noteStatus;
+    }
+
+    public void setNoteStatus(NoteStatus noteStatus) {
+        this.noteStatus = noteStatus;
+    }
+
+    public LocalDate getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
     }
 

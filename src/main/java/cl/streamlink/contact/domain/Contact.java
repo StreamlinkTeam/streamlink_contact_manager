@@ -1,6 +1,9 @@
 package cl.streamlink.contact.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 /**
  * Created by Chemakh on 11/07/2018.
@@ -33,8 +36,16 @@ public class Contact {
 
     private String website;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emergencyContact_id", referencedColumnName = "id")
+    private EmergencyContact emergencyContact;
+
     public String getEmail1() {
         return email1;
+    }
+
+    public EmergencyContact getEmergencyContact() {
+        return emergencyContact;
     }
 
     public void setEmail1(String email1) {
@@ -127,5 +138,9 @@ public class Contact {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public void setEmergencyContact(EmergencyContact emergencyContact) {
+        this.emergencyContact = emergencyContact;
     }
 }

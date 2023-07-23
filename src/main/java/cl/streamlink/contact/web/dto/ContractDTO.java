@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
 public class ContractDTO {
 
     private String developerReference;
@@ -44,6 +43,56 @@ public class ContractDTO {
     private ContractCategory contractCategory;
 
     private ContractClassification contractClassification;
+
+    private BigDecimal missionExpenses;
+
+    public LocalDate getEndTrial() {
+        return endTrial;
+    }
+
+    public void setEndTrial(LocalDate endTrial) {
+        this.endTrial = endTrial;
+    }
+
+    public LocalDate getStartTrial() {
+        return startTrial;
+    }
+
+    public void setStartTrial(LocalDate startTrial) {
+        this.startTrial = startTrial;
+    }
+
+    private LocalDate endTrial;
+
+    private LocalDate startTrial;
+
+    public void setMissionExpenses(BigDecimal missionExpenses) {
+        this.missionExpenses = missionExpenses;
+    }
+
+    public void setTransportCosts(BigDecimal transportCosts) {
+        this.transportCosts = transportCosts;
+    }
+
+    public void setBilletRestaurant(boolean billetRestaurant) {
+        this.billetRestaurant = billetRestaurant;
+    }
+
+    private BigDecimal transportCosts;
+
+    public BigDecimal getMissionExpenses() {
+        return missionExpenses;
+    }
+
+    public BigDecimal getTransportCosts() {
+        return transportCosts;
+    }
+
+    public boolean isBilletRestaurant() {
+        return billetRestaurant;
+    }
+
+    private boolean billetRestaurant;
 
     public String getDeveloperReference() {
         return developerReference;

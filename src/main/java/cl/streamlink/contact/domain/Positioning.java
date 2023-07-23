@@ -1,6 +1,5 @@
 package cl.streamlink.contact.domain;
 
-
 import cl.streamlink.contact.utils.MiscUtils;
 import cl.streamlink.contact.utils.enums.PositioningStage;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,7 +14,7 @@ import java.util.Optional;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(indexes = {@Index(name = "index_project_reference", columnList = "reference", unique = true)})
+@Table(indexes = { @Index(name = "index_project_reference", columnList = "reference", unique = true) })
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE")
 @DiscriminatorValue("POSITIONING")
@@ -31,7 +30,7 @@ public class Positioning {
     @ManyToOne(optional = false)
     private Resource resource;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Need need;
 
     @ManyToOne(optional = false)
@@ -52,8 +51,18 @@ public class Positioning {
 
     private Integer freeDays;
 
+    private String needTitle;
+
     @Lob
     private String note;
+
+    public String getNeedTitle() {
+        return needTitle;
+    }
+
+    public void setNeedTitle(String needTitle) {
+        this.needTitle = needTitle;
+    }
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
@@ -185,10 +194,9 @@ public class Positioning {
 
     @Override
     public boolean equals(Object object) {
-        return Optional.ofNullable(object).filter(obj -> obj instanceof Positioning).map(obj -> (Positioning) obj).
-                filter(ag -> getId() == null || MiscUtils.equals(ag.getReference(), this.getReference())).
-                filter(ag -> getId() != null || MiscUtils.equals(ag, this)).
-                isPresent();
+        return Optional.ofNullable(object).filter(obj -> obj instanceof Positioning).map(obj -> (Positioning) obj)
+                .filter(ag -> getId() == null || MiscUtils.equals(ag.getReference(), this.getReference()))
+                .filter(ag -> getId() != null || MiscUtils.equals(ag, this)).isPresent();
     }
 
     @Override

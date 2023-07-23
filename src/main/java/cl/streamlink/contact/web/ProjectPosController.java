@@ -1,12 +1,14 @@
 package cl.streamlink.contact.web;
 
-
 import cl.streamlink.contact.domain.Need;
+import cl.streamlink.contact.domain.Positioning;
 import cl.streamlink.contact.domain.ProjectPos;
 import cl.streamlink.contact.exception.ContactApiException;
 import cl.streamlink.contact.service.ProjectPosService;
 import cl.streamlink.contact.utils.MiscUtils;
+import cl.streamlink.contact.web.dto.PositioningDTO;
 import cl.streamlink.contact.web.dto.ProjectPosDTO;
+import cl.streamlink.contact.web.dto.ResourceDTO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -36,8 +38,8 @@ public class ProjectPosController {
             @ApiResponse(code = 400, message = "Validation Error, Database conflict")
     })
     public ProjectPosDTO createProjectFromPositioning(
-            @RequestParam(value = "positioningReference") String positioningReference) {
-        return projectPosService.createProjectFromPositioning(positioningReference);
+            @RequestBody @Valid PositioningDTO positioningDTO) {
+        return projectPosService.createProjectFromPositioning(positioningDTO);
     }
 
     @GetMapping(value = "all")
@@ -59,7 +61,8 @@ public class ProjectPosController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = ProjectPos.class),
             @ApiResponse(code = 404, message = "Project with Ref not Found")
     })
-    public ProjectPosDTO getProject(@RequestParam(value = "projectReference") String projectReference) throws ContactApiException {
+    public ProjectPosDTO getProject(@RequestParam(value = "projectReference") String projectReference)
+            throws ContactApiException {
         return projectPosService.getProject(projectReference);
     }
 
@@ -67,17 +70,17 @@ public class ProjectPosController {
     @ApiOperation(value = "Create Project Service")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = Need.class),
-            @ApiResponse(code = 400, message = "Validation Error, Database conflict")})
+            @ApiResponse(code = 400, message = "Validation Error, Database conflict") })
     public ProjectPosDTO updateProject(@Valid @RequestBody ProjectPosDTO project,
-                                       @RequestParam(value = "projectReference") String projectReference) throws ContactApiException {
+            @RequestParam(value = "projectReference") String projectReference) throws ContactApiException {
 
         return projectPosService.updateProject(project, projectReference);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<ProjectPosDTO> getProjects(Pageable pageable, @RequestParam boolean fromAngular,
-                                           @RequestParam(required = false) String value,
-                                           @RequestParam(required = false) Sort.Direction dir) {
+            @RequestParam(required = false) String value,
+            @RequestParam(required = false) Sort.Direction dir) {
 
         if (fromAngular) {
 
@@ -96,7 +99,8 @@ public class ProjectPosController {
             @ApiResponse(code = 200, message = "Operation Executed Successfully", response = ProjectPos.class),
             @ApiResponse(code = 404, message = "Project with Ref not Found")
     })
-    public JSONObject deleteProject(@RequestParam("projectReference") String projectReference) throws ContactApiException {
+    public JSONObject deleteProject(@RequestParam("projectReference") String projectReference)
+            throws ContactApiException {
 
         return projectPosService.deleteProject(projectReference);
     }

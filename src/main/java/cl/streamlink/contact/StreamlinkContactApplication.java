@@ -54,6 +54,34 @@ public class StreamlinkContactApplication implements CommandLineRunner {
         } catch (ContactApiException e) {
             logger.warn(e.getMessage());
         }
+
+        try {
+            UserDTO admin = new UserDTO();
+            admin.setLastname("Baccouche");
+            admin.setFirstname("Ghazi");
+
+            admin.setPassword("ghazi");
+            admin.setEmail("ghazi@email.com");
+            admin.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_ADMIN)));
+
+            userService.signup(admin);
+        } catch (ContactApiException e) {
+            logger.warn(e.getMessage());
+        }
+
+        try {
+            UserDTO admin = new UserDTO();
+            admin.setLastname("Gafsi");
+            admin.setFirstname("Habib");
+
+            admin.setPassword("habib");
+            admin.setEmail("habib@email.com");
+            admin.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_ADMIN)));
+
+            userService.signup(admin);
+        } catch (ContactApiException e) {
+            logger.warn(e.getMessage());
+        }
         try {
             UserDTO client = new UserDTO();
             client.setLastname("client");
@@ -80,9 +108,9 @@ public class StreamlinkContactApplication implements CommandLineRunner {
             logger.warn(e.getMessage());
         }
 
-     //     fakerService.deleteAll();
-        //  fakerService.generateFakerDeveloperData(10);
-//          fakerService.generateFakerResourceDate(10);
+        // fakerService.deleteAll();
+        // fakerService.generateFakerDeveloperData(10);
+        // fakerService.generateFakerResourceDate(10);
         // fakerService.generateFakerSocietyData(20,10);
     }
 }

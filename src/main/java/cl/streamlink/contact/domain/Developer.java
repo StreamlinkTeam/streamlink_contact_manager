@@ -46,10 +46,6 @@ public class Developer extends AbstractProfile {
     private Diplomes diplomes;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emergencyContact_id", referencedColumnName = "id")
-    private EmergencyContact emergencyContact;
-
-    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "familyElement_id", referencedColumnName = "id")
     private FamilyElement familyElement;
 
@@ -156,14 +152,6 @@ public class Developer extends AbstractProfile {
 
     public Diplomes getDiplomes() {
         return diplomes;
-    }
-
-    public EmergencyContact getEmergencyContact() {
-        return emergencyContact;
-    }
-
-    public void setEmergencyContact(EmergencyContact emergencyContact) {
-        this.emergencyContact = emergencyContact;
     }
 
     public FamilyElement getFamilyElement() {

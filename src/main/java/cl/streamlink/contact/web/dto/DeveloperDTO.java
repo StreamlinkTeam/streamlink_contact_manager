@@ -3,7 +3,6 @@ package cl.streamlink.contact.web.dto;
 import cl.streamlink.contact.utils.enums.Stage;
 import cl.streamlink.contact.domain.Address;
 import cl.streamlink.contact.domain.Diplomes;
-import cl.streamlink.contact.domain.EmergencyContact;
 import cl.streamlink.contact.domain.FamilyElement;
 import cl.streamlink.contact.utils.MiscUtils;
 
@@ -31,8 +30,6 @@ public class DeveloperDTO extends AbstractProfileDTO {
 
     private Diplomes diplomes;
 
-    private EmergencyContact emergencyContact;
-
     private LocalDate availability;
 
     private FamilyElement familyElement;
@@ -43,10 +40,6 @@ public class DeveloperDTO extends AbstractProfileDTO {
 
     public FamilyElement getFamilyElement() {
         return familyElement;
-    }
-
-    public EmergencyContact getEmergencyContact() {
-        return emergencyContact;
     }
 
     private boolean resource;
@@ -127,16 +120,12 @@ public class DeveloperDTO extends AbstractProfileDTO {
         this.diplomes = diplomes;
     }
 
-    public void setEmergencyContact(EmergencyContact emergencyContact) {
-        this.emergencyContact = emergencyContact;
-    }
-
     public DeveloperDTO() {
     }
 
     public DeveloperDTO(@NotNull @Size(min = 2, max = 255) String firstname,
             @NotNull @Size(min = 2, max = 255) String lastname, Stage stage, String rhReference, Address address,
-            Diplomes diplomes, EmergencyContact emergencyContact, LocalDate availability, FamilyElement familyElement,
+            Diplomes diplomes, LocalDate availability, FamilyElement familyElement,
             boolean resource, List<String> mobility) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -144,7 +133,7 @@ public class DeveloperDTO extends AbstractProfileDTO {
         this.rhReference = rhReference;
         this.address = address;
         this.diplomes = diplomes;
-        this.emergencyContact = emergencyContact;
+
         this.availability = availability;
         this.familyElement = familyElement;
         this.resource = resource;

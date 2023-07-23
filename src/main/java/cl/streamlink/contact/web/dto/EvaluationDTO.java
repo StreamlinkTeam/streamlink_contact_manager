@@ -1,8 +1,9 @@
 package cl.streamlink.contact.web.dto;
 
-import cl.streamlink.contact.utils.enums.EvaluationNote;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import cl.streamlink.contact.utils.enums.NoteStatus;
 
 /**
  * Created by chemakh on 13/07/2018.
@@ -17,13 +18,27 @@ public class EvaluationDTO {
 
     private String responsibleReference;
 
-    private EvaluationNote relational;
+    private NoteStatus noteStatus;
 
-    private EvaluationNote technical;
+    public NoteStatus getNoteStatus() {
+        return noteStatus;
+    }
+
+    public void setNoteStatus(NoteStatus noteStatus) {
+        this.noteStatus = noteStatus;
+    }
 
     private String note;
 
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
 
     private LocalDateTime modifiedDate;
 
@@ -59,36 +74,12 @@ public class EvaluationDTO {
         this.responsibleReference = responsibleReference;
     }
 
-    public EvaluationNote getRelational() {
-        return relational;
-    }
-
-    public void setRelational(EvaluationNote relational) {
-        this.relational = relational;
-    }
-
-    public EvaluationNote getTechnical() {
-        return technical;
-    }
-
-    public void setTechnical(EvaluationNote technical) {
-        this.technical = technical;
-    }
-
     public String getNote() {
         return note;
     }
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
     }
 
     public LocalDateTime getModifiedDate() {

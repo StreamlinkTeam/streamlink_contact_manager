@@ -2,6 +2,8 @@ package cl.streamlink.contact.web.dto;
 
 import javax.validation.constraints.Email;
 
+import cl.streamlink.contact.domain.EmergencyContact;
+
 /**
  * Created by Chemakh on 11/07/2018.
  */
@@ -36,6 +38,7 @@ public class ContactDTO {
 
     private String website;
 
+    private EmergencyContact emergencyContact;
 
     public String getOwnerReference() {
         return ownerReference;
@@ -139,5 +142,13 @@ public class ContactDTO {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public EmergencyContact getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(EmergencyContact emergencyContact) {
+        this.emergencyContact = emergencyContact;
     }
 }

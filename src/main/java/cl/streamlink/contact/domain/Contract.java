@@ -10,9 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
 @Entity
-@Table(indexes = {@Index(name = "index_contract_reference", columnList = "reference", unique = true)})
+@Table(indexes = { @Index(name = "index_contract_reference", columnList = "reference", unique = true) })
 @EntityListeners(AuditingEntityListener.class)
 public class Contract {
     @Id
@@ -33,6 +32,36 @@ public class Contract {
 
     private BigDecimal salary;
 
+    private BigDecimal missionExpenses;
+
+    private BigDecimal transportCosts;
+
+    public void setMissionExpenses(BigDecimal missionExpenses) {
+        this.missionExpenses = missionExpenses;
+    }
+
+    public void setTransportCosts(BigDecimal transportCosts) {
+        this.transportCosts = transportCosts;
+    }
+
+    public void setBilletRestaurant(boolean billetRestaurant) {
+        this.billetRestaurant = billetRestaurant;
+    }
+
+    private boolean billetRestaurant;
+
+    public BigDecimal getMissionExpenses() {
+        return missionExpenses;
+    }
+
+    public BigDecimal getTransportCosts() {
+        return transportCosts;
+    }
+
+    public boolean isBilletRestaurant() {
+        return billetRestaurant;
+    }
+
     @Enumerated(EnumType.STRING)
     private ContractType type;
 
@@ -42,6 +71,26 @@ public class Contract {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    private LocalDate startTrial;
+
+    public LocalDate getStartTrial() {
+        return startTrial;
+    }
+
+    public void setStartTrial(LocalDate startTrial) {
+        this.startTrial = startTrial;
+    }
+
+    public LocalDate getEndTrial() {
+        return endTrial;
+    }
+
+    public void setEndTrial(LocalDate endTrial) {
+        this.endTrial = endTrial;
+    }
+
+    private LocalDate endTrial;
 
     private LocalDate trialPeriodEndDate;
 

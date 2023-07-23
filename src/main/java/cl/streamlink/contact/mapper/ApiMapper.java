@@ -298,7 +298,6 @@ public abstract class ApiMapper {
         @Mappings({
                         @Mapping(target = "developer", expression = "java(developerRepository.findOneByReference(dto.getDeveloperReference()).orElse(null))"),
                         @Mapping(target = "responsible", expression = "java(userRepository.findOneByReference(dto.getResponsibleReference()).orElse(null))"),
-                        @Mapping(target = "createdDate", ignore = true),
                         @Mapping(target = "modifiedDate", ignore = true) })
         public abstract Evaluation fromDTOToBean(EvaluationDTO dto);
 
@@ -364,7 +363,7 @@ public abstract class ApiMapper {
         @Mappings({ @Mapping(source = "resource.reference", target = "resourceReference"),
                         @Mapping(source = "need.reference", target = "needReference"),
                         @Mapping(source = "responsible.reference", target = "responsibleReference"),
-                        @Mapping(source = "need.title", target = "needTitle"),
+                        // @Mapping(source = "need.title", target = "needTitle"),
                         @Mapping(source = "need.societyContact.society.label", target = "client"),
                         @Mapping(target = "resourceFullName", expression = "java(bean.getResource().getFirstname()+\" \"+bean.getResource().getLastname())"),
         })

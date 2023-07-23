@@ -74,7 +74,6 @@ public class AbstractProfile implements Serializable {
         this.contact = contact;
     }
 
-
     public User getManager() {
         return manager;
     }
@@ -82,7 +81,6 @@ public class AbstractProfile implements Serializable {
     public void setManager(User manager) {
         this.manager = manager;
     }
-
 
     public String getNote() {
         return note;

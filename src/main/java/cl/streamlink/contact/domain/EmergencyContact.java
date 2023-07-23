@@ -15,16 +15,12 @@ public class EmergencyContact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String firstContactFirstName;
 
-    @NotNull
     private String firstContactLastName;
 
-    @NotNull
     private String firstContactPhoneNumber;
 
-    @NotNull
     private String firstContactRelativesLink;
 
     private String secondContactFirstName;

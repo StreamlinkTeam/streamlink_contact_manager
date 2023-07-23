@@ -17,12 +17,15 @@ public enum ResourceType {
     RecruitmentOfficer,
     HRManager,
     OfficeManager,
+    Pfe,
+    Stagiaire,
     Accounting;
 
     @JsonCreator
     public static ResourceType fromString(final String value) {
-        return value != null ?
-                Arrays.stream(values()).filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
+        return value != null
+                ? Arrays.stream(values())
+                        .filter(val -> MiscUtils.equals(val.toString().toUpperCase(), value.toUpperCase()))
                         .findFirst().orElse(NOT_DEFINED)
                 : NOT_DEFINED;
     }

@@ -21,7 +21,6 @@ public class ProjectPosDTO extends PositioningDTO {
 
     private LocalDate presentationDate;
 
-
     public String getCountry() {
         return country;
     }
@@ -69,4 +68,5 @@ public class ProjectPosDTO extends PositioningDTO {
     public void setPresentationDate(LocalDate presentationDate) {
         this.presentationDate = presentationDate;
     }
+
 }

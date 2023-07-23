@@ -1,6 +1,5 @@
 package cl.streamlink.contact.web.dto;
 
-
 import cl.streamlink.contact.utils.enums.PositioningStage;
 
 import javax.persistence.Column;
@@ -11,16 +10,17 @@ import java.time.LocalDateTime;
 
 public class PositioningDTO {
 
-
     private String reference;
 
     @NotEmpty
     private String resourceReference;
 
-    @NotEmpty
+    // @NotEmpty
     private String needReference;
 
-//    private String projectReference;
+    // private String needTitle;
+
+    // private String projectReference;
 
     private String responsibleReference;
 
@@ -88,13 +88,13 @@ public class PositioningDTO {
         this.client = client;
     }
 
-//    public String getProjectTitle() {
-//        return projectTitle;
-//    }
-//
-//    public void setProjectTitle(String projectTitle) {
-//        this.projectTitle = projectTitle;
-//    }
+    // public String getProjectTitle() {
+    // return projectTitle;
+    // }
+    //
+    // public void setProjectTitle(String projectTitle) {
+    // this.projectTitle = projectTitle;
+    // }
 
     public String getResourceFullName() {
         return resourceFullName;
@@ -161,12 +161,14 @@ public class PositioningDTO {
     }
 
     public BigDecimal getPeriodCost() {
-       // return cjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+        // return cjm.multiply(BigDecimal.valueOf(this.getFreeDays() +
+        // this.getInvoicedDays()));
         return null;
     }
 
     public BigDecimal getPeriodCA() {
-       // return tjm.multiply(BigDecimal.valueOf(this.getFreeDays() + this.getInvoicedDays()));
+        // return tjm.multiply(BigDecimal.valueOf(this.getFreeDays() +
+        // this.getInvoicedDays()));
         return null;
     }
 
@@ -177,10 +179,11 @@ public class PositioningDTO {
 
     public BigDecimal getPeriodProfitability() {
 
-//        if (getPeriodCA().equals(BigDecimal.ZERO))
-//            return BigDecimal.ZERO;
-//
-//        return this.getPeriodMargin().divide(getPeriodCA()).multiply(BigDecimal.valueOf(100));
+        // if (getPeriodCA().equals(BigDecimal.ZERO))
+        // return BigDecimal.ZERO;
+        //
+        // return
+        // this.getPeriodMargin().divide(getPeriodCA()).multiply(BigDecimal.valueOf(100));
         return null;
     }
 
@@ -224,21 +227,20 @@ public class PositioningDTO {
         this.needTitle = needTitle;
     }
 
-//	public String getProjectReference() {
-//		return projectReference;
-//	}
-//
-//	public void setProjectReference(String projectReference) {
-//		this.projectReference = projectReference;
-//	}
-public boolean isProject() {
-    return project;
-}
+    // public String getProjectReference() {
+    // return projectReference;
+    // }
+    //
+    // public void setProjectReference(String projectReference) {
+    // this.projectReference = projectReference;
+    // }
+    public boolean isProject() {
+        return project;
+    }
 
     public void setProject(boolean project) {
         this.project = project;
     }
-
 
     public String getEmail() {
         return email;

@@ -32,7 +32,6 @@ public class HireabilityService {
 
     private final Logger logger = LoggerFactory.getLogger(HireabilityService.class);
 
-
     @Value("${contact.hireability.product_code}")
     private String hireAbilityProductCode;
 
@@ -45,10 +44,8 @@ public class HireabilityService {
     @Inject
     private RestTemplate restTemplate;
 
-
     @Inject
     private ObjectMapper objectMapper;
-
 
     public Developer parseResume(File resume) throws IOException {
 
@@ -88,7 +85,6 @@ public class HireabilityService {
                 .findFirst()
                 .orElseThrow(() -> ContactApiException.unprocessableEntityExceptionBuilder("parse_error", null)));
     }
-
 
     private Developer loadDeveloperFromHireAbility(HireAbilityJSONResults resume) {
 
@@ -135,44 +131,39 @@ public class HireabilityService {
         personalInformation.setBirthDate(resume.getDateOfBirth());
         personalInformation.setFamilySituation(FamilySituation.fromString(resume.getFamilySituation()));
 
-
         SkillsInformation skillsInformation = new SkillsInformation();
         skillsInformation.setTitle(resume.getPositionHistories().stream().findFirst()
                 .orElse(new HireAbilityPositionHistory()).getPositionTitle());
         skillsInformation.setFormation(Formation.NOT_DEFINED);
         skillsInformation.setExperience(Experience.NOT_DEFINED);
-//
-        skillsInformation.setQualifications(!resume.getEducationOrganizations().isEmpty() ?
-                resume.getEducationOrganizations().stream()
+        //
+        skillsInformation.setQualifications(
+                !resume.getEducationOrganizations().isEmpty() ? resume.getEducationOrganizations().stream()
                         .flatMap(education -> education.getDegrees().stream())
                         .filter(Objects::nonNull)
                         .map(HireAbilityDegree::getName)
                         .collect(Collectors.toList()) : new ArrayList<>());
 
-        skillsInformation.getQualifications().addAll(!resume.getCertifications().isEmpty() ?
-                resume.getCertifications().stream()
+        skillsInformation.getQualifications()
+                .addAll(!resume.getCertifications().isEmpty() ? resume.getCertifications().stream()
                         .filter(Objects::nonNull)
                         .map(HireAbilityDegree::getName)
                         .collect(Collectors.toList()) : new ArrayList<>());
 
-        skillsInformation.getQualifications().addAll(!resume.getLicences().isEmpty() ?
-                resume.getLicences().stream()
-                        .filter(Objects::nonNull)
-                        .map(HireAbilityDegree::getName)
-                        .collect(Collectors.toList()) : new ArrayList<>());
+        skillsInformation.getQualifications().addAll(!resume.getLicences().isEmpty() ? resume.getLicences().stream()
+                .filter(Objects::nonNull)
+                .map(HireAbilityDegree::getName)
+                .collect(Collectors.toList()) : new ArrayList<>());
 
-        skillsInformation.setLanguages(!resume.getCompetencies().isEmpty() ?
-                resume.getCompetencies().stream()
-                        .map(HireabilityCompetency::getCompetencyName)
-                        .collect(Collectors.joining(",")) : "UNDEFINED");
+        skillsInformation.setLanguages(!resume.getCompetencies().isEmpty() ? resume.getCompetencies().stream()
+                .map(HireabilityCompetency::getCompetencyName)
+                .collect(Collectors.joining(",")) : "UNDEFINED");
 
         developer.setContact(contact);
         developer.setPersonalInformation(personalInformation);
         developer.setSkillsInformation(skillsInformation);
 
-
         return developer;
     }
-
 
 }

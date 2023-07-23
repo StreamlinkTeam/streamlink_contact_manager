@@ -1,6 +1,5 @@
 package cl.streamlink.contact.service;
 
-
 import cl.streamlink.contact.domain.CurriculumVitae;
 import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.exception.ContactApiException;
@@ -25,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 public class CurriculumVitaeService {
@@ -52,9 +50,7 @@ public class CurriculumVitaeService {
     @Inject
     private CurriculumVitaeRepository curriculumVitaeRepository;
 
-
     public DeveloperResponseDTO generateFromCv(MultipartFile cv) {
-
 
         try {
             String reference = MiscUtils.generateReference();
@@ -75,11 +71,11 @@ public class CurriculumVitaeService {
                 curriculumVitaeRepository.save(curriculumVitae);
 
                 return mapper.fromBeanToDTOResponse(developer);
-            } else throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("Cv", "CV", "format_error"));
+            } else
+                throw ContactApiException.validationErrorBuilder(new FieldErrorDTO("Cv", "CV", "format_error"));
         } catch (IOException e) {
             throw ContactApiException.unprocessableEntityExceptionBuilder("parse_error", null);
         }
-
 
     }
 
@@ -87,7 +83,8 @@ public class CurriculumVitaeService {
 
         if (cv != null) {
             Developer developer = developerRepository.findOneByReference(developerReference)
-                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+                    .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer",
+                            developerReference));
 
             if (curriculumVitaeRepository.countByDeveloperReference(developerReference) >= 5)
                 throw ContactApiException.unprocessableEntityExceptionBuilder("cv-number", null);
@@ -110,31 +107,29 @@ public class CurriculumVitaeService {
     public List<CurriculumVitaeDTO> findDeveloperCVs(String developerReference) {
 
         developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
-
+                .orElseThrow(
+                        () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
         return curriculumVitaeRepository.findByDeveloperReference(developerReference)
                 .stream().map(mapper::fromBeanToDTO).collect(Collectors.toList());
-
 
     }
 
     public JSONObject removeDeveloperCV(String reference, String developerReference) {
 
         developerRepository.findOneByReference(developerReference)
-                .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
+                .orElseThrow(
+                        () -> ContactApiException.resourceNotFoundExceptionBuilder("Developer", developerReference));
 
-        CurriculumVitae curriculumVitae = curriculumVitaeRepository.findOneByReferenceAndDeveloperReference
-                (reference, developerReference)
+        CurriculumVitae curriculumVitae = curriculumVitaeRepository
+                .findOneByReferenceAndDeveloperReference(reference, developerReference)
                 .orElseThrow(() -> ContactApiException.resourceNotFoundExceptionBuilder("Cv", reference));
 
         removeCurriculumVitae(curriculumVitae);
 
         return MiscUtils.createSuccessfullyResult();
 
-
     }
-
 
     private File saveCvFile(String fileName, MultipartFile cv) throws IOException {
 
@@ -148,7 +143,6 @@ public class CurriculumVitaeService {
         File file = new File(basePath, curriculumVitae.getName());
         file.delete();
         curriculumVitaeRepository.delete(curriculumVitae);
-
 
     }
 }

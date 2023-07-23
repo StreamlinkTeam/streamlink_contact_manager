@@ -1,6 +1,5 @@
 package cl.streamlink.contact.utils;
 
-
 import cl.streamlink.contact.service.*;
 import cl.streamlink.contact.utils.enums.*;
 import cl.streamlink.contact.web.dto.*;
@@ -20,7 +19,6 @@ import java.util.Locale;
 public class FakerService {
 
     private final static Logger logger = LoggerFactory.getLogger(FakerService.class);
-
 
     @Inject
     private DeveloperService developerService;
@@ -48,8 +46,6 @@ public class FakerService {
 
     private Faker faker = new Faker(new Locale("fr", "fr"));
 
-
-
     public void generateNeed(String societyContactReference) {
 
         List<UserDTO> users = userService.getAllUsers();
@@ -68,7 +64,8 @@ public class FakerService {
 
         NeedInformationDTO needInformation = new NeedInformationDTO();
         needInformation.setBudget(BigDecimal.valueOf(faker.number().randomNumber(4, true)));
-        needInformation.setActivityArea(ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
+        needInformation
+                .setActivityArea(ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
         needInformation.setClosingDate(LocalDate.now().plusMonths(faker.number().numberBetween(10, 20)));
         needInformation.setResponseDate(LocalDate.now().plusMonths(faker.number().numberBetween(0, 6)));
         needInformation.setStartingDate(LocalDate.now().plusMonths(faker.number().numberBetween(5, 8)));
@@ -95,7 +92,8 @@ public class FakerService {
             society.setStaffNumber(faker.number().numberBetween(5, 500));
             society.setSupplierNumber(faker.code().asin());
             society.setStage(SocietyStage.values()[faker.number().numberBetween(0, SocietyStage.values().length)]);
-            society.setActivityArea(ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
+            society.setActivityArea(
+                    ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
             society.setServices(Arrays.asList(faker.job().keySkills(),
                     faker.job().keySkills(), faker.job().keySkills()));
 
@@ -122,9 +120,11 @@ public class FakerService {
                 societyContactDTO.setFirstname(faker.name().firstName());
                 societyContactDTO.setLastname(faker.name().lastName());
                 societyContactDTO.setGender(Gender.values()[i % 2]);
-                societyContactDTO.setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
+                societyContactDTO
+                        .setManagerReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
                 societyContactDTO.setNote(faker.lorem().paragraph());
-                societyContactDTO.setStage(SocietyStage.values()[faker.number().numberBetween(0, SocietyStage.values().length)]);
+                societyContactDTO
+                        .setStage(SocietyStage.values()[faker.number().numberBetween(0, SocietyStage.values().length)]);
                 societyContactDTO.setTitle(faker.job().title());
                 societyContactDTO.setService(faker.job().position());
 
@@ -136,9 +136,8 @@ public class FakerService {
 
                 societyContactDTO.setSocietyReference(society.getReference());
 
-
-                societyContactDTO = societyContactService.createSocietyContact
-                        (societyContactDTO, society.getReference());
+                societyContactDTO = societyContactService.createSocietyContact(societyContactDTO,
+                        society.getReference());
 
                 ContactDTO cont = generateContact(societyContactDTO.getReference());
 
@@ -170,7 +169,8 @@ public class FakerService {
 
         ProjectInformationDTO projectInformation = new ProjectInformationDTO();
         projectInformation.setBudget(BigDecimal.valueOf(faker.number().randomNumber(4, true)));
-        projectInformation.setActivityArea(ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
+        projectInformation
+                .setActivityArea(ActivityArea.values()[faker.number().numberBetween(0, ActivityArea.values().length)]);
         projectInformation.setClosingDate(LocalDate.now().plusMonths(faker.number().numberBetween(10, 20)));
         projectInformation.setResponseDate(LocalDate.now().plusMonths(faker.number().numberBetween(0, 6)));
         projectInformation.setStartingDate(LocalDate.now().plusMonths(faker.number().numberBetween(5, 8)));
@@ -193,7 +193,8 @@ public class FakerService {
         // positioning.setProjectReference(projectReference);
         positioning.setNeedReference(projectReference);
 
-        positioning.setResourceReference(resources.get(faker.number().numberBetween(0, resources.size())).getReference());
+        positioning
+                .setResourceReference(resources.get(faker.number().numberBetween(0, resources.size())).getReference());
         positioning.setResponsibleReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
         positioning.setStartDate(LocalDate.now().plusMonths(faker.number().numberBetween(5, 8)));
         positioning.setCjm(BigDecimal.valueOf(faker.number().randomNumber(3, true)));
@@ -203,11 +204,11 @@ public class FakerService {
         positioning.setInvoicedDays(faker.number().numberBetween(20, 40));
 
         positioning.setNote(faker.lorem().paragraph());
-        positioning.setStage(PositioningStage.values()[faker.number().numberBetween(1, PositioningStage.values().length - 1) - 1]);
+        positioning.setStage(
+                PositioningStage.values()[faker.number().numberBetween(1, PositioningStage.values().length - 1) - 1]);
 
         positioningService.createPositioning(positioning);
     }
-
 
     public void deleteAll() {
 
@@ -223,7 +224,6 @@ public class FakerService {
 
         List<UserDTO> users = userService.getAllUsers();
 
-
         for (Integer i = 0; i < size; i++) {
 
             ResourceDTO res = new ResourceDTO();
@@ -236,12 +236,14 @@ public class FakerService {
             res.setRhReference(users.get(faker.number().numberBetween(0, users.size())).getReference());
             res.setNote(faker.lorem().paragraph());
             res.setStage(Stage.ConvertedToResource);
-            res.setResourceStage(ResourceStage.values()[faker.number().numberBetween(2, ResourceStage.values().length) - 1]);
-            res.setResourceType(ResourceType.values()[faker.number().numberBetween(2, ResourceType.values().length) - 1]);
+            res.setResourceStage(
+                    ResourceStage.values()[faker.number().numberBetween(2, ResourceStage.values().length) - 1]);
+            res.setResourceType(
+                    ResourceType.values()[faker.number().numberBetween(2, ResourceType.values().length) - 1]);
             res.setRegistrationNumber(faker.idNumber().valid());
 
-
-            res.setMobility(Arrays.asList(faker.address().country(), faker.address().country(), faker.address().country()));
+            res.setMobility(
+                    Arrays.asList(faker.address().country(), faker.address().country(), faker.address().country()));
 
             res = resourceService.createResource(res);
 
@@ -276,7 +278,6 @@ public class FakerService {
             skills.setLanguages(String.join(", ", faker.job().keySkills(),
                     faker.job().keySkills(), faker.job().keySkills()));
 
-
             developerService.updateDeveloperSkills(skills, res.getReference());
 
         }
@@ -285,7 +286,6 @@ public class FakerService {
     public void generateFakerDeveloperData(Integer size) {
 
         List<UserDTO> users = userService.getAllUsers();
-
 
         for (Integer i = 0; i < size; i++) {
 
@@ -300,7 +300,8 @@ public class FakerService {
             dev.setNote(faker.lorem().paragraph());
             dev.setStage(Stage.values()[faker.number().numberBetween(1, Stage.values().length - 1) - 1]);
 
-            dev.setMobility(Arrays.asList(faker.address().country(), faker.address().country(), faker.address().country()));
+            dev.setMobility(
+                    Arrays.asList(faker.address().country(), faker.address().country(), faker.address().country()));
 
             dev = developerService.createDeveloper(dev);
 
@@ -332,7 +333,6 @@ public class FakerService {
             skills.setLanguages(String.join(", ", faker.job().keySkills(),
                     faker.job().keySkills(), faker.job().keySkills()));
 
-
             developerService.updateDeveloperSkills(skills, dev.getReference());
 
         }
@@ -353,7 +353,6 @@ public class FakerService {
         contact.setFax(faker.phoneNumber().phoneNumber());
         contact.setWebsite(faker.internet().url());
 
-
         contact.setAddress(faker.address().streetAddress());
         contact.setCity(faker.address().city());
         contact.setCountry(faker.address().country());
@@ -361,6 +360,5 @@ public class FakerService {
 
         return contact;
     }
-
 
 }
