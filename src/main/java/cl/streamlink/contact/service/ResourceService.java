@@ -49,6 +49,11 @@ public class ResourceService {
 
         //Retrieve Object from resourceDTO
         Resource resource = mapper.fromDTOToBean(resourceDTO);
+        //Generate Reference Key & store data to resource
+        resource.setReference("res" + MiscUtils.generateReference());
+        resource.setStage(Stage.ConvertedToResource);
+        //Create Resource
+        mapper.fromBeanToDTO(resourceRepository.save(resource));
 
         //Create new user with Resource credentials
         UserDTO user=new UserDTO();
@@ -59,12 +64,6 @@ public class ResourceService {
         user.setEmail(resourceDTO.getEmail());
         //Save User with resource information
         userService.signup(user);
-
-        //Generate Reference Key & store data to resource
-        resource.setReference("res" + MiscUtils.generateReference());
-        resource.setStage(Stage.ConvertedToResource);
-        //Create Resource
-        mapper.fromBeanToDTO(resourceRepository.save(resource));
 
         //Search Developer by Reference
         Developer res = developerRepository.findOneByReference(resource.getReference())

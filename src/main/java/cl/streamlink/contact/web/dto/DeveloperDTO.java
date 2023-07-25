@@ -19,7 +19,6 @@ public class DeveloperDTO extends AbstractProfileDTO {
     @Size(min = 2, max = 255)
     private String lastname;
 
-    @NotNull
     @Size(min = 2, max = 255)
     private String email;
 

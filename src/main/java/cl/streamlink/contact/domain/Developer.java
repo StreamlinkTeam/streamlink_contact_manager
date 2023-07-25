@@ -24,7 +24,7 @@ public class Developer extends AbstractProfile {
     @NotNull
     private String lastname;
 
-    @NotNull
+    @Transient
     private String email;
 
     @Enumerated(EnumType.STRING)
