@@ -1,6 +1,7 @@
 package cl.streamlink.contact.service;
 
 import cl.streamlink.contact.domain.Contract;
+import cl.streamlink.contact.domain.ContractHistory;
 import cl.streamlink.contact.domain.Developer;
 import cl.streamlink.contact.domain.WishedContract;
 import cl.streamlink.contact.exception.ContactApiException;
@@ -25,6 +26,9 @@ public class ContractService {
 
     @Inject
     private ContractRepository contractRepository;
+
+    @Inject
+    private ContractHistoryService contractHistoryService;
 
     @Inject
     private WishedContractRepository wishedContractRepository;
@@ -65,6 +69,15 @@ public class ContractService {
             contract.setReference(MiscUtils.generateReference());
             contract.setDeveloper(developer);
             contract.setResponsible(userService.getCurrentUser());
+
+        } else {
+            ContractHistory contractHistory = new ContractHistory();
+            contractHistory.setDeveloperReference(developerReference);
+            contractHistory.setStartDate(contractDTO.getStartDate());
+            contractHistory.setEndDate(contractDTO.getEndDate());
+            contractHistory.setSalary(contractDTO.getSalary());
+            contractHistory.setType(contractDTO.getType());
+            contractHistoryService.createContractHistory(contractHistory);
 
         }
 
